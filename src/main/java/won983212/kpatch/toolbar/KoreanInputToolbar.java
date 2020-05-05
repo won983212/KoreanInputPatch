@@ -36,7 +36,7 @@ public class KoreanInputToolbar extends TopViewToolbar {
 			alertText = maxLen - len + "자";
 		}
 
-		String idiText = (KoreanInputContext.isKorMode() ? "한글" : "영문");
+		String idiText = (KoreanInputContext.isKorMode() ? "한" : "영");
 		int textWidth = fr.getStringWidth(idiText);
 		
 		Gui.drawRect(x, y, x + 2, y + height, KoreanInputContext.isKorMode() ? 0xff1E88E5 : 0xffE53935);

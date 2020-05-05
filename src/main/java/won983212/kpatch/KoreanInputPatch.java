@@ -16,9 +16,12 @@ public class KoreanInputPatch {
 
 	@Mod.Instance(KoreanInputPatch.MODID)
 	public static KoreanInputPatch instance;
+	
+	public final Configs conf = new Configs();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		conf.load();
 	}
 
 	@EventHandler
