@@ -1,5 +1,6 @@
 package won983212.kpatch;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -21,7 +22,7 @@ public class KoreanInputPatch {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		System.out.println("Hello, world!");
+		MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
 	}
 	
 	@EventHandler
