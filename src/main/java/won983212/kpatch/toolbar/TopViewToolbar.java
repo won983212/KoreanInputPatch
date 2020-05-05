@@ -1,5 +1,8 @@
 package won983212.kpatch.toolbar;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+
 public abstract class TopViewToolbar {
 	private IToolbarContainer context = null;
 	

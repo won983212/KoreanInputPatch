@@ -13,9 +13,10 @@ import java.util.Properties;
 import net.minecraft.client.Minecraft;
 
 public class Configs {
+	public static final Configs instance = new Configs();
 	private static final File configFile = new File(Minecraft.getMinecraft().mcDataDir, "/config/koreaninput.cfg");
 	private static final HashMap<String, String> defaultValues = new HashMap<>();
-	private Properties data = new Properties();
+	private static Properties data = new Properties();
 	
 	public static final String IME_INDICATOR_VISIBLE_MODE = "imeIndicatorVisibleMode";
 	
@@ -28,7 +29,7 @@ public class Configs {
 		defaultValues.put("version", KoreanInputPatch.VERSION);
 	}
 
-	public void load() {
+	public static void load() {
 		try {
 			data.load(new FileInputStream(configFile));
 			
@@ -47,7 +48,7 @@ public class Configs {
 		}
 	}
 	
-	public void save() {
+	public static void save() {
 		try {
 			if(!configFile.getParentFile().exists())
 				configFile.getParentFile().mkdirs();
@@ -61,14 +62,14 @@ public class Configs {
 		}
 	}
 	
-	public void setDefault() {
+	public static void setDefault() {
 		for(Entry<String, String> ent : defaultValues.entrySet()) {
 			data.setProperty(ent.getKey(), ent.getValue());
 		}
 		save();
 	}
 	
-	public void upgrade() {
+	public static void upgrade() {
 		for(Entry<String, String> ent : defaultValues.entrySet()) {
 			String key = ent.getKey();
 			if(!data.containsKey(key)) {
@@ -88,29 +89,33 @@ public class Configs {
 		save();
 	}
 	
-	public void set(String key, Object obj) {
+	public static void set(String key, Object obj) {
 		data.setProperty(key, obj.toString());
 	}
 	
-	public String get(String key, String defaultValue) {
-		return data.getProperty(key, defaultValue);
+	public static String get(String key) {
+		return data.getProperty(key, defaultValues.getOrDefault(key, ""));
 	}
 	
-	public int getInt(String key, int defaultValue) {
-		String data = this.data.getProperty(key);
-		if(data == null) {
-			return defaultValue;
+	public static int getInt(String key) {
+		String str = data.getProperty(key);
+		String result;
+		if(str == null) {
+			result = defaultValues.getOrDefault(key, "0");
 		} else {
-			return Integer.parseInt(data);
+			result = str;
 		}
+		return Integer.parseInt(result);
 	}
 	
-	public double getDouble(String key, double defaultValue) {
-		String data = this.data.getProperty(key);
-		if(data == null) {
-			return defaultValue;
+	public static double getDouble(String key) {
+		String str = data.getProperty(key);
+		String result;
+		if(str == null) {
+			result = defaultValues.getOrDefault(key, "0.0");
 		} else {
-			return Double.parseDouble(data);
+			result = str;
 		}
+		return Double.parseDouble(result);
 	}
 }

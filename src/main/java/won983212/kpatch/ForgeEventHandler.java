@@ -16,7 +16,6 @@ import won983212.kpatch.toolbar.TopViewToolbar;
 import won983212.kpatch.wrapper.TextfieldWrapper;
 
 public class ForgeEventHandler {
-	public static final ForgeEventHandler instance = new ForgeEventHandler();
 	private final ToolbarRenderer toolbarRenderer = new ToolbarRenderer();
 	
 	@SubscribeEvent

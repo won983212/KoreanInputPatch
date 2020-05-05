@@ -17,19 +17,23 @@ public class KoreanInputPatch {
 	@Mod.Instance(KoreanInputPatch.MODID)
 	public static KoreanInputPatch instance;
 	
-	public final Configs conf = new Configs();
+	private final ForgeEventHandler eventHandler = new ForgeEventHandler();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		conf.load();
+		Configs.load();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(ForgeEventHandler.instance);
+		MinecraftForge.EVENT_BUS.register(eventHandler);
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+	}
+	
+	public ForgeEventHandler getEventHandler() {
+		return eventHandler;
 	}
 }

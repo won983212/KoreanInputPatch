@@ -3,14 +3,26 @@ package won983212.kpatch.toolbar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiScreen;
+import won983212.kpatch.Configs;
+import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.inputengines.KoreanInputContext;
 import won983212.kpatch.wrapper.TextfieldWrapper;
 
 public class KoreanInputToolbar extends TopViewToolbar {
 	@Override
 	public void renderToolbar(IToolbarContainer c) {
-		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+		GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 		TextfieldWrapper wrapper = (TextfieldWrapper) c;
+		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+		int conf = Configs.getInt(Configs.IME_INDICATOR_VISIBLE_MODE);
+		
+		if(conf == 0) { // 0이면 무조건 렌더링 안함
+			return;
+		} else if(conf == 1 && !(screen instanceof GuiChat)) { // 1이면 채팅 ui에서만 렌더링
+			return;
+		} // 2이상은 무조건 렌더링
 
 		int x = wrapper.getX() - 1;
 		int y = wrapper.getY() - fr.FONT_HEIGHT - 4;
@@ -31,7 +43,7 @@ public class KoreanInputToolbar extends TopViewToolbar {
 		if(maxLen == len) {
 			alertBg = 0xffe53935;
 			alertText = "꽉참";
-		} else if(maxLen - 10 < len) {
+		} else if(maxLen * 0.6 < len) {
 			alertBg = 0xfffb8c00;
 			alertText = maxLen - len + "자";
 		}

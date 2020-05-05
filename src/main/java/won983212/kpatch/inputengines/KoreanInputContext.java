@@ -7,6 +7,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.ForgeEventHandler;
+import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.toolbar.IToolbarContainer;
 import won983212.kpatch.toolbar.ToolbarRenderer;
 
@@ -192,7 +193,7 @@ public class KoreanInputContext extends InputEngine {
 
 	public void requestDrawToolbar(IToolbarContainer c) {
 		if(input.isFocused()) {
-			ForgeEventHandler.instance.requestDrawToolbar(c, ToolbarRenderer.TOOLBAR_KOREAN_INPUT);
+			KoreanInputPatch.instance.getEventHandler().requestDrawToolbar(c, ToolbarRenderer.TOOLBAR_KOREAN_INPUT);
 		}
 	}
 }
