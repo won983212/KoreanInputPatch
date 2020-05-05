@@ -1,25 +1,28 @@
-package won983212.kpatch.inputengine;
-
-import java.awt.event.KeyEvent;
+package won983212.kpatch.inputengines;
 
 import org.lwjgl.input.Keyboard;
 
-import test.ChatAllowedCharacters;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ChatAllowedCharacters;
+import won983212.kpatch.ForgeEventHandler;
+import won983212.kpatch.toolbar.IToolbarContainer;
+import won983212.kpatch.toolbar.ToolbarRenderer;
 
-public class KoreanInputEngine extends InputEngine {
+public class KoreanInputContext extends InputEngine {
 	private static final String KeyMap = "`1234567890-=\\qwertyuiop[]asdfghjkl;'zxcvbnm/~!@#$%^&*()_+|QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?";
 	private static final String TranslatedKey = "`1234567890-=\\ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔ[]ㅁㄴㅇㄹㅎㅗㅓㅏㅣ;'ㅋㅌㅊㅍㅠㅜㅡ/~!@#$%^&*()_+|ㅃㅉㄸㄲㅆㅛㅕㅑㅒㅖ{}ㅁㄴㅇㄹㅎㅗㅓㅏㅣ:\"ㅋㅌㅊㅍㅠㅜㅡ<>?";
 	private static final String Chosung = "rRseEfaqQtTdwWczxvg";
 	private static final String[] Jungsung = "k;o;i;O;j;p;u;P;h;hk;ho;hl;y;n;nj;np;nl;b;m;ml;l".split(";");
 	private static final String[] Jongsung = ";r;R;rt;s;sw;sg;e;f;fr;fa;fq;ft;fx;fv;fg;a;q;qt;t;T;d;w;c;z;x;v;g".split(";");
-	private static boolean isKorean = true;
-	private static final boolean useKeySetForSwing = false;
+	private static boolean isKorean = false;
 
 	private int cho = -1;
 	private int jung = -1;
 	private int jong = 0;
 
-	public KoreanInputEngine(IInputWrapper wrapper) {
+	public KoreanInputContext(IInputWrapper wrapper) {
 		super(wrapper);
 	}
 
@@ -60,6 +63,11 @@ public class KoreanInputEngine extends InputEngine {
 							} else {
 								cancelAssemble();
 								write(translate(c));
+								
+								cho = Chosung.indexOf(c);
+								if (cho != -1) {
+									input.setMovingCursor(input.getMovingCursor() - 1);
+								}
 							}
 						}
 					} else {
@@ -99,12 +107,12 @@ public class KoreanInputEngine extends InputEngine {
 				write(c);
 			}
 			return true;
-		} else if (i == (useKeySetForSwing ? KeyEvent.VK_BACK_SPACE : Keyboard.KEY_BACK)) {
+		} else if (i == Keyboard.KEY_BACK) {
 			if (!isKorean)
 				return false;
 			backspaceKorean();
 			return true;
-		} else if (i == (useKeySetForSwing ? KeyEvent.VK_CONTROL : Keyboard.KEY_LCONTROL)) {
+		} else if (i == Keyboard.KEY_LCONTROL) {
 			isKorean = !isKorean;
 			cancelAssemble();
 			return true;
@@ -180,5 +188,11 @@ public class KoreanInputEngine extends InputEngine {
 
 	public static boolean isKorMode() {
 		return isKorean;
+	}
+
+	public void requestDrawToolbar(IToolbarContainer c) {
+		if(input.isFocused()) {
+			ForgeEventHandler.instance.requestDrawToolbar(c, ToolbarRenderer.TOOLBAR_KOREAN_INPUT);
+		}
 	}
 }

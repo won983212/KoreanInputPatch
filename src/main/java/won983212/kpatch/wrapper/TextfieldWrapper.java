@@ -8,211 +8,225 @@ import com.google.common.base.Predicate;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
-import won983212.kpatch.inputengine.IInputWrapper;
-import won983212.kpatch.inputengine.KoreanInputEngine;
+import won983212.kpatch.inputengines.IInputWrapper;
+import won983212.kpatch.inputengines.KoreanInputContext;
+import won983212.kpatch.toolbar.IToolbarContainer;
 import net.minecraft.client.gui.GuiTextField;
 
-public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
-	private GuiTextField impl;
-	private KoreanInputEngine input;
+public class TextfieldWrapper extends GuiTextField implements IInputWrapper, IToolbarContainer {
+	private GuiTextField textfield;
+	private KoreanInputContext input;
 
 	public TextfieldWrapper(GuiTextField impl) {
 		super(impl.getId(), null, impl.x, impl.y, impl.width, impl.height);
-		this.impl = impl;
-		this.input = new KoreanInputEngine(this);
-	}
-
-	@Override
-	public void setGuiResponder(GuiResponder guiResponderIn) {
-		impl.setGuiResponder(guiResponderIn);
-	}
-
-	@Override
-	public void updateCursorCounter() {
-		impl.updateCursorCounter();
-	}
-
-	@Override
-	public void setText(String textIn) {
-		impl.setText(textIn);
-	}
-
-	@Override
-	public String getText() {
-		return impl.getText();
-	}
-
-	@Override
-	public String getSelectedText() {
-		return impl.getSelectedText();
-	}
-
-	@Override
-	public void setValidator(Predicate<String> theValidator) {
-		impl.setValidator(theValidator);
-	}
-
-	@Override
-	public void writeText(String textToWrite) {
-		impl.writeText(textToWrite);
-	}
-
-	@Override
-	public void setResponderEntryValue(int idIn, String textIn) {
-		impl.setResponderEntryValue(idIn, textIn);
-	}
-
-	@Override
-	public void deleteWords(int num) {
-		impl.deleteWords(num);
-	}
-
-	@Override
-	public void deleteFromCursor(int num) {
-		impl.deleteFromCursor(num);
-	}
-
-	@Override
-	public int getId() {
-		return impl.getId();
-	}
-
-	@Override
-	public int getNthWordFromCursor(int numWords) {
-		return impl.getNthWordFromCursor(numWords);
-	}
-
-	@Override
-	public int getNthWordFromPos(int n, int pos) {
-		return impl.getNthWordFromPos(n, pos);
-	}
-
-	@Override
-	public int getNthWordFromPosWS(int n, int pos, boolean skipWs) {
-		return impl.getNthWordFromPosWS(n, pos, skipWs);
-	}
-
-	@Override
-	public void moveCursorBy(int num) {
-		impl.moveCursorBy(num);
-	}
-
-	@Override
-	public void setCursorPosition(int pos) {
-		impl.setCursorPosition(pos);
-	}
-
-	@Override
-	public void setCursorPositionZero() {
-		impl.setCursorPositionZero();
-	}
-
-	@Override
-	public void setCursorPositionEnd() {
-		impl.setCursorPositionEnd();
+		this.textfield = impl;
+		this.input = new KoreanInputContext(this);
 	}
 
 	@Override
 	public boolean textboxKeyTyped(char typedChar, int keyCode) {
-		if (KoreanInputEngine.isKorMode()) {
+		if (KoreanInputContext.isKorMode()) {
 			if (keyCode == Keyboard.KEY_LEFT || keyCode == Keyboard.KEY_RIGHT || keyCode == Keyboard.KEY_RETURN) {
 				input.cancelAssemble();
 			}
 		}
 		if (!input.handleKeyTyped(typedChar, keyCode)) {
-			return impl.textboxKeyTyped(typedChar, keyCode);
+			return textfield.textboxKeyTyped(typedChar, keyCode);
 		}
 		return true;
 	}
 
 	@Override
-	public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
-		return impl.mouseClicked(mouseX, mouseY, mouseButton);
+	public void drawTextBox() {
+		input.requestDrawToolbar(this);
+		textfield.drawTextBox();
 	}
 
 	@Override
-	public void drawTextBox() {
-		impl.drawTextBox();
+	public void setAnchorCursor(int cursor) {
+		int end_cur = getMovingCursor();
+		setCursorPosition(cursor);
+		setSelectionPos(end_cur);
+	}
+
+	@Override
+	public void setMovingCursor(int cursor) {
+		setSelectionPos(cursor);
+	}
+
+	@Override
+	public void setGuiResponder(GuiResponder guiResponderIn) {
+		textfield.setGuiResponder(guiResponderIn);
+	}
+
+	@Override
+	public void updateCursorCounter() {
+		textfield.updateCursorCounter();
+	}
+
+	@Override
+	public void setText(String textIn) {
+		textfield.setText(textIn);
+	}
+
+	@Override
+	public String getText() {
+		return textfield.getText();
+	}
+
+	@Override
+	public String getSelectedText() {
+		return textfield.getSelectedText();
+	}
+
+	@Override
+	public void setValidator(Predicate<String> theValidator) {
+		textfield.setValidator(theValidator);
+	}
+
+	@Override
+	public void writeText(String textToWrite) {
+		textfield.writeText(textToWrite);
+	}
+
+	@Override
+	public void setResponderEntryValue(int idIn, String textIn) {
+		textfield.setResponderEntryValue(idIn, textIn);
+	}
+
+	@Override
+	public void deleteWords(int num) {
+		textfield.deleteWords(num);
+	}
+
+	@Override
+	public void deleteFromCursor(int num) {
+		textfield.deleteFromCursor(num);
+	}
+
+	@Override
+	public int getId() {
+		return textfield.getId();
+	}
+
+	@Override
+	public int getNthWordFromCursor(int numWords) {
+		return textfield.getNthWordFromCursor(numWords);
+	}
+
+	@Override
+	public int getNthWordFromPos(int n, int pos) {
+		return textfield.getNthWordFromPos(n, pos);
+	}
+
+	@Override
+	public int getNthWordFromPosWS(int n, int pos, boolean skipWs) {
+		return textfield.getNthWordFromPosWS(n, pos, skipWs);
+	}
+
+	@Override
+	public void moveCursorBy(int num) {
+		textfield.moveCursorBy(num);
+	}
+
+	@Override
+	public void setCursorPosition(int pos) {
+		textfield.setCursorPosition(pos);
+	}
+
+	@Override
+	public void setCursorPositionZero() {
+		textfield.setCursorPositionZero();
+	}
+
+	@Override
+	public void setCursorPositionEnd() {
+		textfield.setCursorPositionEnd();
+	}
+
+	@Override
+	public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
+		return textfield.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
 	public void setMaxStringLength(int length) {
-		impl.setMaxStringLength(length);
+		textfield.setMaxStringLength(length);
 	}
 
 	@Override
 	public int getMaxStringLength() {
-		return impl.getMaxStringLength();
+		return textfield.getMaxStringLength();
 	}
 
 	@Override
 	public int getCursorPosition() {
-		return impl.getCursorPosition();
+		return textfield.getCursorPosition();
 	}
 
 	@Override
 	public boolean getEnableBackgroundDrawing() {
-		return impl.getEnableBackgroundDrawing();
+		return textfield.getEnableBackgroundDrawing();
 	}
 
 	@Override
 	public void setEnableBackgroundDrawing(boolean enableBackgroundDrawingIn) {
-		impl.setEnableBackgroundDrawing(enableBackgroundDrawingIn);
+		textfield.setEnableBackgroundDrawing(enableBackgroundDrawingIn);
 	}
 
 	@Override
 	public void setTextColor(int color) {
-		impl.setTextColor(color);
+		textfield.setTextColor(color);
 	}
 
 	@Override
 	public void setDisabledTextColour(int color) {
-		impl.setDisabledTextColour(color);
+		textfield.setDisabledTextColour(color);
 	}
 
 	@Override
 	public void setFocused(boolean isFocusedIn) {
-		impl.setFocused(isFocusedIn);
+		textfield.setFocused(isFocusedIn);
 	}
 
 	@Override
 	public boolean isFocused() {
-		return impl.isFocused();
+		return textfield.isFocused();
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		impl.setEnabled(enabled);
+		textfield.setEnabled(enabled);
 	}
 
 	@Override
 	public int getSelectionEnd() {
-		return impl.getSelectionEnd();
+		return textfield.getSelectionEnd();
 	}
 
 	@Override
 	public int getWidth() {
-		return impl.getWidth();
+		return textfield.getWidth();
 	}
 
 	@Override
 	public void setSelectionPos(int position) {
-		impl.setSelectionPos(position);
+		textfield.setSelectionPos(position);
 	}
 
 	@Override
 	public void setCanLoseFocus(boolean canLoseFocusIn) {
-		impl.setCanLoseFocus(canLoseFocusIn);
+		textfield.setCanLoseFocus(canLoseFocusIn);
 	}
 
 	@Override
 	public boolean getVisible() {
-		return impl.getVisible();
+		return textfield.getVisible();
 	}
 
 	@Override
 	public void setVisible(boolean isVisible) {
-		impl.setVisible(isVisible);
+		textfield.setVisible(isVisible);
 	}
 
 	@Override
@@ -226,14 +240,17 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	}
 
 	@Override
-	public void setAnchorCursor(int cursor) {
-		int end_cur = getMovingCursor();
-		setCursorPosition(cursor);
-		setSelectionPos(end_cur);
+	public int getX() {
+		return textfield.x;
 	}
 
 	@Override
-	public void setMovingCursor(int cursor) {
-		setSelectionPos(cursor);
+	public int getY() {
+		return textfield.y;
+	}
+
+	@Override
+	public int getHeight() {
+		return textfield.height;
 	}
 }
