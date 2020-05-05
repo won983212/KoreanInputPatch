@@ -43,9 +43,9 @@ public class KoreanInputToolbar extends TopViewToolbar {
 		if(maxLen == len) {
 			alertBg = 0xffe53935;
 			alertText = "꽉참";
-		} else if(maxLen * 0.6 < len) {
+		} else if(maxLen * 0.7 < len) { // 70%이상 텍스트 입력시 남은 글자수 표시
 			alertBg = 0xfffb8c00;
-			alertText = maxLen - len + "자";
+			alertText = maxLen - len + "자 남음";
 		}
 
 		String idiText = (KoreanInputContext.isKorMode() ? "한" : "영");
