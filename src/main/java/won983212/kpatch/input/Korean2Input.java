@@ -32,7 +32,6 @@ public class Korean2Input extends InputEngine {
 		if(!input.isComponentFocused())
 			return false;
 		if (isKorMode()) {
-			// TODO Only when moving cursor.
 			if (i == Keyboard.KEY_LEFT || i == Keyboard.KEY_RIGHT || i == Keyboard.KEY_RETURN) {
 				cancelAssemble();
 			}
@@ -42,13 +41,13 @@ public class Korean2Input extends InputEngine {
 				if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
 					if ("qwertyuiopasdfghjklzxcvbnmQWERTOP".indexOf(c) == -1)
 						c = Character.toLowerCase(c);
-					if (cho == -1) {
+					if (cho == -1) { // 초성 입력
 						cho = Chosung.indexOf(c);
 						write(translate(c));
 						if (cho != -1) {
 							input.setMovingCursor(input.getMovingCursor() - 1);
 						}
-					} else if (jung == -1) {
+					} else if (jung == -1) { // 중성 입력
 						jung = findArray(Jungsung, c);
 						if (jung == -1) {
 							cho = Chosung.indexOf(c);
@@ -58,12 +57,12 @@ public class Korean2Input extends InputEngine {
 						} else {
 							writeAssembled();
 						}
-					} else if (jong == 0) {
+					} else if (jong == 0) { // 종성 입력
 						int newJung = findArray(Jungsung, Jungsung[jung] + String.valueOf(c));
 						if (newJung != -1) {
 							jung = newJung;
 							writeAssembled();
-						} else {
+						} else { // 종성에 올 수 없는 문자 입력시
 							int idx = findArray(Jongsung, c);
 							if (idx != -1) {
 								jong = idx;
@@ -78,12 +77,12 @@ public class Korean2Input extends InputEngine {
 								}
 							}
 						}
-					} else {
+					} else { // 종성 복자음 조합
 						int newJong = findArray(Jongsung, Jongsung[jong] + String.valueOf(c));
 						if (newJong != -1) {
 							jong = newJong;
 							writeAssembled();
-						} else {
+						} else { // 복자음이 안 만들어지면
 							int newCho = Chosung.indexOf(c);
 							if (newCho != -1) {
 								cancelAssemble();
@@ -188,17 +187,19 @@ public class Korean2Input extends InputEngine {
 	}
 
 	public void cancelAssemble() {
-		cho = -1;
-		jung = -1;
-		jong = 0;
-		input.setMovingCursor(input.getAnchorCursor());
+		if(cho != -1 || jung != -1 || jong != 0) {
+			cho = -1;
+			jung = -1;
+			jong = 0;
+			input.setMovingCursor(input.getAnchorCursor());
+		}
 	}
 
 	public static boolean isKorMode() {
 		return isKorean;
 	}
 
-	public void requestDrawToolbar(IToolbarContainer c) {
+	public void drawIndicator(IToolbarContainer c) {
 		if(input.isComponentFocused()) {
 			KoreanInputPatch.instance.getEventHandler().requestDrawToolbar(c, ToolbarRenderer.TOOLBAR_KOREAN_INPUT);
 		}

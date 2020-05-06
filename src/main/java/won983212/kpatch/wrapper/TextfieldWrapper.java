@@ -33,7 +33,7 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 
 	@Override
 	public void drawTextBox() {
-		input.requestDrawToolbar(this);
+		input.drawIndicator(this);
 		textfield.drawTextBox();
 	}
 
@@ -49,6 +49,38 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 		setSelectionPos(cursor);
 	}
 
+	@Override
+	public int getAnchorCursor() {
+		return getCursorPosition();
+	}
+
+	@Override
+	public int getMovingCursor() {
+		return getSelectionEnd();
+	}
+
+	@Override
+	public boolean isComponentFocused() {
+		return textfield.isFocused();
+	}
+
+	@Override
+	public int getX() {
+		return textfield.x;
+	}
+
+	@Override
+	public int getY() {
+		return textfield.y;
+	}
+
+	@Override
+	public int getHeight() {
+		return textfield.height;
+	}
+
+	// ========== Pass Overrides ===========
+	
 	@Override
 	public void setGuiResponder(GuiResponder guiResponderIn) {
 		textfield.setGuiResponder(guiResponderIn);
@@ -185,7 +217,7 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 	}
 
 	@Override
-	public boolean isComponentFocused() {
+	public boolean isFocused() {
 		return textfield.isFocused();
 	}
 
@@ -222,30 +254,5 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 	@Override
 	public void setVisible(boolean isVisible) {
 		textfield.setVisible(isVisible);
-	}
-
-	@Override
-	public int getAnchorCursor() {
-		return getCursorPosition();
-	}
-
-	@Override
-	public int getMovingCursor() {
-		return getSelectionEnd();
-	}
-
-	@Override
-	public int getX() {
-		return textfield.x;
-	}
-
-	@Override
-	public int getY() {
-		return textfield.y;
-	}
-
-	@Override
-	public int getHeight() {
-		return textfield.height;
 	}
 }

@@ -25,6 +25,14 @@ public class SelectionCursor {
 		return movingCursor;
 	}
 
+	public int getMinCursor() {
+		return Math.min(anchorCursor, movingCursor);
+	}
+	
+	public int getMaxCursor() {
+		return Math.max(anchorCursor, movingCursor);
+	}
+	
 	public void setAnchorCursor(int cursor) {
 		this.anchorCursor = slice(cursor);
 	}
@@ -78,6 +86,10 @@ public class SelectionCursor {
 	}
 
 	public static void drawSelectionBox(int startX, int startY, int endX, int endY) {
+		drawSelectionBox(startX, startY, endX, endY, -1);
+	}
+	
+	public static void drawSelectionBox(int startX, int startY, int endX, int endY, int color) {
 		if (startX < endX) {
 			int i = startX;
 			startX = endX;
@@ -92,17 +104,27 @@ public class SelectionCursor {
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		GlStateManager.color(0.0F, 0.0F, 255.0F, 255.0F);
+		if(color != -1) {
+			float f3 = (float)(color >> 24 & 255) / 255.0F;
+	        float f = (float)(color >> 16 & 255) / 255.0F;
+	        float f1 = (float)(color >> 8 & 255) / 255.0F;
+	        float f2 = (float)(color & 255) / 255.0F;
+	        GlStateManager.color(f, f1, f2, f3);
+		} else {
+			GlStateManager.color(0.0F, 0.0F, 255.0F, 255.0F);
+			GlStateManager.enableColorLogic();
+			GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
+		}
 		GlStateManager.disableTexture2D();
-		GlStateManager.enableColorLogic();
-		GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
 		bufferbuilder.pos((double) startX, (double) endY, 1000.0D).endVertex();
 		bufferbuilder.pos((double) endX, (double) endY, 1000.0D).endVertex();
 		bufferbuilder.pos((double) endX, (double) startY, 1000.0D).endVertex();
 		bufferbuilder.pos((double) startX, (double) startY, 1000.0D).endVertex();
 		tessellator.draw();
-		GlStateManager.disableColorLogic();
+		if(color == -1) {
+			GlStateManager.disableColorLogic();
+		}
 		GlStateManager.enableTexture2D();
 	}
 }
