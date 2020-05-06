@@ -1,21 +1,23 @@
 package won983212.kpatch.input;
 
-public class InputEngine {
+public abstract class InputEngine {
 	protected IInputWrapper input;
 
 	protected InputEngine(IInputWrapper input) {
 		this.input = input;
 	}
+	
+	public abstract boolean handleKeyTyped(char c, int i);
 
-	protected int getStartCursor() {
+	public int getStartCursor() {
 		return Math.min(input.getAnchorCursor(), input.getMovingCursor());
 	}
 
-	protected int getEndCursor() {
+	public int getEndCursor() {
 		return Math.max(input.getAnchorCursor(), input.getMovingCursor());
 	}
 
-	protected boolean isSelectionEnabled() {
+	public boolean isSelectionEnabled() {
 		return input.getAnchorCursor() != input.getMovingCursor();
 	}
 

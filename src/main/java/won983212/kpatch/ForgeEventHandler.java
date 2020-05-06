@@ -1,6 +1,9 @@
 package won983212.kpatch;
 
 import java.lang.reflect.Field;
+import java.util.Queue;
+
+import com.google.common.collect.Queues;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -11,15 +14,11 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import won983212.kpatch.toolbar.IToolbarContainer;
-import won983212.kpatch.toolbar.KoreanInputToolbar;
-import won983212.kpatch.toolbar.ToolbarRenderer;
-import won983212.kpatch.toolbar.TopViewToolbar;
 import won983212.kpatch.wrapper.EditSignWrapper;
 import won983212.kpatch.wrapper.TextfieldWrapper;
 
 public class ForgeEventHandler {
-	private final ToolbarRenderer toolbarRenderer = new ToolbarRenderer();
+	private Queue<Runnable> afterRenderQueue = Queues.newArrayDeque();
 
 	@SubscribeEvent
 	public void onInitGui(GuiScreenEvent.InitGuiEvent.Post e) { // 화면상의 모든 GuiTextfield fields에 wrapper를 씌움
@@ -49,18 +48,24 @@ public class ForgeEventHandler {
 				Minecraft.getMinecraft().displayGuiScreen(new EditSignWrapper(sign));
 			}
 		}
-		/*
-		 * if(screen instanceof GuiMainMenu) { e.setCanceled(true);
-		 * Minecraft.getMinecraft().displayGuiScreen(new TestScreen()); }
-		 */
+		/*if (screen instanceof GuiMainMenu) {
+			e.setCanceled(true);
+			Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
+		}*/
 	}
 
 	@SubscribeEvent
 	public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Post e) {
-		toolbarRenderer.render();
+		synchronized (this.afterRenderQueue) {
+			while (!this.afterRenderQueue.isEmpty()) {
+				this.afterRenderQueue.poll().run();
+			}
+		}
 	}
-
-	public void requestDrawToolbar(IToolbarContainer container, int toolbarId) {
-		toolbarRenderer.requestDrawToolbar(container, toolbarId);
+	
+	public void addTopRenderQueue(Runnable runnable) {
+		synchronized (this.afterRenderQueue) {
+			afterRenderQueue.add(runnable);
+		}
 	}
 }

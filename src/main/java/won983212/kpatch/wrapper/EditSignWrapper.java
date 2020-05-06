@@ -6,32 +6,23 @@ import org.lwjgl.util.Rectangle;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiEditSign;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.text.TextComponentString;
 import won983212.kpatch.ObfuscatedReflection;
 import won983212.kpatch.input.IInputWrapper;
 import won983212.kpatch.input.Korean2Input;
-import won983212.kpatch.input.SelectionCursor;
-import won983212.kpatch.toolbar.IToolbarContainer;
+import won983212.kpatch.input.SelectionCursorInput;
 
-public class EditSignWrapper extends GuiEditSign implements IInputWrapper, IToolbarContainer {
-	private SelectionCursor selection = new SelectionCursor(this);
+public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
+	private SelectionCursorInput selection = new SelectionCursorInput(this);
 	private Korean2Input input = new Korean2Input(this);
 	private TileEntitySign tileSign;
 	private String textBuffer;
-	private Rectangle uibounds;
 
 	public EditSignWrapper(TileEntitySign sign) {
 		super(sign);
 		this.tileSign = sign;
-		if (this.tileSign.getBlockType() == Blocks.STANDING_SIGN) {
-			uibounds = new Rectangle(0, 0, 0, 0);
-		} else {
-			uibounds = new Rectangle(0, 0, 0, 0);
-		}
 	}
 
 	@Override
@@ -45,7 +36,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper, ITool
 			int editLine = getEditline();
 			textBuffer = tileSign.signText[editLine].getUnformattedText();
 			if (!input.handleKeyTyped(typedChar, keyCode)) {
-				selection.keyTyped(keyCode);
+				selection.handleKeyTyped(typedChar, keyCode);
 			}
 			tileSign.signText[editLine] = new TextComponentString(textBuffer);
 		}
@@ -57,17 +48,20 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper, ITool
 
 		int editLine = getEditline();
 		String text = tileSign.signText[editLine].getUnformattedText();
-		final int minCur = selection.getMinCursor();
-		final int maxCur = selection.getMaxCursor();
+		final int textWidth = fontRenderer.getStringWidth(text);
+		final int minCur = selection.getStartCursor();
+		final int maxCur = selection.getEndCursor();
 
-		int x1 = (width - fontRenderer.getStringWidth(text)) / 2 - 1;
-		int x2, y, color;
+		int x1 = (width - textWidth) / 2 - 1;
+		int x2, y, indicatorY, color;
 
 		Block block = this.tileSign.getBlockType();
 		if (block == Blocks.STANDING_SIGN) {
 			y = 71 + editLine * 10;
+			indicatorY = 55;
 		} else {
 			y = 100 + editLine * 10;
+			indicatorY = 85;
 		}
 
 		x1 += fontRenderer.getStringWidth(text.substring(0, minCur));
@@ -79,8 +73,8 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper, ITool
 			color = -1;
 		}
 
-		SelectionCursor.drawSelectionBox(x1, y, x2, y + fontRenderer.FONT_HEIGHT, color);
-		input.drawIndicator(this);
+		SelectionCursorInput.drawSelectionBox(x1, y, x2, y + fontRenderer.FONT_HEIGHT, color);
+		input.drawIndicator(width / 2 - 47, indicatorY, textWidth, 90, "px");
 	}
 
 	private int getEditline() {
@@ -125,25 +119,5 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper, ITool
 	@Override
 	public boolean isComponentFocused() {
 		return true;
-	}
-
-	@Override
-	public int getX() {
-		return uibounds.getX();
-	}
-
-	@Override
-	public int getY() {
-		return uibounds.getY();
-	}
-
-	@Override
-	public int getWidth() {
-		return uibounds.getWidth();
-	}
-
-	@Override
-	public int getHeight() {
-		return uibounds.getHeight();
 	}
 }

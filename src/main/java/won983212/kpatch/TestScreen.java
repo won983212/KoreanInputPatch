@@ -17,7 +17,7 @@ public class TestScreen extends GuiScreen {
 	public void initGui() {
 		Keyboard.enableRepeatEvents(true);
 		tf = new GuiTextField(0, fontRenderer, 5, 5, 200, 20);
-		tf2 = new GuiTextField(1, fontRenderer, 5, 50, 200, 20);
+		tf2 = new GuiTextField(1, fontRenderer, 5, 27, 200, 20);
 		tf2.setMaxStringLength(30);
 	}
 

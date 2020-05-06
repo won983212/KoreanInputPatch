@@ -1,19 +1,15 @@
 package won983212.kpatch.wrapper;
 
-import java.awt.event.KeyEvent;
-
-import org.lwjgl.input.Keyboard;
-
 import com.google.common.base.Predicate;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
+import net.minecraft.client.gui.GuiTextField;
 import won983212.kpatch.input.IInputWrapper;
 import won983212.kpatch.input.Korean2Input;
-import won983212.kpatch.toolbar.IToolbarContainer;
-import net.minecraft.client.gui.GuiTextField;
 
-public class TextfieldWrapper extends GuiTextField implements IInputWrapper, IToolbarContainer {
+public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private GuiTextField textfield;
 	private Korean2Input input;
 
@@ -33,15 +29,28 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 
 	@Override
 	public void drawTextBox() {
-		input.drawIndicator(this);
+		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+		int x = textfield.x - 1;
+		int y = textfield.y - fr.FONT_HEIGHT - 4;
+		
+		if (y < 2) {
+			y = textfield.y + textfield.height + 2;
+		}
+		
+		if (!getEnableBackgroundDrawing()) {
+			x -= 1;
+			y += y < 2 ? 2 : -2;
+		}
+		
+		input.drawIndicator(x, y, getText().length(), getMaxStringLength());
 		textfield.drawTextBox();
 	}
 
 	@Override
 	public void setAnchorCursor(int cursor) {
-		int end_cur = getMovingCursor();
+		int endCur = getMovingCursor();
 		setCursorPosition(cursor);
-		setSelectionPos(end_cur);
+		setSelectionPos(endCur);
 	}
 
 	@Override
@@ -62,21 +71,6 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 	@Override
 	public boolean isComponentFocused() {
 		return textfield.isFocused();
-	}
-
-	@Override
-	public int getX() {
-		return textfield.x;
-	}
-
-	@Override
-	public int getY() {
-		return textfield.y;
-	}
-
-	@Override
-	public int getHeight() {
-		return textfield.height;
 	}
 
 	// ========== Pass Overrides ===========
