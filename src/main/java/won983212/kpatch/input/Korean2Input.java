@@ -1,4 +1,4 @@
-package won983212.kpatch.inputengines;
+package won983212.kpatch.input;
 
 import org.lwjgl.input.Keyboard;
 
@@ -11,7 +11,7 @@ import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.toolbar.IToolbarContainer;
 import won983212.kpatch.toolbar.ToolbarRenderer;
 
-public class KoreanInputContext extends InputEngine {
+public class Korean2Input extends InputEngine {
 	private static final String KeyMap = "`1234567890-=\\qwertyuiop[]asdfghjkl;'zxcvbnm/~!@#$%^&*()_+|QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?";
 	private static final String TranslatedKey = "`1234567890-=\\ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔ[]ㅁㄴㅇㄹㅎㅗㅓㅏㅣ;'ㅋㅌㅊㅍㅠㅜㅡ/~!@#$%^&*()_+|ㅃㅉㄸㄲㅆㅛㅕㅑㅒㅖ{}ㅁㄴㅇㄹㅎㅗㅓㅏㅣ:\"ㅋㅌㅊㅍㅠㅜㅡ<>?";
 	private static final String Chosung = "rRseEfaqQtTdwWczxvg";
@@ -23,7 +23,7 @@ public class KoreanInputContext extends InputEngine {
 	private int jung = -1;
 	private int jong = 0;
 
-	public KoreanInputContext(IInputWrapper wrapper) {
+	public Korean2Input(IInputWrapper wrapper) {
 		super(wrapper);
 	}
 

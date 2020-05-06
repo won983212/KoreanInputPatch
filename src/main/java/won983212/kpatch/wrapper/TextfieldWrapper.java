@@ -8,24 +8,24 @@ import com.google.common.base.Predicate;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
-import won983212.kpatch.inputengines.IInputWrapper;
-import won983212.kpatch.inputengines.KoreanInputContext;
+import won983212.kpatch.input.IInputWrapper;
+import won983212.kpatch.input.Korean2Input;
 import won983212.kpatch.toolbar.IToolbarContainer;
 import net.minecraft.client.gui.GuiTextField;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper, IToolbarContainer {
 	private GuiTextField textfield;
-	private KoreanInputContext input;
+	private Korean2Input input;
 
 	public TextfieldWrapper(GuiTextField impl) {
 		super(impl.getId(), null, impl.x, impl.y, impl.width, impl.height);
 		this.textfield = impl;
-		this.input = new KoreanInputContext(this);
+		this.input = new Korean2Input(this);
 	}
 
 	@Override
 	public boolean textboxKeyTyped(char typedChar, int keyCode) {
-		if (KoreanInputContext.isKorMode()) {
+		if (Korean2Input.isKorMode()) {
 			if (keyCode == Keyboard.KEY_LEFT || keyCode == Keyboard.KEY_RIGHT || keyCode == Keyboard.KEY_RETURN) {
 				input.cancelAssemble();
 			}

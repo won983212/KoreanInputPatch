@@ -11,6 +11,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldExcep
 public class ObfuscatedReflection {
 	private static final HashMap<String, String> svgMap = new HashMap<>();
 
+	// TODO setup svg names.
 	static {
 		// GuiEditSign.class
 		svgMap.put("tileSign", "??a??");

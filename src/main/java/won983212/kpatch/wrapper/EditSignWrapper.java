@@ -7,8 +7,9 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.text.TextComponentString;
 import won983212.kpatch.ObfuscatedReflection;
+import won983212.kpatch.input.IInputWrapper;
 
-public class EditSignWrapper extends GuiEditSign {
+public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	public EditSignWrapper(GuiEditSign parent) {
 		super(ObfuscatedReflection.getPrivateValue(GuiEditSign.class, parent, "tileSign"));
 	}
@@ -31,7 +32,36 @@ public class EditSignWrapper extends GuiEditSign {
 			}
 	
 			tileSign.signText[editLine] = new TextComponentString(s);
-			System.out.println("APPLY");
 		}
+	}
+
+	@Override
+	public void setText(String text) {
+		
+	}
+
+	@Override
+	public String getText() {
+		return null;
+	}
+
+	@Override
+	public int getAnchorCursor() {
+		return 0;
+	}
+
+	@Override
+	public int getMovingCursor() {
+		return 0;
+	}
+
+	@Override
+	public void setAnchorCursor(int cursor) {
+		
+	}
+
+	@Override
+	public void setMovingCursor(int cursor) {
+		
 	}
 }

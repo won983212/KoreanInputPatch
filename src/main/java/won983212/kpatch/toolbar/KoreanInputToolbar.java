@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import won983212.kpatch.Configs;
 import won983212.kpatch.KoreanInputPatch;
-import won983212.kpatch.inputengines.KoreanInputContext;
+import won983212.kpatch.input.Korean2Input;
 import won983212.kpatch.wrapper.TextfieldWrapper;
 
 public class KoreanInputToolbar extends TopViewToolbar {
@@ -48,10 +48,10 @@ public class KoreanInputToolbar extends TopViewToolbar {
 			alertText = maxLen - len + "자 남음";
 		}
 
-		String idiText = (KoreanInputContext.isKorMode() ? "한" : "영");
+		String idiText = (Korean2Input.isKorMode() ? "한" : "영");
 		int textWidth = fr.getStringWidth(idiText);
 		
-		Gui.drawRect(x, y, x + 2, y + height, KoreanInputContext.isKorMode() ? 0xff1E88E5 : 0xffE53935);
+		Gui.drawRect(x, y, x + 2, y + height, Korean2Input.isKorMode() ? 0xff1E88E5 : 0xffE53935);
 		Gui.drawRect(x + 2, y, x + textWidth + 6, y + height, 0xffffffff);
 		if(alertText != null) {
 			final int alertX = x + textWidth + 7;

@@ -1,4 +1,4 @@
-package won983212.kpatch.inputengines;
+package won983212.kpatch.input;
 
 public class InputEngine {
 	protected IInputWrapper input;
