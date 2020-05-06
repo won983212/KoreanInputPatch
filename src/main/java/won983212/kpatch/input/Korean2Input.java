@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.ForgeEventHandler;
 import won983212.kpatch.KoreanInputPatch;
@@ -28,8 +29,14 @@ public class Korean2Input extends InputEngine {
 	}
 
 	public boolean handleKeyTyped(char c, int i) {
-		if(!input.isFocused())
+		if(!input.isComponentFocused())
 			return false;
+		if (isKorMode()) {
+			// TODO Only when moving cursor.
+			if (i == Keyboard.KEY_LEFT || i == Keyboard.KEY_RIGHT || i == Keyboard.KEY_RETURN) {
+				cancelAssemble();
+			}
+		}
 		if (ChatAllowedCharacters.isAllowedCharacter(c)) {
 			if (isKorean) {
 				if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
@@ -192,7 +199,7 @@ public class Korean2Input extends InputEngine {
 	}
 
 	public void requestDrawToolbar(IToolbarContainer c) {
-		if(input.isFocused()) {
+		if(input.isComponentFocused()) {
 			KoreanInputPatch.instance.getEventHandler().requestDrawToolbar(c, ToolbarRenderer.TOOLBAR_KOREAN_INPUT);
 		}
 	}

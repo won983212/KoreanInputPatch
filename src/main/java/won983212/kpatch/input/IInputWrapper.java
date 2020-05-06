@@ -13,5 +13,5 @@ public interface IInputWrapper {
 
 	public void setMovingCursor(int cursor);
 	
-	public boolean isFocused();
+	public boolean isComponentFocused();
 }

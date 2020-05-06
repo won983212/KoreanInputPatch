@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiEditSign;
+import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,7 +45,8 @@ public class ForgeEventHandler {
 		if (screen != null) {
 			if (screen.getClass() == GuiEditSign.class) {
 				e.setCanceled(true);
-				Minecraft.getMinecraft().displayGuiScreen(new EditSignWrapper((GuiEditSign) screen));
+				TileEntitySign sign = ObfuscatedReflection.getPrivateValue(GuiEditSign.class, (GuiEditSign) screen, "tileSign");
+				Minecraft.getMinecraft().displayGuiScreen(new EditSignWrapper(sign));
 			}
 		}
 		/*

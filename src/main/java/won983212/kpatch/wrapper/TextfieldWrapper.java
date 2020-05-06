@@ -25,11 +25,6 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 
 	@Override
 	public boolean textboxKeyTyped(char typedChar, int keyCode) {
-		if (Korean2Input.isKorMode()) {
-			if (keyCode == Keyboard.KEY_LEFT || keyCode == Keyboard.KEY_RIGHT || keyCode == Keyboard.KEY_RETURN) {
-				input.cancelAssemble();
-			}
-		}
 		if (!input.handleKeyTyped(typedChar, keyCode)) {
 			return textfield.textboxKeyTyped(typedChar, keyCode);
 		}
@@ -190,7 +185,7 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper, ITo
 	}
 
 	@Override
-	public boolean isFocused() {
+	public boolean isComponentFocused() {
 		return textfield.isFocused();
 	}
 
