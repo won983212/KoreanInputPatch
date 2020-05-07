@@ -18,12 +18,12 @@ public class Configs {
 	private static final HashMap<String, String> defaultValues = new HashMap<>();
 	private static Properties data = new Properties();
 	
-	public static final String IME_INDICATOR_VISIBLE_MODE = "imeIndicatorVisibleMode";
+	public static final String IME_INDICATOR_VISIBLE = "imeIndicatorVisible";
 	
 	static {
-		// IME Indicator를 언제 표시할 것인가
-		// 0: 아얘 끄기, 1: 채팅창에서만 보임 (default), 2: 채팅창 & 텍스트 필드에서 보임
-		defaultValues.put(IME_INDICATOR_VISIBLE_MODE, "1");
+		// IME Indicator를 표시할 것인가
+		// true: 채팅창에서 사용, false: 아얘 안보임
+		defaultValues.put(IME_INDICATOR_VISIBLE, "true");
 		
 		// 설정파일 버전정보. 버전이 legacy하면 업그레이드한다.
 		defaultValues.put("version", KoreanInputPatch.VERSION);
@@ -117,5 +117,9 @@ public class Configs {
 			result = str;
 		}
 		return Double.parseDouble(result);
+	}
+	
+	public static boolean getBoolean(String key) {
+		return get(key).equals("true");
 	}
 }

@@ -74,7 +74,8 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		}
 
 		SelectionCursorInput.drawSelectionBox(x1, y, x2, y + fontRenderer.FONT_HEIGHT, color);
-		input.drawIndicator(width / 2 - 47, indicatorY, textWidth, 90, "px");
+		// TODO Implement indicator 
+		//input.drawIndicator(width / 2 - 47, indicatorY, textWidth, 90, "px");
 	}
 
 	private int getEditline() {

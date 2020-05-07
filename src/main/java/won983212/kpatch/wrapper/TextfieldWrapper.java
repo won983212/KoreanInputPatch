@@ -4,14 +4,20 @@ import com.google.common.base.Predicate;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.gui.GuiTextField;
 import won983212.kpatch.input.IInputWrapper;
 import won983212.kpatch.input.Korean2Input;
+import won983212.kpatch.ui.popups.GuiKoreanIndicator;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private GuiTextField textfield;
 	private Korean2Input input;
+	
+	// TODO Implement indicator 
+	// this indicator is only for GuiChat
+	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
 
 	public TextfieldWrapper(GuiTextField impl) {
 		super(impl.getId(), null, impl.x, impl.y, impl.width, impl.height);
@@ -29,20 +35,12 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 
 	@Override
 	public void drawTextBox() {
-		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-		int x = textfield.x - 1;
-		int y = textfield.y - fr.FONT_HEIGHT - 4;
-		
-		if (y < 2) {
-			y = textfield.y + textfield.height + 2;
+		if (Minecraft.getMinecraft().currentScreen instanceof GuiChat && isComponentFocused()) {
+			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+			int x = textfield.x - 1;
+			int y = textfield.y - fr.FONT_HEIGHT - 4;
+			indicator.drawIndicator(x, y, getText().length(), getMaxStringLength());
 		}
-		
-		if (!getEnableBackgroundDrawing()) {
-			x -= 1;
-			y += y < 2 ? 2 : -2;
-		}
-		
-		input.drawIndicator(x, y, getText().length(), getMaxStringLength());
 		textfield.drawTextBox();
 	}
 
@@ -74,7 +72,7 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	}
 
 	// ========== Pass Overrides ===========
-	
+
 	@Override
 	public void setGuiResponder(GuiResponder guiResponderIn) {
 		textfield.setGuiResponder(guiResponderIn);
