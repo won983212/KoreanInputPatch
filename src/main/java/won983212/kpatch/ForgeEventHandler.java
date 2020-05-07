@@ -6,8 +6,10 @@ import java.util.Queue;
 import com.google.common.collect.Queues;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiScreenDemo;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiEditSign;
 import net.minecraft.tileentity.TileEntitySign;
@@ -48,10 +50,10 @@ public class ForgeEventHandler {
 				Minecraft.getMinecraft().displayGuiScreen(new EditSignWrapper(sign));
 			}
 		}
-		/*if (screen instanceof GuiMainMenu) {
+		if (screen instanceof GuiMainMenu) {
 			e.setCanceled(true);
 			Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
-		}*/
+		}
 	}
 
 	@SubscribeEvent

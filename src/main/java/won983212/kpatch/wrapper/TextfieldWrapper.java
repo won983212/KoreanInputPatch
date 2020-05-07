@@ -35,12 +35,13 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 
 	@Override
 	public void drawTextBox() {
-		if (Minecraft.getMinecraft().currentScreen instanceof GuiChat && isComponentFocused()) {
+		//TODO DEBUG
+		//if (Minecraft.getMinecraft().currentScreen instanceof GuiChat && isComponentFocused()) {
 			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-			int x = textfield.x - 1;
-			int y = textfield.y - fr.FONT_HEIGHT - 4;
+			int x = textfield.x - 2;
+			int y = textfield.y - fr.FONT_HEIGHT - 6;
 			indicator.drawIndicator(x, y, getText().length(), getMaxStringLength());
-		}
+		//}
 		textfield.drawTextBox();
 	}
 
