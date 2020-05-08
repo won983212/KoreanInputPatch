@@ -14,9 +14,6 @@ import won983212.kpatch.ui.popups.GuiKoreanIndicator;
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private GuiTextField textfield;
 	private Korean2Input input;
-	
-	// TODO Implement indicator 
-	// this indicator is only for GuiChat
 	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
 
 	public TextfieldWrapper(GuiTextField impl) {
@@ -35,13 +32,19 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 
 	@Override
 	public void drawTextBox() {
-		//TODO DEBUG
-		//if (Minecraft.getMinecraft().currentScreen instanceof GuiChat && isComponentFocused()) {
+		if (isComponentFocused()) {
 			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-			int x = textfield.x - 2;
-			int y = textfield.y - fr.FONT_HEIGHT - 6;
+			int x = textfield.x - 1;
+			int y = textfield.y - fr.FONT_HEIGHT - 5;
+			if (y < 2) {
+				y = textfield.y + textfield.height + 3;
+			}
+			if (!getEnableBackgroundDrawing()) {
+				x -= 1;
+				y += y < 2 ? 1 : -1;
+			}
 			indicator.drawIndicator(x, y, getText().length(), getMaxStringLength());
-		//}
+		}
 		textfield.drawTextBox();
 	}
 

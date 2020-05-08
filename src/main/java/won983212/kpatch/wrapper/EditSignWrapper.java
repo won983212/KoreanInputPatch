@@ -13,10 +13,13 @@ import won983212.kpatch.ObfuscatedReflection;
 import won983212.kpatch.input.IInputWrapper;
 import won983212.kpatch.input.Korean2Input;
 import won983212.kpatch.input.SelectionCursorInput;
+import won983212.kpatch.ui.popups.GuiKoreanIndicator;
 
 public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
 	private Korean2Input input = new Korean2Input(this);
+	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
+	
 	private TileEntitySign tileSign;
 	private String textBuffer;
 
@@ -74,8 +77,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		}
 
 		SelectionCursorInput.drawSelectionBox(x1, y, x2, y + fontRenderer.FONT_HEIGHT, color);
-		// TODO Implement indicator 
-		//input.drawIndicator(width / 2 - 47, indicatorY, textWidth, 90, "px");
+		indicator.drawIndicator(width / 2 - 47, indicatorY, (int)(textWidth * 100 / 90.0), 100, "%");
 	}
 
 	private int getEditline() {

@@ -18,13 +18,13 @@ public class Configs {
 	private static final HashMap<String, String> defaultValues = new HashMap<>();
 	private static Properties data = new Properties();
 	
-	public static final String IME_INDICATOR_VISIBLE = "imeIndicatorVisible";
+	public static final String IME_INDICATOR_VISIBLE_MODE = "imeIndicatorVisible";
 	public static final String IME_INDICATOR_ANIMATE = "imeIndicatorAnimate";
 	
 	static {
 		// IME Indicator를 표시합니다
-		// true: 채팅창에서 사용, false: 아얘 안보임
-		defaultValues.put(IME_INDICATOR_VISIBLE, "true");
+		// 0: 끄기, 1: 채팅창에서만 표시, 2: 모든 입력 필드에서 표시
+		defaultValues.put(IME_INDICATOR_VISIBLE_MODE, "2");
 		
 		// IME Indicator에서 에니메이션 효과를 켭니다.
 		defaultValues.put(IME_INDICATOR_ANIMATE, "true");
