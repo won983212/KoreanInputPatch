@@ -19,11 +19,15 @@ public class Configs {
 	private static Properties data = new Properties();
 	
 	public static final String IME_INDICATOR_VISIBLE = "imeIndicatorVisible";
+	public static final String IME_INDICATOR_ANIMATE = "imeIndicatorAnimate";
 	
 	static {
-		// IME Indicator를 표시할 것인가
+		// IME Indicator를 표시합니다
 		// true: 채팅창에서 사용, false: 아얘 안보임
 		defaultValues.put(IME_INDICATOR_VISIBLE, "true");
+		
+		// IME Indicator에서 에니메이션 효과를 켭니다.
+		defaultValues.put(IME_INDICATOR_ANIMATE, "true");
 		
 		// 설정파일 버전정보. 버전이 legacy하면 업그레이드한다.
 		defaultValues.put("version", KoreanInputPatch.VERSION);
