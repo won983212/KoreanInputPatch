@@ -9,13 +9,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.client.gui.GuiScreenDemo;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiEditSign;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import won983212.kpatch.wrapper.EditBookWrapper;
 import won983212.kpatch.wrapper.EditSignWrapper;
 import won983212.kpatch.wrapper.TextfieldWrapper;
 
@@ -44,11 +47,22 @@ public class ForgeEventHandler {
 	public void onOpenGui(GuiOpenEvent e) {
 		GuiScreen screen = e.getGui();
 		if (screen != null) {
-			if (screen.getClass() == GuiEditSign.class) {
-				e.setCanceled(true);
+			Minecraft mc = Minecraft.getMinecraft();
+			Class cls = screen.getClass();
+			boolean cancel = true;
+			
+			if (cls == GuiEditSign.class) {
 				TileEntitySign sign = ObfuscatedReflection.getPrivateValue(GuiEditSign.class, (GuiEditSign) screen, "tileSign");
-				Minecraft.getMinecraft().displayGuiScreen(new EditSignWrapper(sign));
+				mc.displayGuiScreen(new EditSignWrapper(sign));
+			} else if(cls == GuiScreenBook.class) {
+				ItemStack book = ObfuscatedReflection.getPrivateValue(GuiScreenBook.class, (GuiScreenBook) screen, "book");
+				boolean bookIsUnsigned = ObfuscatedReflection.getPrivateValue(GuiScreenBook.class, (GuiScreenBook) screen, "bookIsUnsigned");
+				mc.displayGuiScreen(new EditBookWrapper(book, bookIsUnsigned));
+			} else {
+				cancel = false;
 			}
+			
+			e.setCanceled(cancel);
 		}
 		/*if (screen instanceof GuiMainMenu) {
 			e.setCanceled(true);

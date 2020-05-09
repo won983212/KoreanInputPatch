@@ -11,7 +11,6 @@ import won983212.kpatch.input.Korean2Input;
 import won983212.kpatch.ui.UIUtils;
 import won983212.kpatch.ui.animation.RatioAnimation;
 
-//TODO Implement indicator Process: with animation
 public class GuiKoreanIndicator {
 	private static final int ENG_COLOR = 0xffE53935;
 	private static final int KOR_COLOR = 0xff308FBF;

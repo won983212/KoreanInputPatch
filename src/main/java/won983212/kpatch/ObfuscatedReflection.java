@@ -1,5 +1,6 @@
 package won983212.kpatch;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 import net.minecraftforge.fml.common.FMLLog;
@@ -16,13 +17,24 @@ public class ObfuscatedReflection {
 		// GuiEditSign.class
 		svgMap.put("tileSign", "??a??");
 		svgMap.put("editLine", "?????");
+
+		// GuiScreenBook.class
+		svgMap.put("book", "?????");
+		svgMap.put("bookIsUnsigned", "?????");
 	}
 
 	public static <T, E> T getPrivateValue(Class<? super E> classToAccess, E instance, String fieldName) {
+		checkFieldName(fieldName);
 		return ObfuscationReflectionHelper.getPrivateValue(classToAccess, instance, fieldName, svgMap.get(fieldName));
 	}
 
 	public static <T, E> void setPrivateValue(Class<? super T> classToAccess, T instance, E value, String fieldName) {
+		checkFieldName(fieldName);
 		ObfuscationReflectionHelper.setPrivateValue(classToAccess, instance, value, fieldName, svgMap.get(fieldName));
+	}
+	
+	private static void checkFieldName(String fieldName) {
+		if(!svgMap.containsKey(fieldName))
+			throw new InvalidParameterException("Can't find specified fieldname: " + fieldName);
 	}
 }
