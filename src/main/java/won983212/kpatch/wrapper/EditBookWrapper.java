@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+// TODO Implementing book wrapper
 public class EditBookWrapper extends GuiScreenBook {
 	public EditBookWrapper(ItemStack book, boolean isUnsigned) {
 		super(Minecraft.getMinecraft().player, book, isUnsigned);

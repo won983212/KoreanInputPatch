@@ -1,14 +1,13 @@
 package won983212.kpatch.ui.animation;
 
-public class ColorAnimation implements IAnimation<Integer> {
+public class ColorAnimation extends AnimationBase<Integer> {
 	private int start, end;
 	private int[] color = new int[8];
-	private RatioAnimation animation;
 
 	public ColorAnimation(int start, int end, int duration) {
+		super(duration);
 		this.start = start;
 		this.end = end;
-		this.animation = new RatioAnimation(duration);
 		unpackColor(start, 0);
 		unpackColor(end, 4);
 	}
@@ -21,29 +20,10 @@ public class ColorAnimation implements IAnimation<Integer> {
 	}
 
 	@Override
-	public void setReverse(boolean reverse) {
-		animation.setReverse(reverse);
-	}
-
-	@Override
-	public void play() {
-		animation.play();
-	}
-
-	@Override
-	public boolean isRunning() {
-		return animation.isRunning();
-	}
-
-	@Override
-	public Integer update() {
-		if(!animation.isRunning())
-			return animation.getInitialIntValue(start, end);
-		
-		final double p = animation.update();
+	protected Integer update(double time) {
 		int res = 0;
-		for(int i=0;i<4;i++) {
-			res += (int)(color[i] + (color[i+4] - color[i]) * p) << ((3-i) * 8);
+		for (int i = 0; i < 4; i++) {
+			res += (int) (color[i] + (color[i + 4] - color[i]) * time) << ((3 - i) * 8);
 		}
 		return res;
 	}

@@ -22,7 +22,6 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 		super(impl.getId(), Minecraft.getMinecraft().fontRenderer, impl.x, impl.y, impl.width, impl.height);
 		this.input = new Korean2Input(this);
 
-		// copy from parent field
 		try {
 			for (Field f : FIELDS) {
 				f.set(this, f.get(impl));
