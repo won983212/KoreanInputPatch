@@ -6,16 +6,17 @@ import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
+import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToAccessFieldException;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
 
+// TODO 나중에 AccessTransformer로 대체할 예정
 public class ObfuscatedReflection {
 	private static final HashMap<String, String> svgMap = new HashMap<>();
 
-	// TODO LATEST: setup svg names.
 	static {
 		// GuiEditSign.class
 		svgMap.put("tileSign", "i");
@@ -25,10 +26,15 @@ public class ObfuscatedReflection {
 		svgMap.put("book", "i");
 		svgMap.put("bookIsUnsigned", "i");
 		svgMap.put("bookGettingSigned", "i");
+		svgMap.put("bookTitle", "i");
+		svgMap.put("bookIsModified", "i");
+		
 		svgMap.put("f#pageGetCurrent", "i");
 		svgMap.put("f#pageSetCurrent", "i");
+		svgMap.put("f#updateButtons", "i");
+		svgMap.put("f#sendBookToServer", "i");
 	}
-
+	
 	public static <T, E> T getPrivateValue(Class<? super E> classToAccess, E instance, String fieldName) {
 		checkFieldName(fieldName);
 		return ObfuscationReflectionHelper.getPrivateValue(classToAccess, instance, fieldName, svgMap.get(fieldName));

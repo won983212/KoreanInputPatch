@@ -44,6 +44,10 @@ public class SelectionCursorInput extends InputEngine {
 	public String getSelectedText() {
 		return input.getText().substring(getStartCursor(), getEndCursor());
 	}
+	
+	public void write(String str) {
+		super.write(str);
+	}
 
 	private int slice(int x) {
 		int len = input.getText().length();
