@@ -1,8 +1,7 @@
 package won983212.kpatch.wrapper;
 
 import java.io.IOException;
-
-import org.lwjgl.util.Rectangle;
+import java.lang.reflect.Field;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiEditSign;
@@ -22,21 +21,30 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	
 	private TileEntitySign tileSign;
 	private String textBuffer;
+	
+	// reflected fields
+	private Field editLine;
 
 	public EditSignWrapper(TileEntitySign sign) {
 		super(sign);
-		this.tileSign = sign;
+		tileSign = sign;
+		editLine = ObfuscatedReflection.getPrivateField(GuiEditSign.class, this, "editLine");
 	}
 
+	private int getEditLine() {
+		return ObfuscatedReflection.getPrivateValue(this.editLine, this);
+	}
+	
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (keyCode == 200 || keyCode == 208 || keyCode == 28 || keyCode == 156 || keyCode == 1) {
 			super.keyTyped(typedChar, keyCode);
 			if (keyCode != 1) {
-				selection.setCursor(tileSign.signText[getEditline()].getUnformattedText().length());
+				selection.setCursor(tileSign.signText[getEditLine()].getUnformattedText().length());
+				input.cancelAssemble();
 			}
 		} else {
-			int editLine = getEditline();
+			int editLine = getEditLine();
 			textBuffer = tileSign.signText[editLine].getUnformattedText();
 			if (!input.handleKeyTyped(typedChar, keyCode)) {
 				selection.handleKeyTyped(typedChar, keyCode);
@@ -49,7 +57,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		int editLine = getEditline();
+		int editLine = getEditLine();
 		String text = tileSign.signText[editLine].getUnformattedText();
 		final int textWidth = fontRenderer.getStringWidth(text);
 		final int minCur = selection.getStartCursor();
@@ -80,15 +88,12 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		indicator.drawIndicator(width / 2 - 47, indicatorY, (int)(textWidth * 100 / 90.0), 100, "%");
 	}
 
-	private int getEditline() {
-		return ObfuscatedReflection.getPrivateValue(GuiEditSign.class, this, "editLine");
-	}
-
 	@Override
 	public void setText(String text) {
 		int width = this.fontRenderer.getStringWidth(text);
 		if (width > 90) {
 			textBuffer = this.fontRenderer.trimStringToWidth(text, 90);
+			input.cancelAssemble();
 		} else {
 			textBuffer = text;
 		}

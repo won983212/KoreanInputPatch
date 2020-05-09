@@ -37,6 +37,10 @@ public class SelectionCursorInput extends InputEngine {
 		setMovingCursor(cursor);
 	}
 	
+	public boolean checkIsOutOfRange(int len) {
+		return anchorCursor < 0 || movingCursor < 0 || anchorCursor > len || movingCursor > len;
+	}
+	
 	public String getSelectedText() {
 		return input.getText().substring(getStartCursor(), getEndCursor());
 	}

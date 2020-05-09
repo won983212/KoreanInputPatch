@@ -65,10 +65,10 @@ public class ForgeEventHandler {
 			e.setCanceled(cancel);
 		}
 		
-		if (screen instanceof GuiMainMenu) {
+		/*if (screen instanceof GuiMainMenu) {
 			e.setCanceled(true);
 			Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
-		}
+		}*/
 	}
 
 	@SubscribeEvent
