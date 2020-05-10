@@ -23,16 +23,15 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	private String textBuffer;
 	
 	// reflected fields
-	private Field editLine;
+	private static final Field editLine = ObfuscatedReflection.getPrivateField(GuiEditSign.class, "editLine");
 
 	public EditSignWrapper(TileEntitySign sign) {
 		super(sign);
 		tileSign = sign;
-		editLine = ObfuscatedReflection.getPrivateField(GuiEditSign.class, this, "editLine");
 	}
 
 	private int getEditLine() {
-		return ObfuscatedReflection.getPrivateValue(this.editLine, this);
+		return ObfuscatedReflection.getPrivateValue(editLine, this);
 	}
 	
 	@Override
@@ -63,9 +62,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		final int minCur = selection.getStartCursor();
 		final int maxCur = selection.getEndCursor();
 
-		int x1 = (width - textWidth) / 2 - 1;
-		int x2, y, indicatorY, color;
-
+		int y, indicatorY;
 		Block block = this.tileSign.getBlockType();
 		if (block == Blocks.STANDING_SIGN) {
 			y = 71 + editLine * 10;
@@ -75,16 +72,8 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 			indicatorY = 85;
 		}
 
-		x1 += fontRenderer.getStringWidth(text.substring(0, minCur));
-		if (minCur == maxCur) {
-			x2 = x1 + 1;
-			color = 0xff000000;
-		} else {
-			x2 = x1 + fontRenderer.getStringWidth(text.substring(minCur, maxCur));
-			color = -1;
-		}
-
-		SelectionCursorInput.drawSelectionBox(x1, y, x2, y + fontRenderer.FONT_HEIGHT, color);
+		textBuffer = text;
+		selection.drawSelectionBox(fontRenderer, (width - textWidth) / 2 - 1, y, 0);
 		indicator.drawIndicator(width / 2 - 47, indicatorY, (int)(textWidth * 100 / 90.0), 100, "%");
 	}
 

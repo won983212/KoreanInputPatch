@@ -2,11 +2,14 @@ package won983212.kpatch.input;
 
 import org.lwjgl.input.Keyboard;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
 
 public class SelectionCursorInput extends InputEngine {
 	private int anchorCursor = 0;
@@ -113,6 +116,26 @@ public class SelectionCursorInput extends InputEngine {
 		}
 	}
 
+	public void drawSelectionBox(FontRenderer fontRenderer, int x, int y, int maxWidth) {
+		String text = input.getText();
+		final int textWidth = fontRenderer.getStringWidth(text);
+		final int min = getStartCursor();
+		final int max = getEndCursor();
+		
+		x += fontRenderer.getStringWidth(text.substring(0, min));
+		
+		int color, x2;
+		if (min == max) {
+			x2 = x + 1;
+			color = 0xff000000;
+		} else {
+			x2 = x + fontRenderer.getStringWidth(text.substring(min, max));
+			color = -1;
+		}
+		
+		drawSelectionBox(x, y, x2, y + fontRenderer.FONT_HEIGHT, color);
+	}
+	
 	public static void drawSelectionBox(int startX, int startY, int endX, int endY) {
 		drawSelectionBox(startX, startY, endX, endY, -1);
 	}

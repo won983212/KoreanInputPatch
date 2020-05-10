@@ -69,7 +69,7 @@ public class ObfuscatedReflection {
 		}
 	}
 	
-	public static Method getPrivateMethod(Class classToAccess, Object instance, String funcName, Class... parameterTypes) {
+	public static Method getPrivateMethod(Class classToAccess, String funcName, Class... parameterTypes) {
 		checkMethodName(funcName);
 		String[] names = ObfuscationReflectionHelper.remapFieldNames(classToAccess.getName(), funcName, svgMap.get("f#" + funcName));
 		Exception error = null;
@@ -85,7 +85,7 @@ public class ObfuscatedReflection {
 		throw new UnableToFindFieldException(names, error);
 	}
 	
-	public static Field getPrivateField(Class classToAccess, Object instance, String fieldName) {
+	public static Field getPrivateField(Class classToAccess, String fieldName) {
 		checkFieldName(fieldName);
 		String[] names = ObfuscationReflectionHelper.remapFieldNames(classToAccess.getName(), fieldName, svgMap.get(fieldName));
 		Exception error = null;
