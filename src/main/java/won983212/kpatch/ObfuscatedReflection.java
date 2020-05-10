@@ -28,6 +28,9 @@ public class ObfuscatedReflection {
 		svgMap.put("bookGettingSigned", "i");
 		svgMap.put("bookTitle", "i");
 		svgMap.put("bookIsModified", "i");
+		svgMap.put("currPage", "i");
+		svgMap.put("bookTotalPages", "i");
+		svgMap.put("cachedComponents", "i");
 		
 		svgMap.put("f#pageGetCurrent", "i");
 		svgMap.put("f#pageSetCurrent", "i");
