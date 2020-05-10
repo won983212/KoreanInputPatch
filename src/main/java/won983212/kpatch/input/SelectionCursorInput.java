@@ -116,13 +116,26 @@ public class SelectionCursorInput extends InputEngine {
 		}
 	}
 
+	// TODO MAXWIDTH 구현필요
 	public void drawSelectionBox(FontRenderer fontRenderer, int x, int y, int maxWidth) {
 		String text = input.getText();
 		final int textWidth = fontRenderer.getStringWidth(text);
 		final int min = getStartCursor();
 		final int max = getEndCursor();
 		
-		x += fontRenderer.getStringWidth(text.substring(0, min));
+		if(maxWidth > 0) {
+			int len = 0, tempLen;
+			for (String s : fontRenderer.listFormattedStringToWidth(text, maxWidth)) {
+				tempLen = s.length();
+				if(len + tempLen >= min)
+					break;
+				len += tempLen;
+				y += fontRenderer.FONT_HEIGHT;
+			}
+			x += fontRenderer.getStringWidth(text.substring(0, min - len));
+		} else {
+			x += fontRenderer.getStringWidth(text.substring(0, min));
+		}
 		
 		int color, x2;
 		if (min == max) {

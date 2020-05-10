@@ -28,24 +28,27 @@ public abstract class InputEngine {
 
 	protected void write(char c) {
 		int start = getStartCursor();
-		String s1 = input.getText().substring(0, start);
-		String s2 = input.getText().substring(getEndCursor());
+		String in = input.getText();
+		String s1 = in.substring(0, start);
+		String s2 = in.substring(getEndCursor());
 		input.setText(s1 + c + s2);
 		setCursor(start + 1);
 	}
 
 	protected void write(String text) {
 		int start = getStartCursor();
-		String s1 = input.getText().substring(0, start);
-		String s2 = input.getText().substring(getEndCursor());
+		String in = input.getText();
+		String s1 = in.substring(0, start);
+		String s2 = in.substring(getEndCursor());
 		input.setText(s1 + text + s2);
 		setCursor(start + text.length());
 	}
 
 	protected void backspace() {
 		int start = getStartCursor();
-		String s1 = input.getText().substring(0, start);
-		String s2 = input.getText().substring(getEndCursor());
+		String in = input.getText();
+		String s1 = in.substring(0, start);
+		String s2 = in.substring(getEndCursor());
 		if (input.getMovingCursor() != input.getAnchorCursor()) {
 			input.setText(s1 + s2);
 			setCursor(start);
