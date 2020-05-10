@@ -52,12 +52,9 @@ public class ForgeEventHandler {
 			boolean cancel = true;
 			
 			if (cls == GuiEditSign.class) {
-				TileEntitySign sign = ObfuscatedReflection.getPrivateValue(GuiEditSign.class, (GuiEditSign) screen, "tileSign");
-				mc.displayGuiScreen(new EditSignWrapper(sign));
+				mc.displayGuiScreen(new EditSignWrapper((GuiEditSign) screen));
 			} else if(cls == GuiScreenBook.class) {
-				ItemStack book = ObfuscatedReflection.getPrivateValue(GuiScreenBook.class, (GuiScreenBook) screen, "book");
-				boolean bookIsUnsigned = ObfuscatedReflection.getPrivateValue(GuiScreenBook.class, (GuiScreenBook) screen, "bookIsUnsigned");
-				mc.displayGuiScreen(new EditBookWrapper(book, bookIsUnsigned));
+				mc.displayGuiScreen(new EditBookWrapper((GuiScreenBook) screen));
 			} else {
 				cancel = false;
 			}

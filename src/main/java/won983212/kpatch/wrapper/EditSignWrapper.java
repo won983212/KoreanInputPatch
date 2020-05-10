@@ -1,14 +1,11 @@
 package won983212.kpatch.wrapper;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiEditSign;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.text.TextComponentString;
-import won983212.kpatch.ObfuscatedReflection;
 import won983212.kpatch.input.IInputWrapper;
 import won983212.kpatch.input.Korean2Input;
 import won983212.kpatch.input.SelectionCursorInput;
@@ -19,19 +16,12 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	private Korean2Input input = new Korean2Input(this);
 	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
 	
-	private TileEntitySign tileSign;
 	private String textBuffer;
-	
-	// reflected fields
-	private static final Field editLine = ObfuscatedReflection.getPrivateField(GuiEditSign.class, "editLine");
 
-	public EditSignWrapper(TileEntitySign sign) {
-		super(sign);
-		tileSign = sign;
-	}
-
-	private int getEditLine() {
-		return ObfuscatedReflection.getPrivateValue(editLine, this);
+	// TODO tileSIGN modify
+	// parent.tileSign
+	public EditSignWrapper(GuiEditSign parent) {
+		super(null);
 	}
 	
 	@Override
@@ -39,11 +29,10 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		if (keyCode == 200 || keyCode == 208 || keyCode == 28 || keyCode == 156 || keyCode == 1) {
 			super.keyTyped(typedChar, keyCode);
 			if (keyCode != 1) {
-				selection.setCursor(tileSign.signText[getEditLine()].getUnformattedText().length());
+				selection.setCursor(tileSign.signText[editLine].getUnformattedText().length());
 				input.cancelAssemble();
 			}
 		} else {
-			int editLine = getEditLine();
 			textBuffer = tileSign.signText[editLine].getUnformattedText();
 			if (!input.handleKeyTyped(typedChar, keyCode)) {
 				selection.handleKeyTyped(typedChar, keyCode);
@@ -56,7 +45,6 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		int editLine = getEditLine();
 		String text = tileSign.signText[editLine].getUnformattedText();
 		final int textWidth = fontRenderer.getStringWidth(text);
 		final int minCur = selection.getStartCursor();

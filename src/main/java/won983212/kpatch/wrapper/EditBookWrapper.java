@@ -1,32 +1,17 @@
 package won983212.kpatch.wrapper;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-import com.google.common.collect.Lists;
-import com.google.gson.JsonParseException;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenBook;
-import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemWrittenBook;
-import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import won983212.kpatch.ObfuscatedReflection;
 import won983212.kpatch.input.IInputWrapper;
 import won983212.kpatch.input.Korean2Input;
 import won983212.kpatch.input.SelectionCursorInput;
@@ -38,41 +23,14 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	private Korean2Input input = new Korean2Input(this);
 	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
 	
-	private String textBuffer;
-	private final boolean bookIsUnsigned;
-	
-	// reflected fields
-	private static final Field bookGettingSigned = ObfuscatedReflection.getPrivateField(GuiScreenBook.class, "bookGettingSigned");
-	private static final Field bookTitle = ObfuscatedReflection.getPrivateField(GuiScreenBook.class, "bookTitle");
-	private static final Field bookIsModified = ObfuscatedReflection.getPrivateField(GuiScreenBook.class, "bookIsModified");
-	private static final Field currPage = ObfuscatedReflection.getPrivateField(GuiScreenBook.class, "currPage");
-	private static final Field bookTotalPages = ObfuscatedReflection.getPrivateField(GuiScreenBook.class, "bookTotalPages");
-	private static final Field cachedComponents = ObfuscatedReflection.getPrivateField(GuiScreenBook.class, "cachedComponents");
-	
-	// reflected methods
-	private static final Method pageGetCurrent = ObfuscatedReflection.getPrivateMethod(GuiScreenBook.class, "pageGetCurrent");
-	private static final Method pageSetCurrent = ObfuscatedReflection.getPrivateMethod(GuiScreenBook.class, "pageSetCurrent", String.class);
-	private static final Method updateButtons = ObfuscatedReflection.getPrivateMethod(GuiScreenBook.class, "updateButtons");
-	private static final Method sendBookToServer = ObfuscatedReflection.getPrivateMethod(GuiScreenBook.class, "sendBookToServer", Boolean.TYPE);
-	
-	public EditBookWrapper(ItemStack book, boolean isUnsigned) {
-		super(Minecraft.getMinecraft().player, book, isUnsigned);
-		bookIsUnsigned = isUnsigned;
+	public EditBookWrapper(GuiScreenBook parent) {
+		super(Minecraft.getMinecraft().player, parent.book, parent.bookIsUnsigned);
 		resetInput();
-	}
-	
-	private void loadTextBuffer(boolean bookGettingSigned) {
-		if (bookGettingSigned) {
-			textBuffer = ObfuscatedReflection.getPrivateValue(bookTitle, this);
-		} else {
-			textBuffer = ObfuscatedReflection.invokeMethod(pageGetCurrent, this);
-		}
 	}
 	
 	private void resetInput() {
 		if (this.bookIsUnsigned) {
-			loadTextBuffer(ObfuscatedReflection.getPrivateValue(bookGettingSigned, this));
-			selection.setCursor(textBuffer.length());
+			selection.setCursor(getText().length());
 			input.cancelAssemble();
 		}
 	}
@@ -80,15 +38,12 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (this.bookIsUnsigned) {
-			boolean bookGettingSigned = ObfuscatedReflection.getPrivateValue(this.bookGettingSigned, this);
-			loadTextBuffer(bookGettingSigned);
-
 			if (!input.handleKeyTyped(typedChar, keyCode)) {
 				if (!selection.handleKeyTyped(typedChar, keyCode)) {
 					if ((keyCode == 28 || keyCode == 156)) {
 						if (bookGettingSigned) {
-							if (!textBuffer.isEmpty()) {
-								ObfuscatedReflection.invokeMethod(sendBookToServer, this, true);
+							if (!bookTitle.isEmpty()) {
+								sendBookToServer(true);
 								this.mc.displayGuiScreen((GuiScreen) null);
 							}
 						} else {
@@ -99,11 +54,8 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 			}
 			
 			if (bookGettingSigned) {
-				ObfuscatedReflection.invokeMethod(updateButtons, this);
-				ObfuscatedReflection.setPrivateValue(bookIsModified, this, true);
-				ObfuscatedReflection.setPrivateValue(bookTitle, this, textBuffer);
-			} else {
-				ObfuscatedReflection.invokeMethod(pageSetCurrent, this, textBuffer);
+				updateButtons();
+				bookIsModified = true;
 			}
 		}
 	}
@@ -124,20 +76,17 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	private void drawCursor(boolean isGettingSigned) {
 		int i = (this.width - 192) / 2;
 		if(isGettingSigned) {
-			String s = ObfuscatedReflection.getPrivateValue(bookTitle, this);
-			int l = this.fontRenderer.getStringWidth(s);
+			int l = this.fontRenderer.getStringWidth(bookTitle);
 			selection.drawSelectionBox(fontRenderer, i + 36 + (116 - l) / 2, 50, 0);
-			
+		} else {
 			selection.drawSelectionBox(fontRenderer, i + 36, 34, 116);
 		}
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		boolean isGettingSigned = ObfuscatedReflection.getPrivateValue(this.bookGettingSigned, this);
-		
-		if(!isGettingSigned) {
-			if(!this.bookIsUnsigned || ObfuscatedReflection.getPrivateValue(cachedComponents, this) != null) {
+		if(!bookGettingSigned) {
+			if(!this.bookIsUnsigned || cachedComponents != null) {
 				super.drawScreen(mouseX, mouseY, partialTicks);
 				return;
 			}
@@ -149,29 +98,25 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 		int j = 2;
 		this.drawTexturedModalRect(i, 2, 0, 0, 192, 192);
 		
-		if (isGettingSigned) {
-			String s = ObfuscatedReflection.getPrivateValue(bookTitle, this);
+		if (bookGettingSigned) {
 			String s1 = I18n.format("book.editTitle");
 			int k = this.fontRenderer.getStringWidth(s1);
 			this.fontRenderer.drawString(s1, i + 36 + (116 - k) / 2, 34, 0);
-			int l = this.fontRenderer.getStringWidth(s);
-			this.fontRenderer.drawString(s, i + 36 + (116 - l) / 2, 50, 0);
+			int l = this.fontRenderer.getStringWidth(bookTitle);
+			this.fontRenderer.drawString(bookTitle, i + 36 + (116 - l) / 2, 50, 0);
 			String s2 = I18n.format("book.byAuthor", mc.player.getName());
 			int i1 = this.fontRenderer.getStringWidth(s2);
 			this.fontRenderer.drawString(TextFormatting.DARK_GRAY + s2, i + 36 + (116 - i1) / 2, 60, 0);
 			String s3 = I18n.format("book.finalizeWarning");
 			this.fontRenderer.drawSplitString(s3, i + 36, 82, 116, 0);
 		} else {
-			int cur = (int) ObfuscatedReflection.getPrivateValue(currPage, this) + 1;
-			int total = ObfuscatedReflection.getPrivateValue(bookTotalPages, this);
-			String s4 = I18n.format("book.pageIndicator", cur, total);
-			String s5 = ObfuscatedReflection.invokeMethod(pageGetCurrent, this);
-			this.fontRenderer.drawSplitString(s5, i + 36, 34, 116, 0);
+			String s4 = I18n.format("book.pageIndicator", currPage + 1, bookTotalPages);
+			this.fontRenderer.drawSplitString(pageGetCurrent(), i + 36, 34, 116, 0);
 			int j1 = this.fontRenderer.getStringWidth(s4);
 			this.fontRenderer.drawString(s4, i - j1 + 192 - 44, 18, 0);
 		}
 		
-		drawCursor(isGettingSigned);
+		drawCursor(bookGettingSigned);
 		
 		// components rendering (GuiScreen.drawScreen)
 		for (i = 0; i < this.buttonList.size(); ++i) {
@@ -185,14 +130,14 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	@Override
 	public void setText(String text) {
 		if (bookIsUnsigned) {
-			if ((boolean) ObfuscatedReflection.getPrivateValue(this.bookGettingSigned, this)) {
+			if (bookGettingSigned) {
 				if (text.length() < 16) {
-					textBuffer = text;
+					bookTitle = text;
 				}
 			} else {
 				int i = this.fontRenderer.getWordWrappedHeight(text + TextFormatting.BLACK + "_", 118);
 				if (i <= 128 && text.length() < 256) {
-					textBuffer = text;
+					pageSetCurrent(text);
 				}
 			}
 		}
@@ -200,7 +145,11 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 
 	@Override
 	public String getText() {
-		return textBuffer;
+		if (bookGettingSigned) {
+			return bookTitle;
+		} else {
+			return pageGetCurrent();
+		}
 	}
 
 	@Override

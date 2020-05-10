@@ -79,7 +79,7 @@ public class GuiKoreanIndicator {
 			GlStateManager.disableLighting();
 	
 			// kor indicator bg
-			Gui.drawRect(x, y, x + textWidth + 8, y + height, 0xffF2F2E6);
+			Gui.drawRect(x, y, x + textWidth + 8, y + height, 0xffffffff);
 	
 			// kor indicator badge
 			if (modeColorAnimation.isRunning()) {
