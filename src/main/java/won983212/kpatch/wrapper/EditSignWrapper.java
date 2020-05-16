@@ -18,10 +18,8 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	
 	private String textBuffer;
 
-	// TODO tileSIGN modify
-	// parent.tileSign
 	public EditSignWrapper(GuiEditSign parent) {
-		super(null);
+		super(parent.tileSign);
 	}
 	
 	@Override

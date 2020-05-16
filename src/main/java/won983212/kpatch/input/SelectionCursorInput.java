@@ -126,13 +126,13 @@ public class SelectionCursorInput extends InputEngine {
 		if(maxWidth > 0) {
 			int len = 0, tempLen;
 			for (String s : fontRenderer.listFormattedStringToWidth(text, maxWidth)) {
-				tempLen = s.length();
-				if(len + tempLen >= min)
+				tempLen = s.length() + 1;
+				if(len + tempLen > min)
 					break;
 				len += tempLen;
 				y += fontRenderer.FONT_HEIGHT;
 			}
-			x += fontRenderer.getStringWidth(text.substring(0, min - len));
+			x += fontRenderer.getStringWidth(text.substring(len, min));
 		} else {
 			x += fontRenderer.getStringWidth(text.substring(0, min));
 		}

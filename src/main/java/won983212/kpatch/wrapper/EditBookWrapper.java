@@ -73,9 +73,9 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 		return ret;
 	}
 	
-	private void drawCursor(boolean isGettingSigned) {
+	private void drawCursor() {
 		int i = (this.width - 192) / 2;
-		if(isGettingSigned) {
+		if(bookGettingSigned) {
 			int l = this.fontRenderer.getStringWidth(bookTitle);
 			selection.drawSelectionBox(fontRenderer, i + 36 + (116 - l) / 2, 50, 0);
 		} else {
@@ -116,7 +116,7 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 			this.fontRenderer.drawString(s4, i - j1 + 192 - 44, 18, 0);
 		}
 		
-		drawCursor(bookGettingSigned);
+		drawCursor();
 		
 		// components rendering (GuiScreen.drawScreen)
 		for (i = 0; i < this.buttonList.size(); ++i) {
