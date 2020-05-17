@@ -1,15 +1,15 @@
 package won983212.kpatch.input;
 
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
 
 public class SelectionCursorInput extends InputEngine {
 	private int anchorCursor = 0;
@@ -124,15 +124,25 @@ public class SelectionCursorInput extends InputEngine {
 		final int max = getEndCursor();
 		
 		if(maxWidth > 0) {
-			int len = 0, tempLen;
-			for (String s : fontRenderer.listFormattedStringToWidth(text, maxWidth)) {
-				tempLen = s.length() + 1;
+			int len = 0, tempLen, wrappedLen = 0;
+			List<String> wrapped = fontRenderer.listFormattedStringToWidth(text, maxWidth);
+			for (String s : wrapped) {
+				tempLen = s.length();
 				if(len + tempLen > min)
 					break;
 				len += tempLen;
 				y += fontRenderer.FONT_HEIGHT;
+				wrappedLen++;
 			}
-			x += fontRenderer.getStringWidth(text.substring(len, min));
+			
+			int d=0;
+			char[] chars = text.toCharArray();
+			for (int i = 0; i < min; i++) {
+				if(chars[i] == '\n') d++;
+			}
+			d = wrappedLen - d;
+			
+			x += fontRenderer.getStringWidth(text.substring(len - d, min - d));
 		} else {
 			x += fontRenderer.getStringWidth(text.substring(0, min));
 		}
