@@ -89,30 +89,65 @@ public class Main extends JFrame implements KeyListener {
 		int minY = 0, maxY = 0; // line Y position
 
 		String text = input.getText();
-		List<String> wrapped = fr.listFormattedStringToWidth(input.getText(), maxWidth);
+		System.out.println(text);
+		List<String> wrapped = fr.listFormattedStringToWidth(text + "_", maxWidth);
 		int start = getStartCursor();
 		int end = getEndCursor();
-
-		minX = x + fontRenderer.getStringWidth(text.substring(0, start));
-		maxX = x + fontRenderer.getStringWidth(text.substring(0, end));
-
-		int len = 0;
+		
+		if(!wrapped.isEmpty()) {
+			int lastIdx = wrapped.size() - 1;
+			String last = wrapped.get(lastIdx);
+			wrapped.set(lastIdx, last.substring(0, last.length() - 1));
+		}
+		
+		
+		int len = 0, tempLen = 0;
 		for(String s : wrapped) {
-			if(len + s.length() > start) {
+			tempLen = len + s.length();
+			if(tempLen >= text.length() || text.charAt(tempLen) == '\n') {
+				tempLen = s.length() + 1; // \n by user
+			} else {
+				tempLen = s.length(); // inserted \n by listFormattedStringToWidth
+			}
+			if(len + tempLen > start) {
 				break;
 			}
-			len += s.length();
+			len += tempLen;
 			minY++;
 		}
+		minX = x + fontRenderer.getStringWidth(text.substring(len, start));
 
-		if (minY == maxY) { // single line
-			drawSelectionBox(minX, y, maxX, y + fontRenderer.FONT_HEIGHT);
-		} else { // multiple lines
-			drawSelectionBox(minX, y, x + fr.getStringWidth(wrapped.get(minY)), y + fr.FONT_HEIGHT);
-			for (int i = minY; i < maxY - 2; i++) {
-				drawSelectionBox(x, y, x + fr.getStringWidth(wrapped.get(i)), y + fr.FONT_HEIGHT);
+		len=0;
+		for(String s : wrapped) {
+			tempLen = len + s.length();
+			if(tempLen >= text.length() || text.charAt(tempLen) == '\n') {
+				tempLen = s.length() + 1; // \n by user
+			} else {
+				tempLen = s.length(); // inserted \n by listFormattedStringToWidth
 			}
-			drawSelectionBox(x, y, minX, y + fr.FONT_HEIGHT);
+			if(len + tempLen > end) {
+				break;
+			}
+			len += tempLen;
+			maxY++;
+		}
+		maxX = x + fontRenderer.getStringWidth(text.substring(len, end));
+
+		y += minY * fr.FONT_HEIGHT;
+		if (minY == maxY) { // for single line
+			drawSelectionBox(minX, y, maxX, y + fontRenderer.FONT_HEIGHT);
+		} else { // for multiple lines
+			// first line
+			drawSelectionBox(minX, y, x + fr.getStringWidth(wrapped.get(minY)), y + fr.FONT_HEIGHT);
+			
+			// center lines
+			for (int i = 0; i < maxY - minY - 2; i++) {
+				drawSelectionBox(x, y + i * fr.FONT_HEIGHT, x + fr.getStringWidth(wrapped.get(i + minY)), y + (i + 1) * fr.FONT_HEIGHT);
+			}
+			
+			// end line
+			y += (maxY - minY) * fr.FONT_HEIGHT;
+			drawSelectionBox(x, y, maxX, y + fr.FONT_HEIGHT);
 		}
 	}
 
