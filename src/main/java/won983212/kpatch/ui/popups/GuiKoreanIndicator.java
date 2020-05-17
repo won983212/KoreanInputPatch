@@ -8,17 +8,17 @@ import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.Configs;
 import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.input.Korean2Input;
+import won983212.kpatch.ui.Theme;
 import won983212.kpatch.ui.UIUtils;
 import won983212.kpatch.ui.animation.AnimationBase;
+import won983212.kpatch.ui.animation.ColorAnimation;
 import won983212.kpatch.ui.animation.DecimalAnimation;
 
 public class GuiKoreanIndicator {
-	private static final int ENG_COLOR = 0xffE53935;
-	private static final int KOR_COLOR = 0xff308FBF;
-
 	private DecimalAnimation alertBoomingAnimation = new DecimalAnimation(150);
 	private DecimalAnimation alertWidthAnimation = new DecimalAnimation(200);
-	private DecimalAnimation modeColorAnimation = new DecimalAnimation(200);
+	private DecimalAnimation modeChangeAnimation = new DecimalAnimation(200);
+	private ColorAnimation modeBgColorAnimation = new ColorAnimation(400, Theme.BACKGROUND, 0);
 	private String alertText;
 	private int alertBg;
 	private boolean prevKrMode = Korean2Input.isKorMode();
@@ -26,8 +26,9 @@ public class GuiKoreanIndicator {
 
 	public GuiKoreanIndicator() {
 		alertBoomingAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
+		modeBgColorAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
 	}
-
+	
 	public void drawIndicator(int x, int y, int len, int maxLen) {
 		drawIndicator(x, y, len, maxLen, "자");
 	}
@@ -49,13 +50,15 @@ public class GuiKoreanIndicator {
 		int textWidth = fr.getStringWidth(idiText);
 
 		if (useAnimation && kr != prevKrMode) {
-			modeColorAnimation.play();
+			modeChangeAnimation.play();
+			modeBgColorAnimation.play();
+			modeBgColorAnimation.setEndColor(kr ? Theme.adjustColor(Theme.PRIMARY, 70) : Theme.adjustColor(Theme.SECONDARY, 70));
 			prevKrMode = kr;
 		}
 
 		if (maxLen == len) {
 			alertText = "꽉참";
-			alertBg = 0xffe53935;
+			alertBg = Theme.DANGER;
 		} else if (len > maxLen * 0.7) {
 			if (useAnimation) {
 				if (alertText == null) {
@@ -67,7 +70,7 @@ public class GuiKoreanIndicator {
 				}
 			}
 			alertText = maxLen - len + unit;
-			alertBg = 0xfffb8c00;
+			alertBg = Theme.WARN;
 		} else {
 			alertText = null;
 			alertBg = -1;
@@ -79,14 +82,18 @@ public class GuiKoreanIndicator {
 			GlStateManager.disableLighting();
 	
 			// kor indicator bg
-			Gui.drawRect(x, y, x + textWidth + 8, y + height, 0xffffffff);
+			if(modeBgColorAnimation.isRunning()) {
+				Gui.drawRect(x, y, x + textWidth + 8, y + height, modeBgColorAnimation.update());
+			} else {
+				Gui.drawRect(x, y, x + textWidth + 8, y + height, Theme.BACKGROUND);
+			}
 	
 			// kor indicator badge
-			if (modeColorAnimation.isRunning()) {
-				Gui.drawRect(x, y, x + 2, y + height, !kr ? KOR_COLOR : ENG_COLOR);
-				Gui.drawRect(x, y, x + 2, (int) (y + height * modeColorAnimation.update()), kr ? KOR_COLOR : ENG_COLOR);
+			if (modeChangeAnimation.isRunning()) {
+				Gui.drawRect(x, y, x + 2, y + height, !kr ? Theme.PRIMARY : Theme.SECONDARY);
+				Gui.drawRect(x, y, x + 2, (int) (y + height * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
 			} else {
-				Gui.drawRect(x, y, x + 2, y + height, kr ? KOR_COLOR : ENG_COLOR);
+				Gui.drawRect(x, y, x + 2, y + height, kr ? Theme.PRIMARY : Theme.SECONDARY);
 			}
 	
 			if (alertText != null) {
