@@ -89,7 +89,7 @@ public class Main extends JFrame implements KeyListener {
 		new Main();
 	}
 
-	// TODO -------------- Implementation ---------------------
+	// -------------- Implementation ---------------------
 	private String prevText = null;
 	private CaretPosition min = new CaretPosition();
 	private CaretPosition max = new CaretPosition();

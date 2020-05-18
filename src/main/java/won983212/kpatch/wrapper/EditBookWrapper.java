@@ -77,9 +77,9 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 		int i = (this.width - 192) / 2;
 		if(bookGettingSigned) {
 			int l = this.fontRenderer.getStringWidth(bookTitle);
-			selection.drawSelectionBox(fontRenderer, i + 36 + (116 - l) / 2, 50, 0);
+			selection.drawSelectionBox(i + 36 + (116 - l) / 2, 50, 0);
 		} else {
-			selection.drawSelectionBox(fontRenderer, i + 36, 34, 116);
+			selection.drawSelectionBox(i + 36, 34, 116);
 		}
 	}
 

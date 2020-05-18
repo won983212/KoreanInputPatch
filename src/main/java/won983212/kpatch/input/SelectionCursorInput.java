@@ -18,11 +18,14 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 
 public class SelectionCursorInput extends InputEngine {
+	private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
 	private int anchorCursor = 0;
 	private int movingCursor = 0;
 
 	// caret state cache
 	private String prevText = null;
+	private int prevMaxWidth = -1;
 	private CaretPosition min = new CaretPosition();
 	private CaretPosition max = new CaretPosition();
 	private int[] cachedCaretOffset = new int[0];
@@ -51,15 +54,15 @@ public class SelectionCursorInput extends InputEngine {
 		setAnchorCursor(cursor);
 		setMovingCursor(cursor);
 	}
-	
+
 	public boolean checkIsOutOfRange(int len) {
 		return anchorCursor < 0 || movingCursor < 0 || anchorCursor > len || movingCursor > len;
 	}
-	
+
 	public String getSelectedText() {
 		return input.getText().substring(getStartCursor(), getEndCursor());
 	}
-	
+
 	public void write(String str) {
 		super.write(str);
 	}
@@ -84,6 +87,20 @@ public class SelectionCursorInput extends InputEngine {
 		} else if (GuiScreen.isKeyComboCtrlX(i)) {
 			GuiScreen.setClipboardString(this.getSelectedText());
 			write("");
+			return true;
+		} else if (i == Keyboard.KEY_HOME) {
+			if (GuiScreen.isShiftKeyDown()) {
+				setMovingCursor(0);
+			} else {
+				setCursor(0);
+			}
+			return true;
+		} else if (i == Keyboard.KEY_END) {
+			if (GuiScreen.isShiftKeyDown()) {
+				setMovingCursor(text.length());
+			} else {
+				setCursor(text.length());
+			}
 			return true;
 		} else if (i == Keyboard.KEY_LEFT) {
 			if (GuiScreen.isShiftKeyDown()) {
@@ -128,79 +145,82 @@ public class SelectionCursorInput extends InputEngine {
 		}
 	}
 
-	public void drawSelectionBox(FontRenderer fr, int x, int y) {
-		String text = input.getText();
-		int minX = x + fr.getStringWidth(text.substring(0, getStartCursor()));
-		int maxX = x + fr.getStringWidth(text.substring(0, getEndCursor()));
-		drawSelectionBox(minX, y, maxX, y + fr.FONT_HEIGHT);
-	}
-
-	public void drawSelectionBox(FontRenderer fontRenderer, int x, int y, int maxWidth) {
-		if(maxWidth <= 1) {
-			drawSelectionBox(fontRenderer, x, y);
-			return;
-		}
-		
+	public void drawSelectionBox(int x, int y, int maxWidth) {
 		String text = input.getText();
 		int start = getStartCursor();
 		int end = getEndCursor();
 
-		System.out.println(fontRenderer.getStringWidth("§l"));
-		String inText = text.substring(0, start) + '\u0020' + text.substring(start, end) + '\u0020' + text.substring(end);
-		if (inText != prevText) {
-			List<String> cachedWrappingText = fontRenderer.listFormattedStringToWidth(inText, maxWidth);
-			
-			// get full wrapped text (it contains \n)
-			StringBuilder sb = new StringBuilder();
-			for(String str : cachedWrappingText) {
-				sb.append(str);
-				sb.append('\n');
-			}
-			
+		if (maxWidth <= 1) {
+			int minX = x + fontRenderer.getStringWidth(text.substring(0, start));
+			int maxX = x + fontRenderer.getStringWidth(text.substring(0, end));
+			drawSelectionBox(minX, y, maxX, y + fontRenderer.FONT_HEIGHT);
+			return;
+		}
+
+		String inText = insertCursorIndicator(text, start, end);
+		if (!inText.equals(prevText) || maxWidth != prevMaxWidth) {
+			List<String> wrapped = fontRenderer.listFormattedStringToWidth(inText, maxWidth);
+
 			// find caret indicator character
 			int idx1 = -1, idx2 = -1;
-			String wrappedFullText = sb.toString().substring(0, sb.length() - 1);
-			idx1 = wrappedFullText.indexOf('\u0020');
-			idx2 = wrappedFullText.indexOf('\u0020', idx1 + 1);
-			
+			String wrappedFullText = combineWrappedTexts(wrapped);
+			idx1 = wrappedFullText.indexOf('\u200B');
+			idx2 = wrappedFullText.indexOf('\u200B', idx1 + 1);
+
 			// calculate caret X,Y location in textarea(book, etc...)
-			calculateCaretPosition(min, fontRenderer, wrappedFullText, x, idx1);
-			calculateCaretPosition(max, fontRenderer, wrappedFullText, x, idx2);
-			
+			calculateCaretPosition(min, fontRenderer, wrappedFullText, idx1);
+			calculateCaretPosition(max, fontRenderer, wrappedFullText, idx2);
+
 			// generate actual caret location cache
 			int len = max.y - min.y;
 			cachedCaretOffset = new int[len];
 			for (int i = 0; i < len; i++) {
-				cachedCaretOffset[i] = fontRenderer.getStringWidth(cachedWrappingText.get(min.y + i));
+				cachedCaretOffset[i] = fontRenderer.getStringWidth(wrapped.get(min.y + i));
 			}
+
 			prevText = inText;
+			prevMaxWidth = maxWidth;
 		}
 
 		y += min.y * fontRenderer.FONT_HEIGHT;
 		if (min.y == max.y) { // for single line
-			drawSelectionBox(min.x, y, max.x, y + fontRenderer.FONT_HEIGHT);
+			drawSelectionBox(x + min.x, y, x + max.x, y + fontRenderer.FONT_HEIGHT);
 		} else { // for multiple lines
 			// first & center lines
 			for (int i = 0; i < cachedCaretOffset.length; i++) {
-				int endY = y + (i + 1) * fontRenderer.FONT_HEIGHT;
-				drawSelectionBox(i == 0 ? min.x : x, y + i * fontRenderer.FONT_HEIGHT, x + cachedCaretOffset[i], endY);
+				final int startX = i == 0 ? (x + min.x) : x;
+				final int startY = y + i * fontRenderer.FONT_HEIGHT;
+				drawSelectionBox(startX, startY, x + cachedCaretOffset[i], startY + fontRenderer.FONT_HEIGHT);
 			}
 			// end line
 			y += (max.y - min.y) * fontRenderer.FONT_HEIGHT;
-			drawSelectionBox(x, y, max.x, y + fontRenderer.FONT_HEIGHT);
+			drawSelectionBox(x, y, x + max.x, y + fontRenderer.FONT_HEIGHT);
 		}
 	}
 
-	private void calculateCaretPosition(CaretPosition target, FontRenderer fr, String wrappedFullText, int x, int idx) {
+	private String insertCursorIndicator(String text, int start, int end) {
+		return text.substring(0, start) + '\u200B' + text.substring(start, end) + '\u200B' + text.substring(end);
+	}
+
+	private String combineWrappedTexts(List<String> wrapped) {
+		StringBuilder sb = new StringBuilder();
+		for (String str : wrapped) {
+			sb.append(str);
+			sb.append('\n');
+		}
+		return sb.toString().substring(0, sb.length() - 1);
+	}
+
+	private void calculateCaretPosition(CaretPosition target, FontRenderer fr, String wrappedFullText, int idx) {
 		target.x = target.y = 0;
 		for (int i = 0; i < idx; i++) {
 			char c = wrappedFullText.charAt(i);
-			if(c == '\n') {
-				target.x = i;
+			if (c == '\n') {
+				target.x = i + 1;
 				target.y++;
 			}
 		}
-		target.x = x + fr.getStringWidth(wrappedFullText.substring(target.x, idx));
+		target.x = fr.getStringWidth(wrappedFullText.substring(target.x, idx));
 	}
 
 	// draw caret. color will be selected automatically.

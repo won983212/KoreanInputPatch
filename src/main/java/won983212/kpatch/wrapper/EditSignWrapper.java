@@ -59,7 +59,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		}
 
 		textBuffer = text;
-		selection.drawSelectionBox(fontRenderer, (width - textWidth) / 2 - 1, y);
+		selection.drawSelectionBox((width - textWidth) / 2 - 1, y, 0);
 		indicator.drawIndicator(width / 2 - 47, indicatorY, (int)(textWidth * 100 / 90.0), 100, "%");
 	}
 

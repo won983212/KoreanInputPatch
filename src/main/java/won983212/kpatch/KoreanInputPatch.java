@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import won983212.font.FontRendererWrapper;
 
 @Mod(modid = KoreanInputPatch.MODID, name = KoreanInputPatch.NAME, version = KoreanInputPatch.VERSION)
 public class KoreanInputPatch {
@@ -31,6 +32,8 @@ public class KoreanInputPatch {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		Minecraft mc = Minecraft.getMinecraft();
+		mc.fontRenderer = new FontRendererWrapper(mc);
 	}
 	
 	public ForgeEventHandler getEventHandler() {
