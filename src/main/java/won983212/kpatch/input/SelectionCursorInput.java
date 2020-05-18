@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 
-public class SelectionCursorInput extends InputEngine {
+public class SelectionCursorInput extends InputProcessor {
 	private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
 	private int anchorCursor = 0;

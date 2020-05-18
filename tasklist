@@ -2,13 +2,13 @@ Feature
  - Textfield, Sign, book등에 한글 입력 기능
  - 한영키(Ctrl)로 한/영 모드 전환가능
  - 텍스트가 초과될 것 같으면 알려줌
- - 팻말과 책에 커서 및 택스트 편집키 추가
+ - 팻말과 책 커서 편집 + 편집키 지원
 
 TODO
- - 글자 초과 주의 문구에 아이콘도 넣어보자
+ - Ctrl+Z / Ctrl+Y / UP(caret upper) / DOWN(caret lower)키 추가하기
+ - 한영키로 바꿀 수 있는지 확인해보기
  - 색 Input 구현
  - 한자 Input 구현
  - 설정창 만들기(키설정, 자소 삭제 여부, 세벌식, 필터 및 채팅 자동 변환)
  - 폰트 설정기능
  - 시작 화면 추가(간단한 Overview, 기초 설정)
- - AccessTransformer를 사용하는 방안도 생각해보기

@@ -9,18 +9,19 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.gui.GuiTextField;
+import won983212.kpatch.input.ColorInput;
 import won983212.kpatch.input.IInputWrapper;
-import won983212.kpatch.input.Korean2Input;
-import won983212.kpatch.ui.popups.GuiKoreanIndicator;
+import won983212.kpatch.input.InputProcessor;
+import won983212.kpatch.input.KoreanInput;
+import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private static final Field[] FIELDS = GuiTextField.class.getDeclaredFields();
-	private Korean2Input input;
-	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
+	private KoreanInput krIn = new KoreanInput(this);
+	private ColorInput colorIn = new ColorInput(this);
 
 	public TextfieldWrapper(GuiTextField impl) {
 		super(impl.getId(), Minecraft.getMinecraft().fontRenderer, impl.x, impl.y, impl.width, impl.height);
-		this.input = new Korean2Input(this);
 
 		try {
 			for (Field f : FIELDS) {
@@ -35,9 +36,8 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 
 	@Override
 	public boolean textboxKeyTyped(char typedChar, int keyCode) {
-		if (!input.handleKeyTyped(typedChar, keyCode)) {
+		if(!InputProcessor.processKeyInput(typedChar, keyCode, colorIn, krIn))
 			return super.textboxKeyTyped(typedChar, keyCode);
-		}
 		return true;
 	}
 
@@ -54,7 +54,8 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 				x -= 1;
 				y += y < 2 ? 1 : -1;
 			}
-			indicator.drawIndicator(x, y, getText().length(), getMaxStringLength());
+			krIn.drawIndicator(x, y, getText().length(), getMaxStringLength());
+			colorIn.drawIndicator(2, 2);
 		}
 		super.drawTextBox();
 	}

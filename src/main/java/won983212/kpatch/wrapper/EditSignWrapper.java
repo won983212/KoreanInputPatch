@@ -7,14 +7,14 @@ import net.minecraft.client.gui.inventory.GuiEditSign;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.text.TextComponentString;
 import won983212.kpatch.input.IInputWrapper;
-import won983212.kpatch.input.Korean2Input;
+import won983212.kpatch.input.InputProcessor;
+import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
-import won983212.kpatch.ui.popups.GuiKoreanIndicator;
+import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 
 public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
-	private Korean2Input input = new Korean2Input(this);
-	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
+	private KoreanInput krIn = new KoreanInput(this);
 	
 	private String textBuffer;
 
@@ -28,13 +28,11 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 			super.keyTyped(typedChar, keyCode);
 			if (keyCode != 1) {
 				selection.setCursor(tileSign.signText[editLine].getUnformattedText().length());
-				input.cancelAssemble();
+				krIn.cancelAssemble();
 			}
 		} else {
 			textBuffer = tileSign.signText[editLine].getUnformattedText();
-			if (!input.handleKeyTyped(typedChar, keyCode)) {
-				selection.handleKeyTyped(typedChar, keyCode);
-			}
+			InputProcessor.processKeyInput(typedChar, keyCode, krIn, selection);
 			tileSign.signText[editLine] = new TextComponentString(textBuffer);
 		}
 	}
@@ -60,7 +58,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 
 		textBuffer = text;
 		selection.drawSelectionBox((width - textWidth) / 2 - 1, y, 0);
-		indicator.drawIndicator(width / 2 - 47, indicatorY, (int)(textWidth * 100 / 90.0), 100, "%");
+		krIn.drawIndicator(width / 2 - 47, indicatorY, (int)(textWidth * 100 / 90.0), 100, "%");
 	}
 
 	@Override
@@ -68,7 +66,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		int width = this.fontRenderer.getStringWidth(text);
 		if (width > 90) {
 			textBuffer = this.fontRenderer.trimStringToWidth(text, 90);
-			input.cancelAssemble();
+			krIn.cancelAssemble();
 		} else {
 			textBuffer = text;
 		}

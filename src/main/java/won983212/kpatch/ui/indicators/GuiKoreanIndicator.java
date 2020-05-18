@@ -1,4 +1,4 @@
-package won983212.kpatch.ui.popups;
+package won983212.kpatch.ui.indicators;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.Configs;
 import won983212.kpatch.KoreanInputPatch;
-import won983212.kpatch.input.Korean2Input;
+import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.ui.Theme;
 import won983212.kpatch.ui.UIUtils;
 import won983212.kpatch.ui.animation.AnimationBase;
@@ -21,7 +21,7 @@ public class GuiKoreanIndicator {
 	private ColorAnimation modeBgColorAnimation = new ColorAnimation(400, Theme.BACKGROUND, 0);
 	private String alertText;
 	private int alertBg;
-	private boolean prevKrMode = Korean2Input.isKorMode();
+	private boolean prevKrMode = KoreanInput.isKorMode();
 	private int prevLen = 0;
 
 	public GuiKoreanIndicator() {
@@ -45,7 +45,7 @@ public class GuiKoreanIndicator {
 			return;
 		} // 2이상은 무조건 렌더링
 
-		boolean kr = Korean2Input.isKorMode();
+		boolean kr = KoreanInput.isKorMode();
 		String idiText = (kr ? "한글" : "영문");
 		int textWidth = fr.getStringWidth(idiText);
 
@@ -83,17 +83,17 @@ public class GuiKoreanIndicator {
 	
 			// kor indicator bg
 			if(modeBgColorAnimation.isRunning()) {
-				Gui.drawRect(x, y, x + textWidth + 8, y + height, modeBgColorAnimation.update());
+				UIUtils.drawArea(x, y, textWidth + 8, height, modeBgColorAnimation.update());
 			} else {
-				Gui.drawRect(x, y, x + textWidth + 8, y + height, Theme.BACKGROUND);
+				UIUtils.drawArea(x, y, textWidth + 8, height, Theme.BACKGROUND);
 			}
 	
 			// kor indicator badge
 			if (modeChangeAnimation.isRunning()) {
-				Gui.drawRect(x, y, x + 2, y + height, !kr ? Theme.PRIMARY : Theme.SECONDARY);
-				Gui.drawRect(x, y, x + 2, (int) (y + height * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UIUtils.drawArea(x, y, 2, height, !kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UIUtils.drawArea(x, y, 2, (int) (height * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
 			} else {
-				Gui.drawRect(x, y, x + 2, y + height, kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UIUtils.drawArea(x, y, 2, height, kr ? Theme.PRIMARY : Theme.SECONDARY);
 			}
 	
 			if (alertText != null) {
@@ -125,8 +125,7 @@ public class GuiKoreanIndicator {
 	
 			// kor indicator text
 			int textX = x + 2 + (textWidth + 6 - fr.getStringWidth(idiText)) / 2;
-			fr.drawString(idiText, textX + 0.5f, y + 1.5f, 0xffaaaaaa, false);
-			fr.drawString(idiText, textX, y + 1, 0xff000000);
+			UIUtils.drawTextCustomShadow(fr, idiText, textX, y + 1, 0xff000000, 0xffaaaaaa);
 	
 			GlStateManager.translate(0, 0, -300);
 		});

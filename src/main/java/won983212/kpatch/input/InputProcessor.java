@@ -1,9 +1,9 @@
 package won983212.kpatch.input;
 
-public abstract class InputEngine {
+public abstract class InputProcessor {
 	protected IInputWrapper input;
 
-	protected InputEngine(IInputWrapper input) {
+	protected InputProcessor(IInputWrapper input) {
 		this.input = input;
 	}
 	
@@ -56,5 +56,13 @@ public abstract class InputEngine {
 			input.setText(s1.substring(0, s1.length() - 1) + s2);
 			setCursor(start - 1);
 		}
+	}
+	
+	public static boolean processKeyInput(char charIn, int keyIn, InputProcessor... processors) {
+		for(InputProcessor p : processors) {
+			if(p.handleKeyTyped(charIn, keyIn))
+				return true;
+		}
+		return false;
 	}
 }

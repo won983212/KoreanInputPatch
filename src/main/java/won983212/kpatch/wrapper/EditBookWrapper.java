@@ -13,15 +13,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import won983212.kpatch.input.IInputWrapper;
-import won983212.kpatch.input.Korean2Input;
+import won983212.kpatch.input.InputProcessor;
+import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
-import won983212.kpatch.ui.popups.GuiKoreanIndicator;
+import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 
 public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation("textures/gui/book.png");
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
-	private Korean2Input input = new Korean2Input(this);
-	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
+	private KoreanInput krIn = new KoreanInput(this);
 	
 	public EditBookWrapper(GuiScreenBook parent) {
 		super(Minecraft.getMinecraft().player, parent.book, parent.bookIsUnsigned);
@@ -31,24 +31,22 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	private void resetInput() {
 		if (this.bookIsUnsigned) {
 			selection.setCursor(getText().length());
-			input.cancelAssemble();
+			krIn.cancelAssemble();
 		}
 	}
 	
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (this.bookIsUnsigned) {
-			if (!input.handleKeyTyped(typedChar, keyCode)) {
-				if (!selection.handleKeyTyped(typedChar, keyCode)) {
-					if ((keyCode == 28 || keyCode == 156)) {
-						if (bookGettingSigned) {
-							if (!bookTitle.isEmpty()) {
-								sendBookToServer(true);
-								this.mc.displayGuiScreen((GuiScreen) null);
-							}
-						} else {
-							selection.write("\n");
+			if (InputProcessor.processKeyInput(typedChar, keyCode, krIn, selection)) {
+				if ((keyCode == 28 || keyCode == 156)) {
+					if (bookGettingSigned) {
+						if (!bookTitle.isEmpty()) {
+							sendBookToServer(true);
+							this.mc.displayGuiScreen((GuiScreen) null);
 						}
+					} else {
+						selection.write("\n");
 					}
 				}
 			}
@@ -96,7 +94,7 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 		this.mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
 		int i = (this.width - 192) / 2;
 		int j = 2;
-		this.drawTexturedModalRect(i, 2, 0, 0, 192, 192);
+		this.drawTexturedModalRect(i, j, 0, 0, 192, 192);
 		
 		if (bookGettingSigned) {
 			String s1 = I18n.format("book.editTitle");
@@ -109,11 +107,14 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 			this.fontRenderer.drawString(TextFormatting.DARK_GRAY + s2, i + 36 + (116 - i1) / 2, 60, 0);
 			String s3 = I18n.format("book.finalizeWarning");
 			this.fontRenderer.drawSplitString(s3, i + 36, 82, 116, 0);
+			krIn.drawIndicator(2, 2, bookTitle.length(), 15);
 		} else {
 			String s4 = I18n.format("book.pageIndicator", currPage + 1, bookTotalPages);
-			this.fontRenderer.drawSplitString(pageGetCurrent(), i + 36, 34, 116, 0);
+			String text = pageGetCurrent();
+			this.fontRenderer.drawSplitString(text, i + 36, 34, 116, 0);
 			int j1 = this.fontRenderer.getStringWidth(s4);
 			this.fontRenderer.drawString(s4, i - j1 + 192 - 44, 18, 0);
+			krIn.drawIndicator(2, 2, text.length(), 255);
 		}
 		
 		drawCursor();

@@ -9,8 +9,9 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.Configs;
 import won983212.kpatch.KoreanInputPatch;
+import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 
-public class Korean2Input extends InputEngine {
+public class KoreanInput extends InputProcessor {
 	private static final String KeyMap = "`1234567890-=\\qwertyuiop[]asdfghjkl;'zxcvbnm/~!@#$%^&*()_+|QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?";
 	private static final String TranslatedKey = "`1234567890-=\\ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔ[]ㅁㄴㅇㄹㅎㅗㅓㅏㅣ;'ㅋㅌㅊㅍㅠㅜㅡ/~!@#$%^&*()_+|ㅃㅉㄸㄲㅆㅛㅕㅑㅒㅖ{}ㅁㄴㅇㄹㅎㅗㅓㅏㅣ:\"ㅋㅌㅊㅍㅠㅜㅡ<>?";
 	private static final String Chosung = "rRseEfaqQtTdwWczxvg";
@@ -21,8 +22,9 @@ public class Korean2Input extends InputEngine {
 	private int cho = -1;
 	private int jung = -1;
 	private int jong = 0;
+	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
 
-	public Korean2Input(IInputWrapper wrapper) {
+	public KoreanInput(IInputWrapper wrapper) {
 		super(wrapper);
 	}
 
@@ -191,6 +193,14 @@ public class Korean2Input extends InputEngine {
 			jong = 0;
 			input.setMovingCursor(input.getAnchorCursor());
 		}
+	}
+	
+	public void drawIndicator(int x, int y, int len, int maxLen) {
+		indicator.drawIndicator(x, y, len, maxLen);
+	}
+	
+	public void drawIndicator(int x, int y, int len, int maxLen, String unit) {
+		indicator.drawIndicator(x, y, len, maxLen, unit);
 	}
 
 	public static boolean isKorMode() {
