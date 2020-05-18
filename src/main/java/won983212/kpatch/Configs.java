@@ -38,8 +38,9 @@ public class Configs {
 			data.load(new FileInputStream(configFile));
 			
 			String cfgVersion = data.getProperty("version");
-			if(cfgVersion == null || cfgVersion != KoreanInputPatch.VERSION) {
+			if(cfgVersion == null || !cfgVersion.equals(KoreanInputPatch.VERSION)) {
 				System.out.println("설정파일이 이전버전입니다. 업그레이드합니다.");
+				System.out.println("설정버전: " + cfgVersion + " / 최신버전: " + KoreanInputPatch.VERSION);
 				upgrade();
 			} else if(data.values().size() != defaultValues.values().size()){
 				System.out.println("설정파일이 손상되어서 수정했습니다.");

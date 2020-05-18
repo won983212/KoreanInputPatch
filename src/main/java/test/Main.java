@@ -32,13 +32,6 @@ public class Main extends JFrame implements KeyListener {
 		setVisible(true);
 		pack();
 		addKeyListener(this);
-		
-		new Timer().schedule(new TimerTask() {
-			@Override
-			public void run() {
-				repaint();
-			}
-		}, 0, 1000);
 	}
 
 	@Override
@@ -97,51 +90,44 @@ public class Main extends JFrame implements KeyListener {
 	}
 
 	// TODO -------------- Implementation ---------------------
-	private int prevStartCaret = -1;
-	private int prevEndCaret = -1;
 	private String prevText = null;
-
 	private CaretPosition min = new CaretPosition();
 	private CaretPosition max = new CaretPosition();
-	private List<String> cachedWrappingText = null;
-
 	private int[] cachedCaretOffset = new int[0];
 
 	public void drawSelectionBox(FontRendererInterface fontRenderer, int x, int y, int maxWidth) {
-		boolean update = false;
-
 		String text = input.getText();
-		if (text != prevText) {
-			cachedWrappingText = fr.listFormattedStringToWidth(text + "_", maxWidth);
-			if (!cachedWrappingText.isEmpty()) {
-				int lastIdx = cachedWrappingText.size() - 1;
-				String last = cachedWrappingText.get(lastIdx);
-				cachedWrappingText.set(lastIdx, last.substring(0, last.length() - 1));
-			}
-			prevText = text;
-			update = true;
-		}
-
 		int start = getStartCursor();
-		if (start != prevStartCaret) {
-			min = calculateCaretPosition(text, fontRenderer, x, start);
-			prevStartCaret = start;
-			update = true;
-		}
-
 		int end = getEndCursor();
-		if (end != prevEndCaret) {
-			max = calculateCaretPosition(text, fontRenderer, x, end);
-			prevEndCaret = end;
-			update = true;
-		}
 
-		if (update) {
+		String inText = text.substring(0, start) + '\u200B' + text.substring(start, end) + '\u200B' + text.substring(end);
+		if (inText != prevText) {
+			List<String> cachedWrappingText = fr.listFormattedStringToWidth(inText, maxWidth);
+			
+			// get full wrapped text (it contains \n)
+			StringBuilder sb = new StringBuilder();
+			for(String str : cachedWrappingText) {
+				sb.append(str);
+				sb.append('\n');
+			}
+			
+			// find caret indicator character
+			int idx1 = -1, idx2 = -1;
+			String wrappedFullText = sb.toString().substring(0, sb.length() - 1);
+			idx1 = wrappedFullText.indexOf('\u200B');
+			idx2 = wrappedFullText.indexOf('\u200B', idx1 + 1);
+			
+			// calculate caret X,Y location in textarea(book, etc...)
+			calculateCaretPosition(min, wrappedFullText, x, idx1);
+			calculateCaretPosition(max, wrappedFullText, x, idx2);
+			
+			// generate actual caret location cache
 			int len = max.y - min.y;
 			cachedCaretOffset = new int[len];
 			for (int i = 0; i < len; i++) {
 				cachedCaretOffset[i] = fr.getStringWidth(cachedWrappingText.get(min.y + i));
 			}
+			prevText = inText;
 		}
 
 		y += min.y * fr.FONT_HEIGHT;
@@ -159,24 +145,16 @@ public class Main extends JFrame implements KeyListener {
 		}
 	}
 
-	private CaretPosition calculateCaretPosition(String text, FontRendererInterface fr, int offsetX, int caret) {
-		CaretPosition pos = new CaretPosition();
-		int len = 0, tempLen = 0;
-		for (String s : cachedWrappingText) {
-			tempLen = len + s.length();
-			if (tempLen >= text.length() || text.charAt(tempLen) == '\n') {
-				tempLen = s.length() + 1; // \n by user
-			} else {
-				tempLen = s.length(); // inserted \n by listFormattedStringToWidth
+	private void calculateCaretPosition(CaretPosition target, String wrappedFullText, int x, int idx) {
+		target.x = target.y = 0;
+		for (int i = 0; i < idx; i++) {
+			char c = wrappedFullText.charAt(i);
+			if(c == '\n') {
+				target.x = i;
+				target.y++;
 			}
-			if (len + tempLen > caret) {
-				break;
-			}
-			len += tempLen;
-			pos.y++;
 		}
-		pos.x = offsetX + fr.getStringWidth(text.substring(len, caret));
-		return pos;
+		target.x = x + fr.getStringWidth(wrappedFullText.substring(target.x, idx));
 	}
 
 	// draw caret. color will be selected automatically.

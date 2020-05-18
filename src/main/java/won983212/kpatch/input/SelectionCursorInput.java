@@ -1,29 +1,30 @@
 package won983212.kpatch.input;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.lwjgl.input.Keyboard;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.util.ResourceLocation;
 
 public class SelectionCursorInput extends InputEngine {
 	private int anchorCursor = 0;
 	private int movingCursor = 0;
 
 	// caret state cache
-	private int prevStartCaret = -1;
-	private int prevEndCaret = -1;
 	private String prevText = null;
-
 	private CaretPosition min = new CaretPosition();
 	private CaretPosition max = new CaretPosition();
-	private List<String> cachedWrappingText = null;
-
 	private int[] cachedCaretOffset = new int[0];
 
 	public SelectionCursorInput(IInputWrapper base) {
@@ -133,81 +134,73 @@ public class SelectionCursorInput extends InputEngine {
 		int maxX = x + fr.getStringWidth(text.substring(0, getEndCursor()));
 		drawSelectionBox(minX, y, maxX, y + fr.FONT_HEIGHT);
 	}
-	
-	public void drawSelectionBox(FontRenderer fr, int x, int y, int maxWidth) {
+
+	public void drawSelectionBox(FontRenderer fontRenderer, int x, int y, int maxWidth) {
 		if(maxWidth <= 1) {
-			drawSelectionBox(fr, x, y);
+			drawSelectionBox(fontRenderer, x, y);
 			return;
 		}
-
-		boolean update = false;
+		
 		String text = input.getText();
-		if (text != prevText) {
-			cachedWrappingText = fr.listFormattedStringToWidth(text + "_", maxWidth);
-			if (!cachedWrappingText.isEmpty()) {
-				int lastIdx = cachedWrappingText.size() - 1;
-				String last = cachedWrappingText.get(lastIdx);
-				cachedWrappingText.set(lastIdx, last.substring(0, last.length() - 1));
-			}
-			prevText = text;
-			update = true;
-		}
-
 		int start = getStartCursor();
-		if (start != prevStartCaret) {
-			min = calculateCaretPosition(text, fr, x, start);
-			prevStartCaret = start;
-			update = true;
-		}
-
 		int end = getEndCursor();
-		if (end != prevEndCaret) {
-			max = calculateCaretPosition(text, fr, x, end);
-			prevEndCaret = end;
-			update = true;
-		}
 
-		if (update) {
+		System.out.println(fontRenderer.getStringWidth("§l"));
+		String inText = text.substring(0, start) + '\u0020' + text.substring(start, end) + '\u0020' + text.substring(end);
+		if (inText != prevText) {
+			List<String> cachedWrappingText = fontRenderer.listFormattedStringToWidth(inText, maxWidth);
+			
+			// get full wrapped text (it contains \n)
+			StringBuilder sb = new StringBuilder();
+			for(String str : cachedWrappingText) {
+				sb.append(str);
+				sb.append('\n');
+			}
+			
+			// find caret indicator character
+			int idx1 = -1, idx2 = -1;
+			String wrappedFullText = sb.toString().substring(0, sb.length() - 1);
+			idx1 = wrappedFullText.indexOf('\u0020');
+			idx2 = wrappedFullText.indexOf('\u0020', idx1 + 1);
+			
+			// calculate caret X,Y location in textarea(book, etc...)
+			calculateCaretPosition(min, fontRenderer, wrappedFullText, x, idx1);
+			calculateCaretPosition(max, fontRenderer, wrappedFullText, x, idx2);
+			
+			// generate actual caret location cache
 			int len = max.y - min.y;
 			cachedCaretOffset = new int[len];
 			for (int i = 0; i < len; i++) {
-				cachedCaretOffset[i] = fr.getStringWidth(cachedWrappingText.get(min.y + i));
+				cachedCaretOffset[i] = fontRenderer.getStringWidth(cachedWrappingText.get(min.y + i));
 			}
+			prevText = inText;
 		}
 
-		y += min.y * fr.FONT_HEIGHT;
+		y += min.y * fontRenderer.FONT_HEIGHT;
 		if (min.y == max.y) { // for single line
-			drawSelectionBox(min.x, y, max.x, y + fr.FONT_HEIGHT);
+			drawSelectionBox(min.x, y, max.x, y + fontRenderer.FONT_HEIGHT);
 		} else { // for multiple lines
 			// first & center lines
 			for (int i = 0; i < cachedCaretOffset.length; i++) {
-				int endY = y + (i + 1) * fr.FONT_HEIGHT;
-				drawSelectionBox(i == 0 ? min.x : x, y + i * fr.FONT_HEIGHT, x + cachedCaretOffset[i], endY);
+				int endY = y + (i + 1) * fontRenderer.FONT_HEIGHT;
+				drawSelectionBox(i == 0 ? min.x : x, y + i * fontRenderer.FONT_HEIGHT, x + cachedCaretOffset[i], endY);
 			}
 			// end line
-			y += (max.y - min.y) * fr.FONT_HEIGHT;
-			drawSelectionBox(x, y, max.x, y + fr.FONT_HEIGHT);
+			y += (max.y - min.y) * fontRenderer.FONT_HEIGHT;
+			drawSelectionBox(x, y, max.x, y + fontRenderer.FONT_HEIGHT);
 		}
 	}
 
-	private CaretPosition calculateCaretPosition(String text, FontRenderer fr, int offsetX, int caret) {
-		CaretPosition pos = new CaretPosition();
-		int len = 0, tempLen = 0;
-		for (String s : cachedWrappingText) {
-			tempLen = len + s.length();
-			if (tempLen < text.length() && text.charAt(tempLen) == '\n') {
-				tempLen = s.length() + 1; // \n by user
-			} else {
-				tempLen = s.length(); // inserted \n by listFormattedStringToWidth
+	private void calculateCaretPosition(CaretPosition target, FontRenderer fr, String wrappedFullText, int x, int idx) {
+		target.x = target.y = 0;
+		for (int i = 0; i < idx; i++) {
+			char c = wrappedFullText.charAt(i);
+			if(c == '\n') {
+				target.x = i;
+				target.y++;
 			}
-			if (len + tempLen > caret) {
-				break;
-			}
-			len += tempLen;
-			pos.y++;
 		}
-		pos.x = offsetX + fr.getStringWidth(text.substring(len, caret));
-		return pos;
+		target.x = x + fr.getStringWidth(wrappedFullText.substring(target.x, idx));
 	}
 
 	// draw caret. color will be selected automatically.
