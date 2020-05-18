@@ -15,6 +15,17 @@ public class SelectionCursorInput extends InputEngine {
 	private int anchorCursor = 0;
 	private int movingCursor = 0;
 
+	// caret state cache
+	private int prevStartCaret = -1;
+	private int prevEndCaret = -1;
+	private String prevText = null;
+
+	private CaretPosition min = new CaretPosition();
+	private CaretPosition max = new CaretPosition();
+	private List<String> cachedWrappingText = null;
+
+	private int[] cachedCaretOffset = new int[0];
+
 	public SelectionCursorInput(IInputWrapper base) {
 		super(base);
 	}
@@ -116,51 +127,97 @@ public class SelectionCursorInput extends InputEngine {
 		}
 	}
 
-	// TODO MAXWIDTH 구현필요
-	public void drawSelectionBox(FontRenderer fontRenderer, int x, int y, int maxWidth) {
+	public void drawSelectionBox(FontRenderer fr, int x, int y) {
 		String text = input.getText();
-		final int textWidth = fontRenderer.getStringWidth(text);
-		final int min = getStartCursor();
-		final int max = getEndCursor();
-		
-		if(maxWidth > 0) {
-			int len = 0, tempLen, wrappedLen = 0;
-			List<String> wrapped = fontRenderer.listFormattedStringToWidth(text, maxWidth);
-			for (String s : wrapped) {
-				tempLen = s.length();
-				if(len + tempLen > min)
-					break;
-				len += tempLen;
-				y += fontRenderer.FONT_HEIGHT;
-				wrappedLen++;
-			}
-			
-			int d=0;
-			char[] chars = text.toCharArray();
-			for (int i = 0; i < min; i++) {
-				if(chars[i] == '\n') d++;
-			}
-			d = wrappedLen - d;
-			
-			x += fontRenderer.getStringWidth(text.substring(len - d, min - d));
-		} else {
-			x += fontRenderer.getStringWidth(text.substring(0, min));
-		}
-		
-		int color, x2;
-		if (min == max) {
-			x2 = x + 1;
-			color = 0xff000000;
-		} else {
-			x2 = x + fontRenderer.getStringWidth(text.substring(min, max));
-			color = -1;
-		}
-		
-		drawSelectionBox(x, y, x2, y + fontRenderer.FONT_HEIGHT, color);
+		int minX = x + fr.getStringWidth(text.substring(0, getStartCursor()));
+		int maxX = x + fr.getStringWidth(text.substring(0, getEndCursor()));
+		drawSelectionBox(minX, y, maxX, y + fr.FONT_HEIGHT);
 	}
 	
+	public void drawSelectionBox(FontRenderer fr, int x, int y, int maxWidth) {
+		if(maxWidth <= 1) {
+			drawSelectionBox(fr, x, y);
+			return;
+		}
+
+		boolean update = false;
+		String text = input.getText();
+		if (text != prevText) {
+			cachedWrappingText = fr.listFormattedStringToWidth(text + "_", maxWidth);
+			if (!cachedWrappingText.isEmpty()) {
+				int lastIdx = cachedWrappingText.size() - 1;
+				String last = cachedWrappingText.get(lastIdx);
+				cachedWrappingText.set(lastIdx, last.substring(0, last.length() - 1));
+			}
+			prevText = text;
+			update = true;
+		}
+
+		int start = getStartCursor();
+		if (start != prevStartCaret) {
+			min = calculateCaretPosition(text, fr, x, start);
+			prevStartCaret = start;
+			update = true;
+		}
+
+		int end = getEndCursor();
+		if (end != prevEndCaret) {
+			max = calculateCaretPosition(text, fr, x, end);
+			prevEndCaret = end;
+			update = true;
+		}
+
+		if (update) {
+			int len = max.y - min.y;
+			cachedCaretOffset = new int[len];
+			for (int i = 0; i < len; i++) {
+				cachedCaretOffset[i] = fr.getStringWidth(cachedWrappingText.get(min.y + i));
+			}
+		}
+
+		y += min.y * fr.FONT_HEIGHT;
+		if (min.y == max.y) { // for single line
+			drawSelectionBox(min.x, y, max.x, y + fr.FONT_HEIGHT);
+		} else { // for multiple lines
+			// first & center lines
+			for (int i = 0; i < cachedCaretOffset.length; i++) {
+				int endY = y + (i + 1) * fr.FONT_HEIGHT;
+				drawSelectionBox(i == 0 ? min.x : x, y + i * fr.FONT_HEIGHT, x + cachedCaretOffset[i], endY);
+			}
+			// end line
+			y += (max.y - min.y) * fr.FONT_HEIGHT;
+			drawSelectionBox(x, y, max.x, y + fr.FONT_HEIGHT);
+		}
+	}
+
+	private CaretPosition calculateCaretPosition(String text, FontRenderer fr, int offsetX, int caret) {
+		CaretPosition pos = new CaretPosition();
+		int len = 0, tempLen = 0;
+		for (String s : cachedWrappingText) {
+			tempLen = len + s.length();
+			if (tempLen < text.length() && text.charAt(tempLen) == '\n') {
+				tempLen = s.length() + 1; // \n by user
+			} else {
+				tempLen = s.length(); // inserted \n by listFormattedStringToWidth
+			}
+			if (len + tempLen > caret) {
+				break;
+			}
+			len += tempLen;
+			pos.y++;
+		}
+		pos.x = offsetX + fr.getStringWidth(text.substring(len, caret));
+		return pos;
+	}
+
+	// draw caret. color will be selected automatically.
 	public static void drawSelectionBox(int startX, int startY, int endX, int endY) {
-		drawSelectionBox(startX, startY, endX, endY, -1);
+		int color = -1;
+		if (startX == endX) {
+			endX += 1;
+			color = 0xff000000;
+		}
+		drawSelectionBox(startX, startY, endX, endY, color);
 	}
 
 	public static void drawSelectionBox(int startX, int startY, int endX, int endY, int color) {
@@ -200,5 +257,10 @@ public class SelectionCursorInput extends InputEngine {
 			GlStateManager.disableColorLogic();
 		}
 		GlStateManager.enableTexture2D();
+	}
+
+	private class CaretPosition {
+		public int x = 0; // actual x location
+		public int y = 0; // y'th line location
 	}
 }
