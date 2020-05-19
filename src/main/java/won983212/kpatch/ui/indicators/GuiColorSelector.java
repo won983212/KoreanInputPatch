@@ -8,7 +8,7 @@ import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.ui.Theme;
 import won983212.kpatch.ui.UIUtils;
 
-public class GuiColorSelector {
+public class GuiColorSelector extends GuiPopup {
 	private static final String code = "0123456789abcdefklmnor";
 	private static final int[] color = {
 		0x000000, 0x0000aa, 0x00aa00, 0x00aaaa, 0xaa0000, 0xaa00aa, 0xffaa00, 0xaaaaaa,	// 0 1 2 3 4 5 6 7
@@ -16,33 +16,21 @@ public class GuiColorSelector {
 		0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff						// k l m n o r
 	};
 	
-	private static final int colorPanelSize = 12;
-	private static final int margin = 4;
+	private static final int colorPanelSize = 14;
+	private static final int margin = 5;
 	private static final int columns = 6;
 	private static final int rows = 4;
-	private static final int gap = 2;
+	private static final int gap = 3;
 	private static final int borderColor = 0xff555555;
 	
 	public static final int WIDTH = columns * (colorPanelSize + gap) - gap + margin * 2;
 	public static final int HEIGHT = rows * (colorPanelSize + gap) - gap + margin * 2;
 	
-	private boolean show = false;
-	
-	public boolean isShow() {
-		return show;
-	}
-	
-	public void setVisible(boolean visible) {
-		this.show = visible;
-	}
-	
 	public void select(char code) {
 		setVisible(false);
 	}
 	
-	public void drawIndicator(int x, int y) {
-		if(!show) return;
-		
+	protected void renderPopup(int x, int y) {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			FontRenderer fr = UIUtils.getDefaultASCIIRenderer();
 			

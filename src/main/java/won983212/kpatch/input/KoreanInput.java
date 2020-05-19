@@ -8,7 +8,10 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.Configs;
+import won983212.kpatch.IInputWrapper;
+import won983212.kpatch.InputProcessor;
 import won983212.kpatch.KoreanInputPatch;
+import won983212.kpatch.ui.Point2i;
 import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 
 public class KoreanInput extends InputProcessor {
@@ -29,8 +32,6 @@ public class KoreanInput extends InputProcessor {
 	}
 
 	public boolean handleKeyTyped(char c, int i) {
-		if(!input.isComponentFocused())
-			return false;
 		if (isKorMode()) {
 			if (i == Keyboard.KEY_LEFT || i == Keyboard.KEY_RIGHT || i == Keyboard.KEY_RETURN) {
 				cancelAssemble();
@@ -193,6 +194,10 @@ public class KoreanInput extends InputProcessor {
 			jong = 0;
 			input.setMovingCursor(input.getAnchorCursor());
 		}
+	}
+	
+	public void drawIndicator(Point2i pos, int len, int maxLen) {
+		indicator.drawIndicator(pos.x, pos.y, len, maxLen);
 	}
 	
 	public void drawIndicator(int x, int y, int len, int maxLen) {

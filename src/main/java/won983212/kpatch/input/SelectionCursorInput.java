@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
+import won983212.kpatch.IInputWrapper;
+import won983212.kpatch.InputProcessor;
 
 public class SelectionCursorInput extends InputProcessor {
 	private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;

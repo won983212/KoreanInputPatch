@@ -6,8 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiEditSign;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.text.TextComponentString;
-import won983212.kpatch.input.IInputWrapper;
-import won983212.kpatch.input.InputProcessor;
+import won983212.kpatch.IInputWrapper;
+import won983212.kpatch.InputProcessor;
 import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
 import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
@@ -35,6 +35,12 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 			InputProcessor.processKeyInput(typedChar, keyCode, krIn, selection);
 			tileSign.signText[editLine] = new TextComponentString(textBuffer);
 		}
+	}
+	
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, krIn, selection);
+		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
@@ -95,10 +101,5 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	@Override
 	public void setMovingCursor(int cursor) {
 		selection.setMovingCursor(cursor);
-	}
-
-	@Override
-	public boolean isComponentFocused() {
-		return true;
 	}
 }

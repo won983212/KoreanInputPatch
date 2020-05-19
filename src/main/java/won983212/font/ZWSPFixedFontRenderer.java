@@ -9,7 +9,11 @@ import net.minecraft.util.ResourceLocation;
 
 public class ZWSPFixedFontRenderer extends FontRenderer {
 	public ZWSPFixedFontRenderer(Minecraft mc) {
-		super(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.getTextureManager(), mc.isUnicode());
+		this(mc, mc.isUnicode());
+	}
+	
+	public ZWSPFixedFontRenderer(Minecraft mc, boolean isUnicode) {
+		super(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.getTextureManager(), isUnicode);
 		setBidiFlag(mc.getLanguageManager().isCurrentLanguageBidirectional());
 		((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(this);
 	}

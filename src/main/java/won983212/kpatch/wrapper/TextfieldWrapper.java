@@ -2,21 +2,23 @@ package won983212.kpatch.wrapper;
 
 import java.lang.reflect.Field;
 
-import org.lwjgl.util.Point;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
+import won983212.kpatch.IInputWrapper;
+import won983212.kpatch.InputProcessor;
 import won983212.kpatch.input.ColorInput;
-import won983212.kpatch.input.IInputWrapper;
-import won983212.kpatch.input.InputProcessor;
+import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
+import won983212.kpatch.ui.Point2i;
 import won983212.kpatch.ui.indicators.GuiColorSelector;
+import won983212.kpatch.ui.indicators.GuiHanjaSelector;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private static final Field[] FIELDS = GuiTextField.class.getDeclaredFields();
 	private KoreanInput krIn = new KoreanInput(this);
 	private ColorInput colorIn = new ColorInput(this);
+	private HanjaInput hanjaIn = new HanjaInput(this);
 
 	public TextfieldWrapper(GuiTextField impl) {
 		super(impl.getId(), Minecraft.getMinecraft().fontRenderer, impl.x, impl.y, impl.width, impl.height);
@@ -34,18 +36,22 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 
 	@Override
 	public boolean textboxKeyTyped(char typedChar, int keyCode) {
-		if(!InputProcessor.processKeyInput(typedChar, keyCode, colorIn, krIn))
-			return super.textboxKeyTyped(typedChar, keyCode);
-		return true;
+		if (!isFocused()) {
+			return false;
+		} else {
+			if (!InputProcessor.processKeyInput(typedChar, keyCode, colorIn, hanjaIn, krIn))
+				return super.textboxKeyTyped(typedChar, keyCode);
+			return true;
+		}
 	}
 	
 	@Override
 	public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
-		colorIn.clearIndicator();
+		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, colorIn, hanjaIn, krIn);
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
-	private Point getPopupLocation(int height) {
+	private Point2i getPopupLocation(int height) {
 		int x = this.x - 1;
 		int y = this.y - 3 - height;
 		
@@ -58,18 +64,16 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 			y += y < 2 ? 1 : -1;
 		}
 		
-		return new Point(x, y);
+		return new Point2i(x, y);
 	}
 	
 	@Override
 	public void drawTextBox() {
-		if (isComponentFocused()) {
+		if (isFocused()) {
 			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-			Point krInLoc = getPopupLocation(fr.FONT_HEIGHT + 2);
-			Point colorInLoc = getPopupLocation(GuiColorSelector.HEIGHT);
-			
-			krIn.drawIndicator(krInLoc.getX(), krInLoc.getY(), getText().length(), getMaxStringLength());
-			colorIn.drawIndicator(colorInLoc.getX(), colorInLoc.getY());
+			krIn.drawIndicator(getPopupLocation(fr.FONT_HEIGHT + 2), getText().length(), getMaxStringLength());
+			colorIn.drawIndicator(getPopupLocation(GuiColorSelector.HEIGHT));
+			hanjaIn.drawIndicator(getPopupLocation(GuiHanjaSelector.HEIGHT));
 		}
 		super.drawTextBox();
 	}
@@ -94,11 +98,6 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	@Override
 	public int getMovingCursor() {
 		return getSelectionEnd();
-	}
-
-	@Override
-	public boolean isComponentFocused() {
-		return isFocused();
 	}
 
 	static {

@@ -1,4 +1,4 @@
-package won983212.kpatch.input;
+package won983212.kpatch;
 
 public abstract class InputProcessor {
 	protected IInputWrapper input;
@@ -8,6 +8,9 @@ public abstract class InputProcessor {
 	}
 	
 	public abstract boolean handleKeyTyped(char c, int i);
+	
+	public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
+	}
 
 	public int getStartCursor() {
 		return Math.min(input.getAnchorCursor(), input.getMovingCursor());
@@ -64,5 +67,11 @@ public abstract class InputProcessor {
 				return true;
 		}
 		return false;
+	}
+	
+	public static void processMouseClick(int mouseX, int mouseY, int mouseButton, InputProcessor... processors) {
+		for(InputProcessor p : processors) {
+			p.onMouseClick(mouseX, mouseY, mouseButton);
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package won983212.kpatch.input;
+package won983212.kpatch;
 
 public interface IInputWrapper {
 	public void setText(String text);
@@ -12,6 +12,4 @@ public interface IInputWrapper {
 	public void setAnchorCursor(int cursor);
 
 	public void setMovingCursor(int cursor);
-	
-	public boolean isComponentFocused();
 }

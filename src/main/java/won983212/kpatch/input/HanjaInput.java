@@ -6,11 +6,12 @@ import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
 import won983212.kpatch.ui.Point2i;
 import won983212.kpatch.ui.indicators.GuiColorSelector;
+import won983212.kpatch.ui.indicators.GuiHanjaSelector;
 
-public class ColorInput extends InputProcessor {
-	private GuiColorSelector indicator = new GuiColorSelector();
-
-	public ColorInput(IInputWrapper base) {
+public class HanjaInput extends InputProcessor {
+	private GuiHanjaSelector indicator = new GuiHanjaSelector();
+	
+	public HanjaInput(IInputWrapper base) {
 		super(base);
 	}
 
@@ -18,11 +19,11 @@ public class ColorInput extends InputProcessor {
 	public boolean handleKeyTyped(char c, int i) {
 		if (i == 0) {
 			return false;
-		} else if (i == Keyboard.KEY_INSERT) {
+		} else if (i == Keyboard.KEY_KANJI) {
 			indicator.setVisible(!indicator.isShow());
 			return true;
 		} else if (indicator.isShow()) {
-			if ("0123456789abcdeflmnokr".indexOf(c) != -1) {
+			if (c >= '0' && c <= '9') {
 				write("§" + c);
 				indicator.select(c);
 				return true;

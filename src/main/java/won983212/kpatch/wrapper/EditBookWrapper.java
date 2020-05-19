@@ -12,8 +12,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import won983212.kpatch.input.IInputWrapper;
-import won983212.kpatch.input.InputProcessor;
+import won983212.kpatch.IInputWrapper;
+import won983212.kpatch.InputProcessor;
 import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
 import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
@@ -56,6 +56,12 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 				bookIsModified = true;
 			}
 		}
+	}
+	
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, krIn, selection);
+		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
@@ -171,10 +177,5 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	@Override
 	public void setMovingCursor(int cursor) {
 		selection.setMovingCursor(cursor);
-	}
-
-	@Override
-	public boolean isComponentFocused() {
-		return true;
 	}
 }

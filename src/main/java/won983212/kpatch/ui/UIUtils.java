@@ -41,7 +41,7 @@ public class UIUtils {
 	
 	public static FontRenderer getDefaultASCIIRenderer() {
 		if(ascii_font_renderer == null) {
-			ascii_font_renderer = new ZWSPFixedFontRenderer(Minecraft.getMinecraft());
+			ascii_font_renderer = new ZWSPFixedFontRenderer(Minecraft.getMinecraft(), false);
 		}
 		return ascii_font_renderer;
 	}
