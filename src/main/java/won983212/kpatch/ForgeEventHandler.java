@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.client.gui.GuiScreenDemo;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiEditSign;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -72,8 +73,13 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Post e) {
 		synchronized (this.afterRenderQueue) {
-			while (!this.afterRenderQueue.isEmpty()) {
-				this.afterRenderQueue.poll().run();
+			if(!this.afterRenderQueue.isEmpty()) {
+				GlStateManager.translate(0, 0, 300);
+				GlStateManager.disableLighting();
+				while (!this.afterRenderQueue.isEmpty()) {
+					this.afterRenderQueue.poll().run();
+				}
+				GlStateManager.translate(0, 0, -300);
 			}
 		}
 	}

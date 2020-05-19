@@ -77,10 +77,6 @@ public class GuiKoreanIndicator {
 		}
 
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
-			// Draw at top
-			GlStateManager.translate(0, 0, 300);
-			GlStateManager.disableLighting();
-	
 			// kor indicator bg
 			if(modeBgColorAnimation.isRunning()) {
 				UIUtils.drawArea(x, y, textWidth + 8, HEIGHT, modeBgColorAnimation.update());
@@ -127,8 +123,6 @@ public class GuiKoreanIndicator {
 			int textX = x + 2 + (textWidth + 6 - fr.getStringWidth(idiText)) / 2;
 			UIUtils.useShadow(0xffaaaaaa);
 			UIUtils.drawText(fr, idiText, textX, y + 1, 0xff000000);
-	
-			GlStateManager.translate(0, 0, -300);
 		});
 	}
 }

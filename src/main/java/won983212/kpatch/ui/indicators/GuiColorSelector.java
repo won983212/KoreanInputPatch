@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.ui.Theme;
 import won983212.kpatch.ui.UIUtils;
 
@@ -42,41 +43,43 @@ public class GuiColorSelector {
 	public void drawIndicator(int x, int y) {
 		if(!show) return;
 		
-		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-		
-		// background
-		UIUtils.useShadow(Theme.BACKGROUND_SHADOW);
-		UIUtils.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND);
-		
-		int k = 0;
-		for (int j = 0; j < rows; j++) {
-			for (int i = 0; i < columns; i++) {
-				if(k > 15 && j != rows - 1) break;
-				
-				int px = x + margin + i * (colorPanelSize + gap);
-				int py = y + margin + j * (colorPanelSize + gap);
-				char c = code.charAt(k);
-				
-				// border
-				UIUtils.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor);
-				
-				// color panel
-				UIUtils.drawRectDouble(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
-				
-				if(k > 15) {
-					UIUtils.drawAreaCenteredText(fr, "§" + c + "A", px, py + 1, colorPanelSize, colorPanelSize, 0xff000000);
+		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
+			FontRenderer fr = UIUtils.getDefaultASCIIRenderer();
+			
+			// background
+			UIUtils.useShadow(Theme.BACKGROUND_SHADOW);
+			UIUtils.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND);
+			
+			int k = 0;
+			for (int j = 0; j < rows; j++) {
+				for (int i = 0; i < columns; i++) {
+					if(k > 15 && j != rows - 1) break;
+					
+					int px = x + margin + i * (colorPanelSize + gap);
+					int py = y + margin + j * (colorPanelSize + gap);
+					char c = code.charAt(k);
+					
+					// border
+					UIUtils.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor);
+					
+					// color panel
+					UIUtils.drawRectDouble(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
+					
+					if(k > 15) {
+						UIUtils.drawAreaCenteredText(fr, "§" + c + "A", px, py + 1, colorPanelSize, colorPanelSize, 0xff000000);
+					}
+					
+					// border label background
+					UIUtils.drawRectDouble(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor);
+					
+					// border label
+					GlStateManager.scale(0.5, 0.5, 0.5);
+					fr.drawString(String.valueOf(c), (px + colorPanelSize) * 2 - 7, (py + colorPanelSize) * 2 - 9, 0xffffffff);
+					GlStateManager.scale(2, 2, 2);
+					
+					k++;
 				}
-				
-				// border label background
-				UIUtils.drawRectDouble(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor);
-				
-				// border label
-				GlStateManager.scale(0.5, 0.5, 0.5);
-				fr.drawString(String.valueOf(c), (px + colorPanelSize) * 2 - 7, (py + colorPanelSize) * 2 - 9, 0xffffffff);
-				GlStateManager.scale(2, 2, 2);
-				
-				k++;
 			}
-		}
+		});
 	}
 }

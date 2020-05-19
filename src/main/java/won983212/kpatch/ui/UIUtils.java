@@ -5,8 +5,10 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import won983212.font.ZWSPFixedFontRenderer;
 
 public class UIUtils {
+	private static FontRenderer ascii_font_renderer = null; 
 	private static int shadowColor = -1;
 	
 	// ================================= Core Utils =================================
@@ -36,6 +38,13 @@ public class UIUtils {
 	}
 	
 	// ================================= Text Utils =================================
+	
+	public static FontRenderer getDefaultASCIIRenderer() {
+		if(ascii_font_renderer == null) {
+			ascii_font_renderer = new ZWSPFixedFontRenderer(Minecraft.getMinecraft());
+		}
+		return ascii_font_renderer;
+	}
 	
 	public static void drawText(FontRenderer fr, String text, float x, float y, int color) {
 		if(shadowColor != -1) {
