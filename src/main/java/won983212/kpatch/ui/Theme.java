@@ -10,6 +10,7 @@ public class Theme {
 	public static final int WARN = 0xfffb8c00;
 	public static final int DANGER = 0xffe53935;
 	public static final int BACKGROUND = 0xffffffff;
+	public static final int BACKGROUND_SHADOW = 0xff666666;
 	
 	static {
 		PRIMARY_LIGHTEST = adjustColor(PRIMARY, 70);

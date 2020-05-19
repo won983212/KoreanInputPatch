@@ -15,6 +15,7 @@ import won983212.kpatch.ui.animation.ColorAnimation;
 import won983212.kpatch.ui.animation.DecimalAnimation;
 
 public class GuiKoreanIndicator {
+	public static final int HEIGHT = 11;
 	private DecimalAnimation alertBoomingAnimation = new DecimalAnimation(150);
 	private DecimalAnimation alertWidthAnimation = new DecimalAnimation(200);
 	private DecimalAnimation modeChangeAnimation = new DecimalAnimation(200);
@@ -35,7 +36,6 @@ public class GuiKoreanIndicator {
 
 	public void drawIndicator(int x, int y, int len, int maxLen, String unit) {
 		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-		final int height = fr.FONT_HEIGHT + 2;
 		final int conf = Configs.getInt(Configs.IME_INDICATOR_VISIBLE_MODE);
 		final boolean useAnimation = Configs.getBoolean(Configs.IME_INDICATOR_ANIMATE);
 
@@ -83,17 +83,17 @@ public class GuiKoreanIndicator {
 	
 			// kor indicator bg
 			if(modeBgColorAnimation.isRunning()) {
-				UIUtils.drawArea(x, y, textWidth + 8, height, modeBgColorAnimation.update());
+				UIUtils.drawArea(x, y, textWidth + 8, HEIGHT, modeBgColorAnimation.update());
 			} else {
-				UIUtils.drawArea(x, y, textWidth + 8, height, Theme.BACKGROUND);
+				UIUtils.drawArea(x, y, textWidth + 8, HEIGHT, Theme.BACKGROUND);
 			}
 	
 			// kor indicator badge
 			if (modeChangeAnimation.isRunning()) {
-				UIUtils.drawArea(x, y, 2, height, !kr ? Theme.PRIMARY : Theme.SECONDARY);
-				UIUtils.drawArea(x, y, 2, (int) (height * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UIUtils.drawArea(x, y, 2, HEIGHT, !kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UIUtils.drawArea(x, y, 2, (int) (HEIGHT * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
 			} else {
-				UIUtils.drawArea(x, y, 2, height, kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UIUtils.drawArea(x, y, 2, HEIGHT, kr ? Theme.PRIMARY : Theme.SECONDARY);
 			}
 	
 			if (alertText != null) {
@@ -102,13 +102,13 @@ public class GuiKoreanIndicator {
 	
 				// alert bg
 				double p = useAnimation ? alertWidthAnimation.update() : 1;
-				UIUtils.drawRectDouble(alertX, y, alertX + alertWidth * p, y + height, alertBg);
+				UIUtils.drawRectDouble(alertX, y, alertX + alertWidth * p, y + HEIGHT, alertBg);
 	
 				// alert text
 				if (p > 0.9) {
 					double scale = useAnimation ? 1 + alertBoomingAnimation.update() * 0.3 : 1;
 					int alertTextX = (int) ((alertX + (alertWidth - fr.getStringWidth(alertText) * scale) / 2) / scale);
-					int alertTextY = (int) ((y + (height - fr.FONT_HEIGHT * scale) / 2) / scale);
+					int alertTextY = (int) ((y + (HEIGHT - fr.FONT_HEIGHT * scale) / 2) / scale);
 
 					if (useAnimation) {
 						GlStateManager.pushMatrix();
@@ -125,7 +125,8 @@ public class GuiKoreanIndicator {
 	
 			// kor indicator text
 			int textX = x + 2 + (textWidth + 6 - fr.getStringWidth(idiText)) / 2;
-			UIUtils.drawTextCustomShadow(fr, idiText, textX, y + 1, 0xff000000, 0xffaaaaaa);
+			UIUtils.useShadow(0xffaaaaaa);
+			UIUtils.drawText(fr, idiText, textX, y + 1, 0xff000000);
 	
 			GlStateManager.translate(0, 0, -300);
 		});

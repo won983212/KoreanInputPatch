@@ -2,18 +2,16 @@ package won983212.kpatch.wrapper;
 
 import java.lang.reflect.Field;
 
-import com.google.common.base.Predicate;
+import org.lwjgl.util.Point;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.gui.GuiTextField;
 import won983212.kpatch.input.ColorInput;
 import won983212.kpatch.input.IInputWrapper;
 import won983212.kpatch.input.InputProcessor;
 import won983212.kpatch.input.KoreanInput;
-import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
+import won983212.kpatch.ui.indicators.GuiColorSelector;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private static final Field[] FIELDS = GuiTextField.class.getDeclaredFields();
@@ -40,22 +38,38 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 			return super.textboxKeyTyped(typedChar, keyCode);
 		return true;
 	}
+	
+	@Override
+	public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
+		colorIn.clearIndicator();
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
+	}
 
+	private Point getPopupLocation(int height) {
+		int x = this.x - 1;
+		int y = this.y - 3 - height;
+		
+		if (y < 2) {
+			y = this.y + this.height + 3;
+		}
+		
+		if (!getEnableBackgroundDrawing()) {
+			x -= 1;
+			y += y < 2 ? 1 : -1;
+		}
+		
+		return new Point(x, y);
+	}
+	
 	@Override
 	public void drawTextBox() {
 		if (isComponentFocused()) {
 			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-			int x = this.x - 1;
-			int y = this.y - fr.FONT_HEIGHT - 5;
-			if (y < 2) {
-				y = this.y + this.height + 3;
-			}
-			if (!getEnableBackgroundDrawing()) {
-				x -= 1;
-				y += y < 2 ? 1 : -1;
-			}
-			krIn.drawIndicator(x, y, getText().length(), getMaxStringLength());
-			colorIn.drawIndicator(2, 2);
+			Point krInLoc = getPopupLocation(fr.FONT_HEIGHT + 2);
+			Point colorInLoc = getPopupLocation(GuiColorSelector.HEIGHT);
+			
+			krIn.drawIndicator(krInLoc.getX(), krInLoc.getY(), getText().length(), getMaxStringLength());
+			colorIn.drawIndicator(colorInLoc.getX(), colorInLoc.getY());
 		}
 		super.drawTextBox();
 	}
