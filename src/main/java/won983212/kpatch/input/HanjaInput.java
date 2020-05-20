@@ -5,7 +5,6 @@ import org.lwjgl.input.Keyboard;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
 import won983212.kpatch.ui.Point2i;
-import won983212.kpatch.ui.indicators.GuiColorSelector;
 import won983212.kpatch.ui.indicators.GuiHanjaSelector;
 
 public class HanjaInput extends InputProcessor {

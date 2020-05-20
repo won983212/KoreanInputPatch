@@ -33,7 +33,7 @@ public class Configs {
 		defaultValues.put("version", KoreanInputPatch.VERSION);
 	}
 
-	public static void load() {
+	public static boolean load() {
 		try {
 			data.load(new FileInputStream(configFile));
 			
@@ -42,15 +42,19 @@ public class Configs {
 				System.out.println("설정파일이 이전버전입니다. 업그레이드합니다.");
 				System.out.println("설정버전: " + cfgVersion + " / 최신버전: " + KoreanInputPatch.VERSION);
 				upgrade();
+				return false;
 			} else if(data.values().size() != defaultValues.values().size()){
 				System.out.println("설정파일이 손상되어서 수정했습니다.");
+				return false;
 			}
+			return true;
 		} catch (FileNotFoundException e) {
 			System.out.println("설정파일이 없으므로 새로 생성함.");
 			setDefault();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	public static void save() {

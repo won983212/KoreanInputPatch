@@ -8,13 +8,28 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Map.Entry;
 
 import javax.swing.JFrame;
 
 import net.minecraft.client.gui.FontRenderer;
+import scala.actors.threadpool.Arrays;
 
 /**
  * Test Platform
@@ -85,7 +100,116 @@ public class Main extends JFrame implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 	}
 
+	/*private static class Hanja {
+		public char hanja;
+		public String meaning;
+		
+		public Hanja(char hanja, String meaning) {
+			this.hanja = hanja;
+			this.meaning = meaning;
+		}
+		
+		@Override
+		public String toString() {
+			return isSpecial() ? String.valueOf(hanja) : (hanja + " " + meaning);
+		}
+		
+		public boolean isSpecial() {
+			return meaning.length() == 0;
+		}
+	}
+	
+	private static HashMap<Character, Hanja[]> load1() {
+		HashMap<Character, Hanja[]> data = new HashMap<>();
+		InputStream is = Main.class.getResourceAsStream("/assets/openkoreanime/hanja");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		
+		char snd = 0;
+		ArrayList<Hanja> hanjaBuffer = new ArrayList<>();
+		
+		try {
+			String buf = null;
+			while((buf = br.readLine()) != null) {
+				if(buf.startsWith("#")) {
+					if(!hanjaBuffer.isEmpty()) {
+						data.put(snd, hanjaBuffer.toArray(new Hanja[hanjaBuffer.size()]));
+						hanjaBuffer.clear();
+					}
+					snd = buf.charAt(1);
+				} else {
+					hanjaBuffer.add(new Hanja(buf.charAt(0), buf.substring(1)));
+				}
+			}
+			
+			if(!hanjaBuffer.isEmpty()) {
+				data.put(snd, hanjaBuffer.toArray(new Hanja[hanjaBuffer.size()]));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+	
+	private static void convert() {
+		try {
+			HashMap<Character, Hanja[]> data = load1();
+			DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File("C:\\Users\\Cyber\\Desktop\\hanja2")));
+			dos.writeShort(data.size());
+			for (Entry<Character, Hanja[]> ent : data.entrySet()) {
+				Hanja[] values = ent.getValue();
+				dos.writeChar(ent.getKey());
+				dos.writeShort(values.length);
+				for (Hanja val : values) {
+					dos.writeChar(val.hanja);
+					dos.writeUTF(val.meaning);
+				}
+			}
+			dos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static HashMap<Character, Hanja[]> load2() {
+		try {
+			HashMap<Character, Hanja[]> data = new HashMap<>();
+			DataInputStream dis = new DataInputStream(Main.class.getResourceAsStream("/assets/openkoreanime/hanja2"));
+			int len = dis.readShort();
+			for (int i = 0; i < len; i++) {
+				char key = dis.readChar();
+				Hanja[] value = new Hanja[dis.readShort()];
+				for (int j = 0; j < value.length; j++) {
+					value[j] = new Hanja(dis.readChar(), dis.readUTF());
+				}
+				data.put(key, value);
+			}
+			dis.close();
+			return data;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}*/
+	
 	public static void main(String[] args) {
+		//convert();
+		/*double time = 0;
+		for(int i=0;i<300;i++) {
+			long s = System.nanoTime();
+			load2();
+			long e = System.nanoTime();
+			time += (e - s) / 1000000.0;
+		}
+		System.out.println(time / 300 + "ms");*/
+		
+		/*s = System.nanoTime();
+		load1();
+		e = System.nanoTime();
+		System.out.println((e - s) / 1000000.0 + "ms");*/
 		new Main();
 	}
 

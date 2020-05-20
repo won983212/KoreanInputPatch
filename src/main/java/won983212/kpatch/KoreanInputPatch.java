@@ -8,11 +8,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import won983212.font.ZWSPFixedFontRenderer;
+import won983212.kpatch.input.HanjaInput;
 
 @Mod(modid = KoreanInputPatch.MODID, name = KoreanInputPatch.NAME, version = KoreanInputPatch.VERSION)
 public class KoreanInputPatch {
-	public static final String MODID = "koreaninputpatch";
-	public static final String NAME = "KoreanInputPatch";
+	public static final String MODID = "openkoreanime";
+	public static final String NAME = "Open Minecraft Korean IME";
 	public static final String VERSION = "0.1";
 
 	@Mod.Instance(KoreanInputPatch.MODID)
@@ -23,6 +24,7 @@ public class KoreanInputPatch {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		Configs.load();
+		Hanja.loadHanjas();
 	}
 
 	@EventHandler

@@ -1,7 +1,7 @@
 [
 {
-  "modid": "koreaninputmod",
-  "name": "Korean Input Mod",
+  "modid": "openkoreanime",
+  "name": "Open Minecraft Korean IME",
   "description": "Korean IME in minecraft",
   "version": "${version}",
   "mcversion": "${mcversion}",
