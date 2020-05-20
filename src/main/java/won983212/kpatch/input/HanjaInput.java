@@ -30,11 +30,15 @@ public class HanjaInput extends InputProcessor {
 	}
 	
 	public void nextPage() {
-		if(page < getMaxPage()) page++;
+		if(page < getMaxPage()) {
+			indicator.animatePage(true, page++);
+		}
 	}
 	
 	public void prevPage() {
-		if(page > 1) page--;
+		if(page > 1) {
+			indicator.animatePage(false, page--);
+		}
 	}
 	
 	private int getMaxPage() {

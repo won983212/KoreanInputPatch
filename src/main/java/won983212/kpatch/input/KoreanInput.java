@@ -127,6 +127,11 @@ public class KoreanInput extends InputProcessor {
 		}
 		return false;
 	}
+	
+	@Override
+	public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
+		cancelAssemble();
+	}
 
 	private int findArray(String[] arr, String value) {
 		for (int i = 0; i < arr.length; i++) {
