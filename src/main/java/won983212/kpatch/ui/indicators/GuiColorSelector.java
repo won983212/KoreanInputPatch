@@ -26,11 +26,7 @@ public class GuiColorSelector extends GuiPopup {
 	public static final int WIDTH = columns * (colorPanelSize + gap) - gap + margin * 2;
 	public static final int HEIGHT = rows * (colorPanelSize + gap) - gap + margin * 2;
 	
-	public void select(char code) {
-		setVisible(false);
-	}
-	
-	protected void renderPopup(int x, int y) {
+	protected void renderPopup(int x, int y, Object[] args) {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			FontRenderer fr = UIUtils.getDefaultASCIIRenderer();
 			

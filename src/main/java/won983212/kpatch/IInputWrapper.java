@@ -12,4 +12,6 @@ public interface IInputWrapper {
 	public void setAnchorCursor(int cursor);
 
 	public void setMovingCursor(int cursor);
+	
+	public void cancelAllInputContext();
 }

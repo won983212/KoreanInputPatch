@@ -31,7 +31,7 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	private void resetInput() {
 		if (this.bookIsUnsigned) {
 			selection.setCursor(getText().length());
-			krIn.cancelAssemble();
+			cancelAllInputContext();
 		}
 	}
 	
@@ -177,5 +177,10 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	@Override
 	public void setMovingCursor(int cursor) {
 		selection.setMovingCursor(cursor);
+	}
+
+	@Override
+	public void cancelAllInputContext() {
+		krIn.cancelAssemble();		
 	}
 }

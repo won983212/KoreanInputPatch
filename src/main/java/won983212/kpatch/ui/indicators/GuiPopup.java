@@ -15,11 +15,11 @@ public abstract class GuiPopup {
 		this.show = visible;
 	}
 	
-	public void draw(int x, int y) {
+	public void draw(int x, int y, Object... args) {
 		if(show) {
-			renderPopup(x, y);
+			renderPopup(x, y, args);
 		}
 	}
 	
-	protected abstract void renderPopup(int x, int y);
+	protected abstract void renderPopup(int x, int y, Object[] args);
 }

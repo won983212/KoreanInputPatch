@@ -28,7 +28,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 			super.keyTyped(typedChar, keyCode);
 			if (keyCode != 1) {
 				selection.setCursor(tileSign.signText[editLine].getUnformattedText().length());
-				krIn.cancelAssemble();
+				cancelAllInputContext();
 			}
 		} else {
 			textBuffer = tileSign.signText[editLine].getUnformattedText();
@@ -72,7 +72,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		int width = this.fontRenderer.getStringWidth(text);
 		if (width > 90) {
 			textBuffer = this.fontRenderer.trimStringToWidth(text, 90);
-			krIn.cancelAssemble();
+			cancelAllInputContext();
 		} else {
 			textBuffer = text;
 		}
@@ -101,5 +101,10 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	@Override
 	public void setMovingCursor(int cursor) {
 		selection.setMovingCursor(cursor);
+	}
+
+	@Override
+	public void cancelAllInputContext() {
+		krIn.cancelAssemble();
 	}
 }

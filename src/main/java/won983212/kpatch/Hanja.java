@@ -10,6 +10,7 @@ import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
+import scala.actors.threadpool.Arrays;
 
 public class Hanja {
 	private static final HashMap<Character, Hanja[]> HANJA_DATA = new HashMap<>();
@@ -35,11 +36,12 @@ public class Hanja {
 	}
 	
 	public static void loadHanjas() {
+		long start = System.nanoTime();
 		try {
 			ResourceLocation location = new ResourceLocation(KoreanInputPatch.MODID, "hanja");
 			IResource res = Minecraft.getMinecraft().getResourceManager().getResource(location);
 			InputStream is = res.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
 
 			char snd = 0;
 			ArrayList<Hanja> hanjaBuffer = new ArrayList<>();
@@ -63,5 +65,7 @@ public class Hanja {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		long end = System.nanoTime();
+		System.out.println("Hanja Loaded! (" + (end - start) / 1000000.0 + "ms)");
 	}
 }

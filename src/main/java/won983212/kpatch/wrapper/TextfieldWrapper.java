@@ -105,4 +105,9 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 			f.setAccessible(true);
 		}
 	}
+
+	@Override
+	public void cancelAllInputContext() {
+		krIn.cancelAssemble();
+	}
 }

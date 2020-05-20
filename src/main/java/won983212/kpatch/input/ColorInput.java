@@ -24,10 +24,9 @@ public class ColorInput extends InputProcessor {
 		} else if (indicator.isShow()) {
 			if ("0123456789abcdeflmnokr".indexOf(c) != -1) {
 				write("§" + c);
-				indicator.select(c);
-				return true;
 			}
 			indicator.setVisible(false);
+			return true;
 		}
 		return false;
 	}
