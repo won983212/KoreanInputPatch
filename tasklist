@@ -1,14 +1,13 @@
 Feature
- - Textfield, Sign, bookµî¿¡ ÇÑ±Û ÀÔ·Â ±â´É
- - ÇÑ¿µÅ°(Ctrl)·Î ÇÑ/¿µ ¸ðµå ÀüÈ¯°¡´É
- - ÅØ½ºÆ®°¡ ÃÊ°úµÉ °Í °°À¸¸é ¾Ë·ÁÁÜ
- - ÆÖ¸»°ú Ã¥ Ä¿¼­ ÆíÁý + ÆíÁýÅ° Áö¿ø
- - »ö Input ±¸Çö
+ - Textfield, Sign, bookë“±ì— í•œê¸€ ìž…ë ¥ ê¸°ëŠ¥
+ - í•œì˜í‚¤(Ctrl)ë¡œ í•œ/ì˜ ëª¨ë“œ ì „í™˜ê°€ëŠ¥
+ - í…ìŠ¤íŠ¸ê°€ ì´ˆê³¼ë  ê²ƒ ê°™ìœ¼ë©´ ì•Œë ¤ì¤Œ
+ - íŒ»ë§ê³¼ ì±… ì»¤ì„œ íŽ¸ì§‘ + íŽ¸ì§‘í‚¤ ì§€ì›
+ - ìƒ‰ Input êµ¬í˜„
+ - í•œìž Input êµ¬í˜„
 
 TODO
- - Ctrl+Z / Ctrl+Y / UP(caret upper) / DOWN(caret lower)Å° Ãß°¡ÇÏ±â
- - ÇÑ¿µÅ°·Î ¹Ù²Ü ¼ö ÀÖ´ÂÁö È®ÀÎÇØº¸±â
- - ÇÑÀÚ Input ±¸Çö
- - ¼³Á¤Ã¢ ¸¸µé±â(Å°¼³Á¤, ÀÚ¼Ò »èÁ¦ ¿©ºÎ, ¼¼¹ú½Ä, ÇÊÅÍ ¹× Ã¤ÆÃ ÀÚµ¿ º¯È¯)
- - ÆùÆ® ¼³Á¤±â´É
- - ½ÃÀÛ È­¸é Ãß°¡(°£´ÜÇÑ Overview, ±âÃÊ ¼³Á¤)
+ - Ctrl+Z / Ctrl+Y í‚¤ ì¶”ê°€í•˜ê¸°
+ - í•œì˜í‚¤ë¡œ ë°”ê¿€ ìˆ˜ ìžˆëŠ”ì§€ í™•ì¸í•´ë³´ê¸°
+ - ì„¤ì •ì°½ ë§Œë“¤ê¸°(í‚¤ì„¤ì •, ìžì†Œ ì‚­ì œ ì—¬ë¶€, ì„¸ë²Œì‹, í•„í„° ë° ì±„íŒ… ìžë™ ë³€í™˜)
+ - ì‹œìž‘ í™”ë©´ ì¶”ê°€(ê°„ë‹¨í•œ Overview, ê¸°ì´ˆ ì„¤ì •)

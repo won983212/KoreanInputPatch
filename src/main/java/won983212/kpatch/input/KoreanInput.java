@@ -120,7 +120,7 @@ public class KoreanInput extends InputProcessor {
 				return false;
 			backspaceKorean();
 			return true;
-		} else if (i == Keyboard.KEY_LCONTROL) {
+		} else if (i == Configs.getInt(Configs.KEY_KOR)) {
 			isKorean = !isKorean;
 			cancelAssemble();
 			return true;

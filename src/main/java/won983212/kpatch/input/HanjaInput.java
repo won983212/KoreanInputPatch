@@ -2,6 +2,7 @@ package won983212.kpatch.input;
 
 import org.lwjgl.input.Keyboard;
 
+import won983212.kpatch.Configs;
 import won983212.kpatch.Hanja;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
@@ -31,13 +32,13 @@ public class HanjaInput extends InputProcessor {
 	
 	public void nextPage() {
 		if(page < getMaxPage()) {
-			indicator.animatePage(true, page++);
+			page++;
 		}
 	}
 	
 	public void prevPage() {
 		if(page > 1) {
-			indicator.animatePage(false, page--);
+			page--;
 		}
 	}
 	
@@ -52,7 +53,7 @@ public class HanjaInput extends InputProcessor {
 	public boolean handleKeyTyped(char c, int i) {
 		if (i == 0) {
 			return false;
-		} else if (i == Keyboard.KEY_KANJI) {
+		} else if (i == Configs.getInt(Configs.KEY_HANJA)) {
 			if(!indicator.isShow()) {
 				if(getEndCursor() - getStartCursor() > 1)
 					return true;

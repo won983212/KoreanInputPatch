@@ -13,9 +13,6 @@ public class GuiHanjaSelector extends GuiPopup {
 	private static final int gap = 3;
 	public static final int HEIGHT = 132;
 	
-	private int prevPage = 0;
-	private DecimalAnimation pageAnimation = new DecimalAnimation(1000);
-	
 	protected void renderPopup(int x, int y, Object[] args) {
 		final char key = (char) args[0];
 		final int page = (int) args[1];
@@ -52,13 +49,6 @@ public class GuiHanjaSelector extends GuiPopup {
 		final int pageX = x + width - fr.getStringWidth(pageText) - gap;
 		final int pageY = y - fr.FONT_HEIGHT + titleHeight - gap / 2;
 		fr.drawStringWithShadow(pageText, pageX, pageY, 0xffffffff);
-		
-		double pageAni = pageAnimation.update();
-		if(pageAnimation.isRunning()) {
-			renderPage(fr, x, y, prevPage, hanjas);
-			UIUtils.drawArea(x, y, width * pageAni, HEIGHT, Theme.BACKGROUND);
-		}
-		
 		renderPage(fr, x, y, page, hanjas);
 	}
 	
@@ -74,10 +64,5 @@ public class GuiHanjaSelector extends GuiPopup {
 			fr.drawString(String.valueOf(hanjas[idx].hanja), x + 9 + gap * 2, py, 0xff000000);
 			fr.drawString(hanjas[idx].meaning, x + 23 + gap * 2, py, 0xff000000);
 		}
-	}
-
-	public void animatePage(boolean next, int prevPage) {
-		this.prevPage = prevPage;
-		pageAnimation.play();
 	}
 }

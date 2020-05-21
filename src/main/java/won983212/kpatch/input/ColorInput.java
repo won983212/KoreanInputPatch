@@ -2,6 +2,7 @@ package won983212.kpatch.input;
 
 import org.lwjgl.input.Keyboard;
 
+import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
 import won983212.kpatch.ui.Point2i;
@@ -18,7 +19,7 @@ public class ColorInput extends InputProcessor {
 	public boolean handleKeyTyped(char c, int i) {
 		if (i == 0) {
 			return false;
-		} else if (i == Keyboard.KEY_INSERT) {
+		} else if (i == Configs.getInt(Configs.KEY_COLOR)) {
 			indicator.setVisible(!indicator.isShow());
 			return true;
 		} else if (indicator.isShow()) {

@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.Minecraft;
 
 public class Configs {
@@ -20,14 +22,26 @@ public class Configs {
 	
 	public static final String IME_INDICATOR_VISIBLE_MODE = "imeIndicatorVisible";
 	public static final String IME_INDICATOR_ANIMATE = "imeIndicatorAnimate";
+	public static final String KEY_KOR = "keyKor";
+	public static final String KEY_HANJA = "keyHanja";
+	public static final String KEY_COLOR = "keyColor";
 	
 	static {
 		// IME Indicator를 표시합니다
-		// 0: 끄기, 1: 채팅창에서만 표시, 2: 모든 입력 필드에서 표시
+		// 0: 끄기, 1: 채팅창에서만 표시, 2: 모든 입력 필드(택스트 필드, 책, 팻말)에서 표시
 		defaultValues.put(IME_INDICATOR_VISIBLE_MODE, "2");
 		
 		// IME Indicator에서 에니메이션 효과를 켭니다.
 		defaultValues.put(IME_INDICATOR_ANIMATE, "true");
+		
+		// 한영 변환키를 설정합니다. (기본 LControl)
+		defaultValues.put(KEY_KOR, String.valueOf(Keyboard.KEY_LCONTROL));
+		
+		// 한자 입력기 키를 설정합니다. (기본 한자키)
+		defaultValues.put(KEY_HANJA, String.valueOf(Keyboard.KEY_KANJI));
+		
+		// 색 입력기 키를 설정합니다. (기본 Insert키)
+		defaultValues.put(KEY_COLOR, String.valueOf(Keyboard.KEY_INSERT));
 		
 		// 설정파일 버전정보. 버전이 legacy하면 업그레이드한다.
 		defaultValues.put("version", KoreanInputPatch.VERSION);
