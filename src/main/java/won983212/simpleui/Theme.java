@@ -15,6 +15,7 @@ public class Theme {
 	
 	public static final int WARN = 0xfffb8c00;
 	public static final int DANGER = 0xffe53935;
+	public static final int SUCCESS = 0xff4caf50;
 	public static final int BACKGROUND = WHITE;
 	public static final int BACKGROUND_SHADOW = DARK_GRAY;
 	

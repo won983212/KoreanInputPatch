@@ -22,6 +22,7 @@ public class Configs {
 	
 	public static final String IME_INDICATOR_VISIBLE_MODE = "imeIndicatorVisible";
 	public static final String IME_INDICATOR_ANIMATE = "imeIndicatorAnimate";
+	public static final String UI_ANIMATE = "uiAnimate";
 	public static final String KEY_KOR = "keyKor";
 	public static final String KEY_HANJA = "keyHanja";
 	public static final String KEY_COLOR = "keyColor";
@@ -33,6 +34,9 @@ public class Configs {
 		
 		// IME Indicator에서 에니메이션 효과를 켭니다.
 		defaultValues.put(IME_INDICATOR_ANIMATE, "true");
+		
+		// SimpleUI에서 에니메이션 효과를 켭니다.
+		defaultValues.put(UI_ANIMATE, "true");
 		
 		// 한영 변환키를 설정합니다. (기본 LControl)
 		defaultValues.put(KEY_KOR, String.valueOf(Keyboard.KEY_LCONTROL));

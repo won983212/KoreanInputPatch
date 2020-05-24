@@ -2,15 +2,21 @@ package won983212.simpleui.components;
 
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UITools;
+import won983212.simpleui.UITools.UIContext;
 
 public abstract class UIComponent<T> {
-	protected int x;
-	protected int y;
-	protected int width;
-	protected int height;
+	protected final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+	protected int x = 0;
+	protected int y = 0;
+	protected int width = 0;
+	protected int height = 0;
 	protected int backgroundColor = Theme.PRIMARY;
 	protected int foregroundColor = Theme.WHITE;
+	private UIContext ctx = new UIContext();
 	
 	public boolean isIn(int px, int py) {
 		return px >= x && px <= x + width && py >= y && py <= y + height;
@@ -38,6 +44,25 @@ public abstract class UIComponent<T> {
 		return (T) this;
 	}
 	
+	public T setShadow(int shadow) {
+		ctx.useShadow(shadow);
+		return (T) this;
+	}
+	
+	public T setTextCenter(boolean horizontal, boolean vertical) {
+		ctx.useTextCenter(horizontal, vertical);
+		return (T) this;
+	}
+	
+	public T setTextCenterArea(int width, int height) {
+		ctx.useTextCenterArea(width, height);
+		return (T) this;
+	}
+	
+	protected void useContext() {
+		UITools.useCustomContext(ctx);
+	}
+	
 	public void onKeyTyped(char typedChar, int keyCode) {
 	}
 
@@ -45,8 +70,7 @@ public abstract class UIComponent<T> {
 		return false;
 	}
 
-	public boolean onMouseReleased(int mouseX, int mouseY, int state) {
-		return false;
+	public void onMouseReleased(int mouseX, int mouseY, int state) {
 	}
 
 	public void onMouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
