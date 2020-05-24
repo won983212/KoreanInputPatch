@@ -4,7 +4,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.ui.Theme;
-import won983212.kpatch.ui.UIUtils;
+import won983212.kpatch.ui.SimpleUI;
 
 public class GuiColorSelector extends GuiPopup {
 	private static final String code = "0123456789abcdefklmnor";
@@ -19,18 +19,18 @@ public class GuiColorSelector extends GuiPopup {
 	private static final int columns = 6;
 	private static final int rows = 4;
 	private static final int gap = 3;
-	private static final int borderColor = 0xff555555;
+	private static final int borderColor = Theme.DARK_GRAY;
 	
 	public static final int WIDTH = columns * (colorPanelSize + gap) - gap + margin * 2;
 	public static final int HEIGHT = rows * (colorPanelSize + gap) - gap + margin * 2;
 	
 	protected void renderPopup(int x, int y, Object[] args) {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
-			FontRenderer fr = UIUtils.getDefaultASCIIRenderer();
+			FontRenderer fr = SimpleUI.getDefaultASCIIRenderer();
 			
 			// background
-			UIUtils.useShadow(Theme.BACKGROUND_SHADOW);
-			UIUtils.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND);
+			SimpleUI.useShadow(Theme.BACKGROUND_SHADOW);
+			SimpleUI.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND);
 			
 			int k = 0;
 			for (int j = 0; j < rows; j++) {
@@ -42,21 +42,23 @@ public class GuiColorSelector extends GuiPopup {
 					char c = code.charAt(k);
 					
 					// border
-					UIUtils.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor);
+					SimpleUI.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor);
 					
 					// color panel
-					UIUtils.drawRectDouble(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
+					SimpleUI.drawRect(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
 					
 					if(k > 15) {
-						UIUtils.drawAreaCenteredText(fr, "§" + c + "A", px, py + 1, colorPanelSize, colorPanelSize, 0xff000000);
+						SimpleUI.useTextArea(colorPanelSize, colorPanelSize);
+						SimpleUI.useTextCenter(true, true);
+						SimpleUI.drawText(fr, "§" + c + "A", px, py + 1, Theme.BLACK);
 					}
 					
 					// border label background
-					UIUtils.drawRectDouble(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor);
+					SimpleUI.drawRect(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor);
 					
 					// border label
 					GlStateManager.scale(0.5, 0.5, 0.5);
-					fr.drawString(String.valueOf(c), (px + colorPanelSize) * 2 - 7, (py + colorPanelSize) * 2 - 9, 0xffffffff);
+					fr.drawString(String.valueOf(c), (px + colorPanelSize) * 2 - 7, (py + colorPanelSize) * 2 - 9, Theme.WHITE);
 					GlStateManager.scale(2, 2, 2);
 					
 					k++;

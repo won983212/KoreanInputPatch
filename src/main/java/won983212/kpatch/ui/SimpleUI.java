@@ -7,19 +7,38 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.font.ZWSPFixedFontRenderer;
 
-public class UIUtils {
+public class SimpleUI {
+	public static final int TEXT_CENTER_HORIZONTAL = 1;
+	public static final int TEXT_CENTER_VERTICAL = 2;
+	
 	private static FontRenderer ascii_font_renderer = null; 
 	private static int shadowColor = -1;
+	private static long areaInfo = 0;
+	private static int textFlag = 0;
 	
 	// ================================= Core Utils =================================
 	
 	public static void useShadow(int shadow) {
-		shadowColor = shadow;
+		if(shadow == -1) {
+			shadowColor = (shadow & 16579836) >> 2 | shadow & -16777216;
+		} else {
+			shadowColor = shadow;
+		}
+	}
+	
+	public static void useTextArea(int width, int height) {
+		areaInfo = ((long) width << 32) + height;
+	}
+	
+	public static void useTextCenter(boolean horizontal, boolean vertical) {
+		int h = horizontal ? TEXT_CENTER_HORIZONTAL : 0;
+		int v = vertical ? TEXT_CENTER_VERTICAL : 0;
+		textFlag |= (h | v);
 	}
 	
 	// ================================= Drawing Utils =================================
 	
-	public static void drawRectDouble(double left, double top, double right, double bottom, int color) {
+	public static void drawRect(double left, double top, double right, double bottom, int color) {
 		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
 		int factor = sr.getScaleFactor();
 		double revFactor = 1.0 / factor;
@@ -34,7 +53,7 @@ public class UIUtils {
 	}
 	
 	public static void drawArea(double x, double y, double width, double height, int color) {
-		drawRectDouble(x, y, x + width, y + height, color);
+		drawRect(x, y, x + width, y + height, color);
 	}
 	
 	// ================================= Text Utils =================================
@@ -51,18 +70,36 @@ public class UIUtils {
 			fr.drawString(text, x + 0.5f, y + 0.5f, shadowColor, false);
 			shadowColor = -1;
 		}
+		
+		int areaWidth = 0;
+		int areaHeight = 0;
+		
+		if(areaInfo > 0) {
+			areaWidth = (int) ((areaInfo >> 32) & 0x7fffffff);
+			areaHeight = (int) (areaInfo & 0x7fffffff);
+			areaInfo = 0;
+		}
+		
+		if(textFlag > 0) {
+			if((textFlag & TEXT_CENTER_HORIZONTAL) > 0) {
+				if(areaWidth > 0) {
+					x = x + (areaWidth - fr.getStringWidth(text)) / 2;
+				} else {
+					x = x + fr.getStringWidth(text) / 2;
+				}
+			}
+			
+			if((textFlag & TEXT_CENTER_VERTICAL) > 0) {
+				if(areaHeight > 0) {
+					y = y + (areaHeight - fr.FONT_HEIGHT) / 2;
+				} else {
+					y = y + fr.FONT_HEIGHT / 2;
+				}
+			}
+			
+			textFlag = 0;
+		}
+		
 		fr.drawString(text, x, y, color, false);
-	}
-	
-	public static void drawAreaCenteredText(FontRenderer fr, String text, float x, float y, int width, int height, int color) {
-		x = x + (width - fr.getStringWidth(text)) / 2;
-		y = y + (height - fr.FONT_HEIGHT) / 2;
-		drawText(fr, text, x, y, color);
-	}
-	
-	public static void drawCenteredText(FontRenderer fr, String text, float x, float y, int color) {
-		x = x - fr.getStringWidth(text) / 2;
-		y = y - fr.FONT_HEIGHT / 2;
-		drawText(fr, text, x, y, color);
 	}
 }
