@@ -1,12 +1,12 @@
-package won983212.kpatch.ui.indicators;
+package won983212.simpleui.indicators;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.Hanja;
 import won983212.kpatch.KoreanInputPatch;
-import won983212.kpatch.ui.Theme;
-import won983212.kpatch.ui.SimpleUI;
+import won983212.simpleui.UITools;
+import won983212.simpleui.Theme;
 
 public class GuiHanjaSelector extends GuiPopup {
 	private static final int titleHeight = 20;
@@ -34,11 +34,11 @@ public class GuiHanjaSelector extends GuiPopup {
 		final int _width = width;
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			// background
-			SimpleUI.useShadow(Theme.BACKGROUND_SHADOW);
-			SimpleUI.drawArea(x, y, _width, HEIGHT, Theme.BACKGROUND);
+			UITools.useShadow(Theme.BACKGROUND_SHADOW);
+			UITools.drawArea(x, y, _width, HEIGHT, Theme.BACKGROUND);
 			
 			// title background
-			SimpleUI.drawArea(x, y, _width, titleHeight, Theme.PRIMARY);
+			UITools.drawArea(x, y, _width, titleHeight, Theme.PRIMARY);
 			
 			// title
 			GlStateManager.scale(2, 2, 2);
@@ -62,8 +62,8 @@ public class GuiHanjaSelector extends GuiPopup {
 				break;
 			
 			int py = y + titleHeight + gap + i * (fr.FONT_HEIGHT + gap) + 1;
-			SimpleUI.useShadow(Theme.GRAY);
-			SimpleUI.drawText(fr, String.valueOf(i + 1), x + gap, py, Theme.BLACK);
+			UITools.useShadow(Theme.GRAY);
+			UITools.drawText(fr, String.valueOf(i + 1), x + gap, py, Theme.BLACK);
 			fr.drawString(String.valueOf(hanjas[idx].hanja), x + 9 + gap * 2, py, Theme.BLACK);
 			fr.drawString(hanjas[idx].meaning, x + 23 + gap * 2, py, Theme.BLACK);
 		}

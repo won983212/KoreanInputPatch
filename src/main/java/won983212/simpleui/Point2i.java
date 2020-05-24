@@ -1,4 +1,4 @@
-package won983212.kpatch.ui;
+package won983212.simpleui;
 
 public class Point2i {
 	public int x;

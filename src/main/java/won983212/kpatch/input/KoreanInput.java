@@ -6,8 +6,8 @@ import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.kpatch.ui.Point2i;
-import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
+import won983212.simpleui.Point2i;
+import won983212.simpleui.indicators.GuiKoreanIndicator;
 
 public class KoreanInput extends InputProcessor {
 	private static final String KeyMap = "`1234567890-=\\qwertyuiop[]asdfghjkl;'zxcvbnm/~!@#$%^&*()_+|QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?";

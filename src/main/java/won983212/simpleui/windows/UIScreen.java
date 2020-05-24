@@ -1,10 +1,10 @@
-package won983212.kpatch.ui.windows;
+package won983212.simpleui.windows;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.client.gui.GuiScreen;
-import won983212.kpatch.ui.components.UIComponent;
+import won983212.simpleui.components.UIComponent;
 
 public class UIScreen extends GuiScreen {
 	private ArrayList<UIComponent> components = new ArrayList<>();

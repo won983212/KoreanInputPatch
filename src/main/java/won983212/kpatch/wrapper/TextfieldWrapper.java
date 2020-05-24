@@ -10,9 +10,9 @@ import won983212.kpatch.InputProcessor;
 import won983212.kpatch.input.ColorInput;
 import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
-import won983212.kpatch.ui.Point2i;
-import won983212.kpatch.ui.indicators.GuiColorSelector;
-import won983212.kpatch.ui.indicators.GuiHanjaSelector;
+import won983212.simpleui.Point2i;
+import won983212.simpleui.indicators.GuiColorSelector;
+import won983212.simpleui.indicators.GuiHanjaSelector;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private static final Field[] FIELDS = GuiTextField.class.getDeclaredFields();

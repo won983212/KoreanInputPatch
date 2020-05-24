@@ -1,7 +1,7 @@
-package won983212.kpatch.ui.windows;
+package won983212.simpleui.windows;
 
 import net.minecraft.client.gui.GuiMainMenu;
-import won983212.kpatch.ui.components.UIButton;
+import won983212.simpleui.components.UIButton;
 
 public class UIScreenSettings extends UIScreen {
 	private GuiMainMenu parent;

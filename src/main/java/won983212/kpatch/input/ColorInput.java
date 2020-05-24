@@ -3,8 +3,8 @@ package won983212.kpatch.input;
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.kpatch.ui.Point2i;
-import won983212.kpatch.ui.indicators.GuiColorSelector;
+import won983212.simpleui.Point2i;
+import won983212.simpleui.indicators.GuiColorSelector;
 
 public class ColorInput extends InputProcessor {
 	private GuiColorSelector indicator = new GuiColorSelector();

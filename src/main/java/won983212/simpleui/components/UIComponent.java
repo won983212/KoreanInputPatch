@@ -1,12 +1,16 @@
-package won983212.kpatch.ui.components;
+package won983212.simpleui.components;
 
 import java.io.IOException;
+
+import won983212.simpleui.Theme;
 
 public abstract class UIComponent<T> {
 	protected int x;
 	protected int y;
 	protected int width;
 	protected int height;
+	protected int backgroundColor = Theme.PRIMARY;
+	protected int foregroundColor = Theme.WHITE;
 	
 	public boolean isIn(int px, int py) {
 		return px >= x && px <= x + width && py >= y && py <= y + height;
@@ -21,6 +25,16 @@ public abstract class UIComponent<T> {
 	public T setSize(int width, int height) {
 		this.width = width;
 		this.height = height;
+		return (T) this;
+	}
+	
+	public T setBackgroundColor(int color) {
+		this.backgroundColor = color;
+		return (T) this;
+	}
+	
+	public T setForegroundColor(int color) {
+		this.foregroundColor = color;
 		return (T) this;
 	}
 	

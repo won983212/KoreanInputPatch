@@ -1,4 +1,4 @@
-package won983212.kpatch.ui;
+package won983212.simpleui;
 
 public class Theme {
 	public static final int WHITE = 0xffffffff;

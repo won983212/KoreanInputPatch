@@ -1,4 +1,4 @@
-package won983212.kpatch.ui.animation;
+package won983212.simpleui.animation;
 
 public class ColorAnimation extends AnimationBase<Integer> {
 	private int start, end;

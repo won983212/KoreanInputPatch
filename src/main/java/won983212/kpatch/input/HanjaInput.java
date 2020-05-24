@@ -6,8 +6,8 @@ import won983212.kpatch.Configs;
 import won983212.kpatch.Hanja;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.kpatch.ui.Point2i;
-import won983212.kpatch.ui.indicators.GuiHanjaSelector;
+import won983212.simpleui.Point2i;
+import won983212.simpleui.indicators.GuiHanjaSelector;
 
 public class HanjaInput extends InputProcessor {
 	private GuiHanjaSelector indicator = new GuiHanjaSelector();

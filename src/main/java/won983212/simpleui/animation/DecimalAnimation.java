@@ -1,4 +1,4 @@
-package won983212.kpatch.ui.animation;
+package won983212.simpleui.animation;
 
 public class DecimalAnimation extends AnimationBase<Double> {
 	public DecimalAnimation(int duration) {

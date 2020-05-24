@@ -1,4 +1,4 @@
-package won983212.kpatch.ui.indicators;
+package won983212.simpleui.indicators;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.Configs;
 import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.input.KoreanInput;
-import won983212.kpatch.ui.Theme;
-import won983212.kpatch.ui.SimpleUI;
-import won983212.kpatch.ui.animation.AnimationBase;
-import won983212.kpatch.ui.animation.ColorAnimation;
-import won983212.kpatch.ui.animation.DecimalAnimation;
+import won983212.simpleui.UITools;
+import won983212.simpleui.Theme;
+import won983212.simpleui.animation.AnimationBase;
+import won983212.simpleui.animation.ColorAnimation;
+import won983212.simpleui.animation.DecimalAnimation;
 
 public class GuiKoreanIndicator {
 	public static final int HEIGHT = 11;
@@ -78,17 +78,17 @@ public class GuiKoreanIndicator {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			// kor indicator bg
 			if(modeBgColorAnimation.isRunning()) {
-				SimpleUI.drawArea(x, y, textWidth + 8, HEIGHT, modeBgColorAnimation.update());
+				UITools.drawArea(x, y, textWidth + 8, HEIGHT, modeBgColorAnimation.update());
 			} else {
-				SimpleUI.drawArea(x, y, textWidth + 8, HEIGHT, Theme.BACKGROUND);
+				UITools.drawArea(x, y, textWidth + 8, HEIGHT, Theme.BACKGROUND);
 			}
 	
 			// kor indicator badge
 			if (modeChangeAnimation.isRunning()) {
-				SimpleUI.drawArea(x, y, 2, HEIGHT, !kr ? Theme.PRIMARY : Theme.SECONDARY);
-				SimpleUI.drawArea(x, y, 2, (int) (HEIGHT * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UITools.drawArea(x, y, 2, HEIGHT, !kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UITools.drawArea(x, y, 2, (int) (HEIGHT * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
 			} else {
-				SimpleUI.drawArea(x, y, 2, HEIGHT, kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UITools.drawArea(x, y, 2, HEIGHT, kr ? Theme.PRIMARY : Theme.SECONDARY);
 			}
 	
 			if (alertText != null) {
@@ -97,7 +97,7 @@ public class GuiKoreanIndicator {
 	
 				// alert bg
 				double p = useAnimation ? alertWidthAnimation.update() : 1;
-				SimpleUI.drawRect(alertX, y, alertX + alertWidth * p, y + HEIGHT, alertBg);
+				UITools.drawRect(alertX, y, alertX + alertWidth * p, y + HEIGHT, alertBg);
 	
 				// alert text
 				if (p > 0.9) {
@@ -120,8 +120,8 @@ public class GuiKoreanIndicator {
 	
 			// kor indicator text
 			int textX = x + 2 + (textWidth + 6 - fr.getStringWidth(idiText)) / 2;
-			SimpleUI.useShadow(Theme.LIGHT_GRAY);
-			SimpleUI.drawText(fr, idiText, textX, y + 1, Theme.BLACK);
+			UITools.useShadow(Theme.LIGHT_GRAY);
+			UITools.drawText(fr, idiText, textX, y + 1, Theme.BLACK);
 		});
 	}
 }

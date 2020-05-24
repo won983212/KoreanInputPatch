@@ -1,4 +1,4 @@
-package won983212.kpatch.ui.indicators;
+package won983212.simpleui.indicators;
 
 public abstract class GuiPopup {
 	private boolean show = false;

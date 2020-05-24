@@ -1,4 +1,4 @@
-package won983212.kpatch.ui;
+package won983212.simpleui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -7,7 +7,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.font.ZWSPFixedFontRenderer;
 
-public class SimpleUI {
+public class UITools {
 	public static final int TEXT_CENTER_HORIZONTAL = 1;
 	public static final int TEXT_CENTER_VERTICAL = 2;
 	

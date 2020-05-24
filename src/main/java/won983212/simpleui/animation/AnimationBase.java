@@ -1,4 +1,4 @@
-package won983212.kpatch.ui.animation;
+package won983212.simpleui.animation;
 
 public abstract class AnimationBase<T> {
 	// animation compile types

@@ -1,10 +1,10 @@
-package won983212.kpatch.ui.indicators;
+package won983212.simpleui.indicators;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.KoreanInputPatch;
-import won983212.kpatch.ui.Theme;
-import won983212.kpatch.ui.SimpleUI;
+import won983212.simpleui.UITools;
+import won983212.simpleui.Theme;
 
 public class GuiColorSelector extends GuiPopup {
 	private static final String code = "0123456789abcdefklmnor";
@@ -26,11 +26,11 @@ public class GuiColorSelector extends GuiPopup {
 	
 	protected void renderPopup(int x, int y, Object[] args) {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
-			FontRenderer fr = SimpleUI.getDefaultASCIIRenderer();
+			FontRenderer fr = UITools.getDefaultASCIIRenderer();
 			
 			// background
-			SimpleUI.useShadow(Theme.BACKGROUND_SHADOW);
-			SimpleUI.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND);
+			UITools.useShadow(Theme.BACKGROUND_SHADOW);
+			UITools.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND);
 			
 			int k = 0;
 			for (int j = 0; j < rows; j++) {
@@ -42,19 +42,19 @@ public class GuiColorSelector extends GuiPopup {
 					char c = code.charAt(k);
 					
 					// border
-					SimpleUI.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor);
+					UITools.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor);
 					
 					// color panel
-					SimpleUI.drawRect(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
+					UITools.drawRect(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
 					
 					if(k > 15) {
-						SimpleUI.useTextCenterArea(colorPanelSize, colorPanelSize);
-						SimpleUI.useTextCenter(true, true);
-						SimpleUI.drawText(fr, "§" + c + "A", px, py + 1, Theme.BLACK);
+						UITools.useTextCenterArea(colorPanelSize, colorPanelSize);
+						UITools.useTextCenter(true, true);
+						UITools.drawText(fr, "§" + c + "A", px, py + 1, Theme.BLACK);
 					}
 					
 					// border label background
-					SimpleUI.drawRect(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor);
+					UITools.drawRect(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor);
 					
 					// border label
 					GlStateManager.scale(0.5, 0.5, 0.5);
