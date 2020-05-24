@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import won983212.font.ZWSPFixedFontRenderer;
-import won983212.kpatch.input.HanjaInput;
 
 @Mod(modid = KoreanInputPatch.MODID, name = KoreanInputPatch.NAME, version = KoreanInputPatch.VERSION)
 public class KoreanInputPatch {

@@ -1,8 +1,6 @@
 package won983212.kpatch.ui.indicators;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.ui.Theme;

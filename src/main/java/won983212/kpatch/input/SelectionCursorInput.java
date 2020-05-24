@@ -1,10 +1,7 @@
 package won983212.kpatch.input;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
@@ -14,8 +11,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.util.ResourceLocation;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
 

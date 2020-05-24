@@ -16,7 +16,6 @@ import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
 import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
-import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 
 public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation("textures/gui/book.png");

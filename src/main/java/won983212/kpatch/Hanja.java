@@ -10,7 +10,6 @@ import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
-import scala.actors.threadpool.Arrays;
 
 public class Hanja {
 	private static final HashMap<Character, Hanja[]> HANJA_DATA = new HashMap<>();

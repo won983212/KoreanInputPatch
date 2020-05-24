@@ -1,9 +1,5 @@
 package won983212.kpatch.ui.indicators;
 
-import won983212.kpatch.KoreanInputPatch;
-import won983212.kpatch.ui.Theme;
-import won983212.kpatch.ui.UIUtils;
-
 public abstract class GuiPopup {
 	private boolean show = false;
 	

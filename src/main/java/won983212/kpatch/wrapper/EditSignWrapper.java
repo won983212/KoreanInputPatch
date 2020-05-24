@@ -10,7 +10,6 @@ import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
 import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
-import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 
 public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	private SelectionCursorInput selection = new SelectionCursorInput(this);

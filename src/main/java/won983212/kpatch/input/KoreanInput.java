@@ -2,15 +2,10 @@ package won983212.kpatch.input;
 
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiChat;
 import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.ui.Point2i;
 import won983212.kpatch.ui.indicators.GuiKoreanIndicator;
 

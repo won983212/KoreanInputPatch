@@ -7,7 +7,6 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.resources.I18n;
 
 public class TestScreen extends GuiScreen {
 	private GuiTextField tf, tf2;

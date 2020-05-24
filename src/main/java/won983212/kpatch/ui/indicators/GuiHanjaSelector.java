@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.Hanja;
 import won983212.kpatch.ui.Theme;
 import won983212.kpatch.ui.UIUtils;
-import won983212.kpatch.ui.animation.DecimalAnimation;
 
 public class GuiHanjaSelector extends GuiPopup {
 	private static final int titleHeight = 20;
