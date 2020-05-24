@@ -26,7 +26,7 @@ public class SimpleUI {
 		}
 	}
 	
-	public static void useTextArea(int width, int height) {
+	public static void useTextCenterArea(int width, int height) {
 		areaInfo = ((long) width << 32) + height;
 	}
 	
@@ -66,11 +66,6 @@ public class SimpleUI {
 	}
 	
 	public static void drawText(FontRenderer fr, String text, float x, float y, int color) {
-		if(shadowColor != -1) {
-			fr.drawString(text, x + 0.5f, y + 0.5f, shadowColor, false);
-			shadowColor = -1;
-		}
-		
 		int areaWidth = 0;
 		int areaHeight = 0;
 		
@@ -98,6 +93,11 @@ public class SimpleUI {
 			}
 			
 			textFlag = 0;
+		}
+		
+		if(shadowColor != -1) {
+			fr.drawString(text, x + 0.5f, y + 0.5f, shadowColor, false);
+			shadowColor = -1;
 		}
 		
 		fr.drawString(text, x, y, color, false);

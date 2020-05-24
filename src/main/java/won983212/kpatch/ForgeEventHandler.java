@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import won983212.kpatch.ui.windows.UIScreen;
+import won983212.kpatch.ui.windows.UIScreenSettings;
 import won983212.kpatch.wrapper.EditBookWrapper;
 import won983212.kpatch.wrapper.EditSignWrapper;
 import won983212.kpatch.wrapper.TextfieldWrapper;
@@ -25,6 +27,13 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onInitGui(GuiScreenEvent.InitGuiEvent.Post e) { // 화면상의 모든 GuiTextfield fields에 wrapper를 씌움
 		GuiScreen screen = e.getGui();
+		
+		// TODO Debug
+		if (screen instanceof GuiMainMenu) {
+			Minecraft.getMinecraft().displayGuiScreen(new UIScreenSettings((GuiMainMenu) screen));
+			return;
+		}
+		
 		Field[] fields = screen.getClass().getDeclaredFields();
 		try {
 			for (Field f : fields) {
@@ -57,12 +66,6 @@ public class ForgeEventHandler {
 			}
 			
 			e.setCanceled(cancel);
-		}
-		
-		// TODO Debug
-		if (screen instanceof GuiMainMenu) {
-			e.setCanceled(true);
-			Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
 		}
 	}
 

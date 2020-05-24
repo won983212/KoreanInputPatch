@@ -48,7 +48,7 @@ public class GuiColorSelector extends GuiPopup {
 					SimpleUI.drawRect(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
 					
 					if(k > 15) {
-						SimpleUI.useTextArea(colorPanelSize, colorPanelSize);
+						SimpleUI.useTextCenterArea(colorPanelSize, colorPanelSize);
 						SimpleUI.useTextCenter(true, true);
 						SimpleUI.drawText(fr, "§" + c + "A", px, py + 1, Theme.BLACK);
 					}
