@@ -16,10 +16,20 @@ public abstract class UIComponent<T> {
 	protected int height = 0;
 	protected int backgroundColor = Theme.PRIMARY;
 	protected int foregroundColor = Theme.WHITE;
+	protected boolean isEnabled = true;
 	private UIContext ctx = new UIContext();
 	
 	public boolean isIn(int px, int py) {
 		return px >= x && px <= x + width && py >= y && py <= y + height;
+	}
+	
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+	
+	public T setEnabled(boolean enable) {
+		this.isEnabled = enable;
+		return (T) this;
 	}
 	
 	public T setLocation(int x, int y) {
@@ -41,6 +51,11 @@ public abstract class UIComponent<T> {
 	
 	public T setForegroundColor(int color) {
 		this.foregroundColor = color;
+		return (T) this;
+	}
+	
+	public T setRadius(int radius) {
+		ctx.useRound(radius);
 		return (T) this;
 	}
 	

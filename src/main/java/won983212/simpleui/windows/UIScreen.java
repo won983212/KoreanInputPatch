@@ -25,7 +25,9 @@ public class UIScreen extends GuiScreen {
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 		for(UIComponent comp : components) {
-			comp.onKeyTyped(typedChar, keyCode);
+			if(comp.isEnabled()) {
+				comp.onKeyTyped(typedChar, keyCode);
+			}
 		}
 	}
 
@@ -33,7 +35,7 @@ public class UIScreen extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		for(UIComponent comp : components) {
-			if(comp.isIn(mouseX, mouseY)) {
+			if(comp.isEnabled() && comp.isIn(mouseX, mouseY)) {
 				if(comp.onMouseClicked(mouseX, mouseY, mouseButton)) {
 					clicked = comp;
 					break;

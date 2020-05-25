@@ -1,10 +1,13 @@
 package won983212.simpleui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import won983212.font.ZWSPFixedFontRenderer;
 
 public class UITools {
@@ -16,6 +19,10 @@ public class UITools {
 	private static boolean isAutoReset = true;
 
 	// ================================= Core =================================
+
+	public static void useRound(int radius) {
+		context.useRound(radius);
+	}
 	
 	public static void useShadow(int shadow) {
 		context.useShadow(shadow);
@@ -45,21 +52,90 @@ public class UITools {
 	
 	// ================================= Drawing Utils =================================
 	
+	private static void bindColor(int color) {
+		float f3 = (float) (color >> 24 & 255) / 255.0F;
+		float f = (float) (color >> 16 & 255) / 255.0F;
+		float f1 = (float) (color >> 8 & 255) / 255.0F;
+		float f2 = (float) (color & 255) / 255.0F;
+		GlStateManager.color(f, f1, f2, f3);
+	}
+	
+	private static void drawRectImpl(double left, double top, double right, double bottom) {
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
+		bufferbuilder.pos(left, bottom, 0.0D).endVertex();
+		bufferbuilder.pos(right, bottom, 0.0D).endVertex();
+		bufferbuilder.pos(right, top, 0.0D).endVertex();
+		bufferbuilder.pos(left, top, 0.0D).endVertex();
+		tessellator.draw();
+	}
+	
+	private static void drawArc(double x, double y, double radius, int seperatedIndex) {
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		bufferbuilder.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
+		bufferbuilder.pos(x, y, 0.0D).endVertex();
+		for (int t = 0; t <= radius * 2; t++) {
+			double theta = Math.PI / (2 * radius * 2) * t + (seperatedIndex % 4) * Math.PI / 2;
+			bufferbuilder.pos(x + radius * Math.cos(theta), y - radius * Math.sin(theta), 0.0D).endVertex();
+		}
+		tessellator.draw();
+	}
+	
+	private static void drawRoundRect(double left, double top, double right, double bottom, double rad) {
+		drawRectImpl(left + rad, top, right - rad, bottom);
+		drawRectImpl(left, top + rad, left + rad, bottom - rad);
+		drawRectImpl(left + rad, top + rad, right, bottom - rad);
+		drawArc(left + rad, top + rad, rad, 1);
+		drawArc(left + rad, bottom - rad, rad, 2);
+		drawArc(right - rad, bottom - rad, rad, 3);
+		drawArc(right - rad, top + rad, rad, 4);
+	}
+	
 	public static void drawRect(double left, double top, double right, double bottom, int color) {
-		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-		int factor = sr.getScaleFactor();
-		double revFactor = 1.0 / factor;
+		if (left > right) {
+			double i = left;
+			left = right;
+			right = i;
+		}
 
-		GlStateManager.scale(revFactor, revFactor, revFactor);
+		if (top > bottom) {
+			double j = top;
+			top = bottom;
+			bottom = j;
+		}
+		
+		GlStateManager.enableBlend();
+		GlStateManager.disableTexture2D();
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
+				GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
+				GlStateManager.DestFactor.ZERO);
+		
 		if(context.shadowColor != -1) {
-			Gui.drawRect((int) ((left + 1) * factor), (int) ((top + 1) * factor), (int) ((right + 1) * factor), (int) ((bottom + 1) * factor), context.shadowColor);
+			bindColor(context.shadowColor);
+			if(context.rectRound > 0) {
+				drawRoundRect(left + 1, top + 1, right + 1, bottom + 1, context.rectRound);
+			} else {
+				drawRectImpl(left + 1, top + 1, right + 1, bottom + 1);
+			}
 			if(isAutoReset) {
 				context.shadowColor = -1;
 			}
 		}
 		
-		Gui.drawRect((int) (left * factor), (int) (top * factor), (int) (right * factor), (int) (bottom * factor), color);
-		GlStateManager.scale(factor, factor, factor);
+		bindColor(color);
+		if(context.rectRound > 0) {
+			drawRoundRect(left, top, right, bottom, context.rectRound);
+			if(isAutoReset) {
+				context.rectRound = -1;
+			}
+		} else {
+			drawRectImpl(left, top, right, bottom);
+		}
+		
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableBlend();
 	}
 	
 	public static void drawArea(double x, double y, double width, double height, int color) {
@@ -122,9 +198,14 @@ public class UITools {
 	
 	public static class UIContext {
 		public int shadowColor = -1;
+		public int rectRound = -1;
 		public int areaWidth = 0;
 		public int areaHeight = 0;
 		public int textFlag = 0;
+		
+		public void useRound(int radius) {
+			rectRound = radius;
+		}
 		
 		public void useShadow(int shadow) {
 			if(shadow == -1) {
@@ -146,6 +227,7 @@ public class UITools {
 		}
 		
 		public void copy(UIContext ctx) {
+			this.rectRound = ctx.rectRound;
 			this.shadowColor = ctx.shadowColor;
 			this.areaWidth = ctx.areaWidth;
 			this.areaHeight = ctx.areaHeight;
