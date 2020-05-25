@@ -9,7 +9,7 @@ import won983212.simpleui.events.IStateChangedEventListener;
 //TODO Implementation
 public class UISwitch extends UIComponent<UISwitch> {
 	private boolean isActive;
-	private IStateChangedEventListener event;
+	private IStateChangedEventListener<Boolean> event;
 	private DecimalAnimation barAnimation = new DecimalAnimation(100);
 	
 	public UISwitch() {
@@ -18,7 +18,7 @@ public class UISwitch extends UIComponent<UISwitch> {
 		height = 9;
 	}
 	
-	public UISwitch setChangedEventListener(IStateChangedEventListener event) {
+	public UISwitch setChangedEventListener(IStateChangedEventListener<Boolean> event) {
 		this.event = event;
 		return this;
 	}
@@ -53,13 +53,14 @@ public class UISwitch extends UIComponent<UISwitch> {
 	@Override
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		isActive = !isActive;
+		
+		if(event != null) {
+			isActive = event.onChanged(this, isActive);
+		}
+		
 		if(Configs.getBoolean(Configs.UI_ANIMATE)) {
 			barAnimation.setReverse(!isActive);
 			barAnimation.play();
-		}
-		
-		if(event != null) {
-			event.onChanged(this, isActive);
 		}
 		
 		return true;

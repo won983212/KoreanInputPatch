@@ -5,60 +5,41 @@ import java.util.ArrayList;
 
 import net.minecraft.client.gui.GuiScreen;
 import won983212.simpleui.components.UIComponent;
+import won983212.simpleui.components.UIPanel;
 
 public class UIScreen extends GuiScreen {
-	private ArrayList<UIComponent> components = new ArrayList<>();
-	private UIComponent clicked = null;
-	
+	private UIPanel rootPanel = new UIPanel();
+
 	protected void add(UIComponent comp) {
-		components.add(comp);
+		rootPanel.add(comp);
 	}
-	
+
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		for(UIComponent comp : components) {
-			comp.draw(mouseX, mouseY, partialTicks);
-		}
+		rootPanel.draw(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
-		for(UIComponent comp : components) {
-			if(comp.isEnabled()) {
-				comp.onKeyTyped(typedChar, keyCode);
-			}
-		}
+		rootPanel.onKeyTyped(typedChar, keyCode);
 	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
-		for(UIComponent comp : components) {
-			if(comp.isEnabled() && comp.isIn(mouseX, mouseY)) {
-				if(comp.onMouseClicked(mouseX, mouseY, mouseButton)) {
-					clicked = comp;
-					break;
-				}
-			}
-		}
+		rootPanel.onMouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
 		super.mouseReleased(mouseX, mouseY, state);
-		if(clicked != null) {
-			clicked.onMouseReleased(mouseX, mouseY, state);
-			clicked = null;
-		}
+		rootPanel.onMouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override
 	protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
 		super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-		if(clicked != null) {
-			clicked.onMouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-		}
+		rootPanel.onMouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 	}
-	
 }
