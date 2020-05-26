@@ -6,7 +6,6 @@ import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.events.IStateChangedEventListener;
 
-//TODO Implementation
 public class UISwitch extends UIComponent<UISwitch> {
 	private boolean isActive;
 	private IStateChangedEventListener<Boolean> event;

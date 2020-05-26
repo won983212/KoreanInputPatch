@@ -34,23 +34,54 @@ public abstract class UIComponent<T> {
 	}
 	
 	public T setLocation(int x, int y) {
+		// check invalid parameter
 		if (x < 0)
 			x = 0;
 		if (y < 0)
 			y = 0;
+		
+		// set location and update area for painting
 		this.x = x;
 		this.y = y;
+		onRenderAreaUpdate();
+		
 		return (T) this;
 	}
 	
 	public T setSize(int width, int height) {
+		// check invalid parameter
 		if (width < 0)
 			width = 0;
 		if (height < 0)
 			height = 0;
+
+		// set location and update area for painting & centering text
 		this.width = width;
 		this.height = height;
 		ctx.useTextCenterArea(width, height);
+		onRenderAreaUpdate();
+		
+		return (T) this;
+	}
+	
+	public T setBounds(int x, int y, int width, int height) {
+		if (x < 0)
+			x = 0;
+		if (y < 0)
+			y = 0;
+		if (width < 0)
+			width = 0;
+		if (height < 0)
+			height = 0;
+		
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		
+		ctx.useTextCenterArea(width, height);
+		onRenderAreaUpdate();
+		
 		return (T) this;
 	}
 	
@@ -83,6 +114,9 @@ public abstract class UIComponent<T> {
 	
 	protected void useContext() {
 		UITools.useCustomContext(ctx);
+	}
+	
+	protected void onRenderAreaUpdate() {
 	}
 	
 	public void onKeyTyped(char typedChar, int keyCode) {

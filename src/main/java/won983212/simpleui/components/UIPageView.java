@@ -17,12 +17,17 @@ public class UIPageView extends UIComponent<UIPageView> {
 		this.currentPage = idx;
 		return this;
 	}
+	
+	@Override
+	protected void onRenderAreaUpdate() {
+		if(components != null && currentPage < components.length) {
+			components[currentPage].setBounds(x, y, width, height);
+		}
+	}
 
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		if(components != null && currentPage < components.length) {
-			components[currentPage].setLocation(x, y);
-			components[currentPage].setSize(width, height);
 			components[currentPage].draw(mouseX, mouseY, partialTicks);
 		}
 	}

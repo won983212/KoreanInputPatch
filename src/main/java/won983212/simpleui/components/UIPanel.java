@@ -10,6 +10,10 @@ public class UIPanel extends UIComponent<UIPanel> {
 	public void add(UIComponent comp) {
 		components.add(comp);
 	}
+	
+	public void clearComponents() {
+		components.clear();
+	}
 
 	public void onKeyTyped(char typedChar, int keyCode) {
 		for(UIComponent comp : components) {
