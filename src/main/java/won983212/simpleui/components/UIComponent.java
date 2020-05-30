@@ -33,7 +33,10 @@ public abstract class UIComponent<T> {
 		return (T) this;
 	}
 	
-	public T setLocation(int x, int y) {
+	private boolean setLocation_(int x, int y) {
+		if(this.x == x && this.y == y)
+			return false;
+			
 		// check invalid parameter
 		if (x < 0)
 			x = 0;
@@ -43,12 +46,19 @@ public abstract class UIComponent<T> {
 		// set location and update area for painting
 		this.x = x;
 		this.y = y;
-		onRenderAreaUpdate();
-		
+		return true;
+	}
+	
+	public T setLocation(int x, int y) {
+		if(setLocation_(x, y))
+			onChangedBounds();
 		return (T) this;
 	}
 	
-	public T setSize(int width, int height) {
+	private boolean setSize_(int width, int height) {
+		if(this.width == width && this.height == height)
+			return false;
+		
 		// check invalid parameter
 		if (width < 0)
 			width = 0;
@@ -59,29 +69,20 @@ public abstract class UIComponent<T> {
 		this.width = width;
 		this.height = height;
 		ctx.useTextCenterArea(width, height);
-		onRenderAreaUpdate();
-		
+		return true;
+	}
+	
+	public T setSize(int width, int height) {
+		if(setSize_(width, height))
+			onChangedBounds();
 		return (T) this;
 	}
 	
 	public T setBounds(int x, int y, int width, int height) {
-		if (x < 0)
-			x = 0;
-		if (y < 0)
-			y = 0;
-		if (width < 0)
-			width = 0;
-		if (height < 0)
-			height = 0;
-		
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		
-		ctx.useTextCenterArea(width, height);
-		onRenderAreaUpdate();
-		
+		boolean b1 = setLocation_(x, y);
+		boolean b2 = setSize_(width, height);
+		if(b1 || b2)
+			onChangedBounds();
 		return (T) this;
 	}
 	
@@ -116,7 +117,7 @@ public abstract class UIComponent<T> {
 		UITools.useCustomContext(ctx);
 	}
 	
-	protected void onRenderAreaUpdate() {
+	protected void onChangedBounds() {
 	}
 	
 	public void onKeyTyped(char typedChar, int keyCode) {

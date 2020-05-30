@@ -7,14 +7,16 @@ import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.events.IStateChangedEventListener;
 
 public class UISwitch extends UIComponent<UISwitch> {
+	public static final int DEFAULT_WIDTH = 24;
+	public static final int DEFAULT_HEIGHT = 9;
 	private boolean isActive;
 	private IStateChangedEventListener<Boolean> event;
 	private DecimalAnimation barAnimation = new DecimalAnimation(100);
 	
 	public UISwitch() {
 		setActive(false);
-		width = 24;
-		height = 9;
+		width = DEFAULT_WIDTH;
+		height = DEFAULT_HEIGHT;
 	}
 	
 	public UISwitch setChangedEventListener(IStateChangedEventListener<Boolean> event) {

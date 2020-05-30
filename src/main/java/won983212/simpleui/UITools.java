@@ -115,9 +115,9 @@ public class UITools {
 		if(context.shadowColor != -1) {
 			bindColor(context.shadowColor);
 			if(context.rectRound > 0) {
-				drawRoundRect(left + 1, top + 1, right + 1, bottom + 1, context.rectRound);
+				drawRoundRect(left + 0.5, top + 0.5, right + 0.5, bottom + 0.5, context.rectRound);
 			} else {
-				drawRectImpl(left + 1, top + 1, right + 1, bottom + 1);
+				drawRectImpl(left + 0.5, top + 0.5, right + 0.5, bottom + 0.5);
 			}
 			if(isAutoReset) {
 				context.shadowColor = -1;

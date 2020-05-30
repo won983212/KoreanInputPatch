@@ -1,18 +1,17 @@
 package won983212.simpleui.windows;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.client.gui.GuiMainMenu;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.components.UIButton;
 import won983212.simpleui.components.UIComponent;
-import won983212.simpleui.components.UILabel;
-import won983212.simpleui.components.UIPageView;
+import won983212.simpleui.components.UIPanel;
 import won983212.simpleui.components.UIRectangle;
 import won983212.simpleui.components.UISettingList;
 import won983212.simpleui.components.UISettingList.Property;
-import won983212.simpleui.components.UISwitch;
 import won983212.simpleui.components.UITab;
 import won983212.simpleui.events.IStateChangedEventListener;
 
@@ -22,7 +21,7 @@ public class UIScreenSettings extends UIScreen {
 	private static Property[][] pages;
 	private static String[] pageTabs;
 	private GuiMainMenu parent;
-	private UIPageView pageView;
+	private UIPanel pageView;
 	
 	static {
 		pages = new Property[4][];
@@ -58,10 +57,10 @@ public class UIScreenSettings extends UIScreen {
 		this.parent = parent;
 	}
 
-	private UIComponent[] createPages() {
-		UIComponent[] ret = new UIComponent[pages.length];
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = new UISettingList(pages[i]);
+	private List<UIComponent> createPages() {
+		ArrayList<UIComponent> ret = new ArrayList<>();
+		for (Property[] p : pages) {
+			ret.add(new UISettingList(p));
 		}
 		return ret;
 	}
@@ -78,7 +77,7 @@ public class UIScreenSettings extends UIScreen {
 			.setSelectedEvent(new IStateChangedEventListener<Integer>() {
 				@Override
 				public Integer onChanged(UIComponent comp, Integer newState) {
-					pageView.setPageIndex(newState);
+					pageView.selectPage(newState);
 					return newState;
 				}
 			}).setTabValues(pageTabs));
@@ -86,8 +85,7 @@ public class UIScreenSettings extends UIScreen {
 		// content
 		add(new UIRectangle().setBounds(sx + navW, sy, WIDTH - navW, HEIGHT)
 			.setBackgroundColor(Theme.BACKGROUND));
-		add(pageView = new UIPageView().setBounds(sx + navW, sy, WIDTH - navW, HEIGHT)
-			.setPages(createPages()));
+		add(pageView = new UIPanel().addAll(createPages()).selectPage(0).setBounds(sx + navW, sy, WIDTH - navW, HEIGHT));
 
 		// footer
 		add(new UIButton("초기화").setBounds(sx + WIDTH - 72, sy + HEIGHT - 17, 34, 14));
