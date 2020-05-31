@@ -10,9 +10,8 @@ import won983212.kpatch.InputProcessor;
 import won983212.kpatch.input.ColorInput;
 import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
-import won983212.simpleui.Point2i;
 import won983212.simpleui.indicators.GuiColorSelector;
-import won983212.simpleui.indicators.GuiHanjaSelector;
+import won983212.simpleui.indicators.GuiKoreanIndicator;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private static final Field[] FIELDS = GuiTextField.class.getDeclaredFields();
@@ -50,9 +49,8 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, colorIn, hanjaIn, krIn);
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
-
-	private Point2i getPopupLocation(int height) {
-		int x = this.x - 1;
+	
+	private int getIndicatorY(int height) {
 		int y = this.y - 3 - height;
 		
 		if (y < 2) {
@@ -60,20 +58,19 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 		}
 		
 		if (!getEnableBackgroundDrawing()) {
-			x -= 1;
 			y += y < 2 ? 1 : -1;
 		}
 		
-		return new Point2i(x, y);
+		return y;
 	}
 	
 	@Override
 	public void drawTextBox() {
 		if (isFocused()) {
-			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-			krIn.drawIndicator(getPopupLocation(fr.FONT_HEIGHT + 2), getText().length(), getMaxStringLength());
-			colorIn.drawIndicator(getPopupLocation(GuiColorSelector.HEIGHT));
-			hanjaIn.drawIndicator(getPopupLocation(hanjaIn.getIndicatorHeight()));
+			int ind_x = getEnableBackgroundDrawing() ? (this.x - 1) : (this.x - 2);
+			krIn.drawIndicator(ind_x, getIndicatorY(GuiKoreanIndicator.HEIGHT), getText().length(), getMaxStringLength());
+			colorIn.drawIndicator(ind_x, getIndicatorY(GuiColorSelector.HEIGHT));
+			hanjaIn.drawIndicator(ind_x, getIndicatorY(hanjaIn.getIndicatorHeight()));
 		}
 		super.drawTextBox();
 	}

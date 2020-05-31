@@ -28,7 +28,8 @@ public class UIScreenSettings extends UIScreen {
 		pageTabs = new String[pages.length];
 		
 		ArrayList<Property> properties = new ArrayList<>();
-		properties.add(new Property("한영 지시자 표시", Configs.IME_INDICATOR_VISIBLE_MODE, Property.SELECT));
+		properties.add(new Property("한영 지시자 표시", Configs.IME_INDICATOR_VISIBLE_MODE, Property.SELECT,
+				new String[] {"끄기", "채팅창에만 표시", "모든 필드에 표시"}));
 		properties.add(new Property("한영 지시자 애니메이션", Configs.IME_INDICATOR_ANIMATE, Property.BOOLEAN));
 		properties.add(new Property("UI 애니메이션", Configs.UI_ANIMATE, Property.BOOLEAN));
 		properties.add(new Property("한영 전환키", Configs.KEY_KOR, Property.KEY));
@@ -38,7 +39,8 @@ public class UIScreenSettings extends UIScreen {
 		pageTabs[0] = "일반";
 		
 		properties.clear();
-		properties.add(new Property("한영 지시자 표시", Configs.IME_INDICATOR_VISIBLE_MODE, Property.SELECT));
+		properties.add(new Property("한영 지시자 표시", Configs.IME_INDICATOR_VISIBLE_MODE, Property.SELECT,
+				new String[] {"끄기", "채팅창에만 표시", "모든 필드에 표시"}));
 		properties.add(new Property("한영 지시자 애니메이션", Configs.IME_INDICATOR_ANIMATE, Property.BOOLEAN));
 		properties.add(new Property("UI 애니메이션", Configs.UI_ANIMATE, Property.BOOLEAN));
 		pages[1] = properties.toArray(new Property[properties.size()]);
@@ -47,6 +49,7 @@ public class UIScreenSettings extends UIScreen {
 		pages[2] = properties.toArray(new Property[properties.size()]);
 		pageTabs[2] = "입력";
 		
+		properties.clear();
 		pages[3] = properties.toArray(new Property[properties.size()]);
 		pageTabs[3] = "고급";
 		

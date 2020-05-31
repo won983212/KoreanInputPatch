@@ -3,7 +3,6 @@ package won983212.kpatch.input;
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.simpleui.Point2i;
 import won983212.simpleui.indicators.GuiColorSelector;
 
 public class ColorInput extends InputProcessor {
@@ -34,10 +33,6 @@ public class ColorInput extends InputProcessor {
 	@Override
 	public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
 		showIndicator = false;
-	}
-
-	public void drawIndicator(Point2i p) {
-		drawIndicator(p.x, p.y);
 	}
 
 	public void drawIndicator(int x, int y) {

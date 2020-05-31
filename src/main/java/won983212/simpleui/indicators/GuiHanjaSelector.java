@@ -66,7 +66,17 @@ public class GuiHanjaSelector {
 			fr.drawStringWithShadow(pageText, pageX, pageY, Theme.WHITE);
 			
 			// page
-			renderPage(fr, x, y);
+			for (int i = 0; i < 9; i++) {
+				int idx = (page - 1) * 9 + i;
+				if(idx >= hanjas.length)
+					break;
+				
+				int py = y + TITLE_HEIGHT + GAP + i * (fr.FONT_HEIGHT + GAP) + 1;
+				UITools.useShadow(Theme.GRAY);
+				UITools.drawText(fr, String.valueOf(i + 1), x + GAP, py, Theme.BLACK);
+				fr.drawString(String.valueOf(hanjas[idx].hanja), x + 9 + GAP * 2, py, Theme.BLACK);
+				fr.drawString(hanjas[idx].meaning, x + 23 + GAP * 2, py, Theme.BLACK);
+			}
 		});
 	}
 	
@@ -76,19 +86,5 @@ public class GuiHanjaSelector {
 	
 	public int getHeight() {
 		return height;
-	}
-	
-	private void renderPage(FontRenderer fr, int x, int y) {
-		for (int i = 0; i < 9; i++) {
-			int idx = (page - 1) * 9 + i;
-			if(idx >= hanjas.length)
-				break;
-			
-			int py = y + TITLE_HEIGHT + GAP + i * (fr.FONT_HEIGHT + GAP) + 1;
-			UITools.useShadow(Theme.GRAY);
-			UITools.drawText(fr, String.valueOf(i + 1), x + GAP, py, Theme.BLACK);
-			fr.drawString(String.valueOf(hanjas[idx].hanja), x + 9 + GAP * 2, py, Theme.BLACK);
-			fr.drawString(hanjas[idx].meaning, x + 23 + GAP * 2, py, Theme.BLACK);
-		}
 	}
 }

@@ -9,25 +9,37 @@ public class UISettingList extends UIPanel {
 	private static final int ITEM_HEIGHT = 20;
 	private static final int ITEM_GAP = 3;
 	private static final int MARGIN = 6;
-	private Property[] properties;
+	private Property[] properties; // cached properties.
 
 	public UISettingList(Property[] properties) {
 		this.properties = properties;
 	}
 	
 	@Override
-	protected void onChangedBounds() {
+	protected void onChangedBounds() { // bounds가 바뀔 때 마다 components를 전부 다시만든다
 		super.onChangedBounds();
 		clearComponents();
+		createComponents();
+	}
+	
+	private void createComponents() {
 		for (int i = 0; i < properties.length; i++) {
 			final int px = x + MARGIN;
 			final int py = y + MARGIN + (ITEM_HEIGHT + ITEM_GAP) * i;
 			/*add(new UIRectangle().setBounds(px, py, width - MARGIN * 2, ITEM_HEIGHT)
 				.setBackgroundColor(Theme.BACKGROUND));*/
 			add(new UILabel(properties[i].label).setBounds(px + 6, py, width - MARGIN * 2, ITEM_HEIGHT)
-				.setTextCenter(false, true).setForegroundColor(Theme.BLACK).setShadow(Theme.LIGHT_GRAY));
-			add(new UISwitch().setLocation(px + width - UISwitch.DEFAULT_WIDTH - MARGIN * 3,
-					py + (ITEM_HEIGHT - UISwitch.DEFAULT_HEIGHT) / 2));
+					.setTextCenter(false, true).setForegroundColor(Theme.BLACK).setShadow(Theme.LIGHT_GRAY));
+			switch (properties[i].type) {
+				case Property.BOOLEAN:
+					add(new UISwitch().setLocation(px + width - UISwitch.DEFAULT_WIDTH - MARGIN * 3,
+							py + (ITEM_HEIGHT - UISwitch.DEFAULT_HEIGHT) / 2));
+					break;
+				case Property.SELECT:
+					add(new UISwitch().setLocation(px + width - UISwitch.DEFAULT_WIDTH - MARGIN * 3,
+							py + (ITEM_HEIGHT - UISwitch.DEFAULT_HEIGHT) / 2));
+					break;
+			}
 		}
 	}
 

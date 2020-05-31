@@ -6,7 +6,6 @@ import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.simpleui.Point2i;
 import won983212.simpleui.indicators.GuiKoreanIndicator;
 
 public class KoreanInput extends InputProcessor {
@@ -194,10 +193,6 @@ public class KoreanInput extends InputProcessor {
 			jong = 0;
 			input.setMovingCursor(input.getAnchorCursor());
 		}
-	}
-	
-	public void drawIndicator(Point2i pos, int len, int maxLen) {
-		indicator.drawIndicator(pos.x, pos.y, len, maxLen);
 	}
 	
 	public void drawIndicator(int x, int y, int len, int maxLen) {
