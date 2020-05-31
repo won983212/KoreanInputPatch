@@ -29,8 +29,7 @@ public class GuiColorSelector {
 			FontRenderer fr = UITools.getDefaultASCIIRenderer();
 			
 			// background
-			UITools.useShadow(Theme.BACKGROUND_SHADOW);
-			UITools.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND);
+			UITools.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND, Theme.BACKGROUND_SHADOW, 0);
 			
 			int k = 0;
 			for (int j = 0; j < rows; j++) {
@@ -42,19 +41,16 @@ public class GuiColorSelector {
 					char c = code.charAt(k);
 					
 					// border
-					UITools.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor);
+					UITools.drawArea(px, py, colorPanelSize, colorPanelSize, borderColor, 0, 0);
 					
 					// color panel
-					UITools.drawRect(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000);
-					
+					UITools.drawArcRect(px + 0.5, py + 0.5, px + colorPanelSize - 0.5, py + colorPanelSize - 0.5, color[k] | 0xff000000, 0, 0);
 					if(k > 15) {
-						UITools.useTextCenterArea(colorPanelSize, colorPanelSize);
-						UITools.useTextCenter(true, true);
-						UITools.drawText(fr, "§" + c + "A", px, py + 1, Theme.BLACK);
+						UITools.drawText(fr, "§" + c + "A", px + colorPanelSize / 2, py + colorPanelSize / 2 + 1, Theme.BLACK, 0, UITools.CENTER_BOTH);
 					}
 					
 					// border label background
-					UITools.drawRect(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor);
+					UITools.drawArcRect(px + colorPanelSize - 4.5, py + colorPanelSize - 5, px + colorPanelSize, py + colorPanelSize, borderColor, 0, 0);
 					
 					// border label
 					GlStateManager.scale(0.5, 0.5, 0.5);

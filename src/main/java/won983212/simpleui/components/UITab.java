@@ -5,7 +5,7 @@ import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 import won983212.simpleui.events.IStateChangedEventListener;
 
-public class UITab extends UIComponent<UITab> {
+public class UITab extends UIControl<UITab> {
 	private static final int ITEM_HEIGHT = 28;
 	
 	private int selected = 0;
@@ -47,15 +47,12 @@ public class UITab extends UIComponent<UITab> {
 			int textColor = Theme.DARK_GRAY;
 			String value = values[i];
 			if(i == selected) {
-				UITools.drawArea(x, y + i * ITEM_HEIGHT, width, ITEM_HEIGHT, Theme.WHITE);
-				UITools.drawArea(x, y + i * ITEM_HEIGHT, 2, ITEM_HEIGHT, backgroundColor);
+				UITools.drawArea(x, y + i * ITEM_HEIGHT, width, ITEM_HEIGHT, Theme.WHITE, 0, 0);
+				UITools.drawArea(x, y + i * ITEM_HEIGHT, 2, ITEM_HEIGHT, backgroundColor, 0, 0);
 				textColor = backgroundColor;
 				value = "§l" + value;
 			}
-			UITools.useTextCenterArea(width, ITEM_HEIGHT);
-			UITools.useTextCenter(false, true);
-			UITools.useShadow(Theme.LIGHT_GRAY);
-			UITools.drawText(fontRenderer, value, x + 12, y + ITEM_HEIGHT * i, textColor);
+			UITools.drawText(fontRenderer, value, x + 12, y + ITEM_HEIGHT * (i + 0.5f), textColor, Theme.LIGHT_GRAY, UITools.CENTER_V);
 		}
 	}
 	

@@ -7,7 +7,7 @@ import won983212.simpleui.events.IClickEventListener;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 
-public class UIButton extends UIComponent<UIButton> {
+public class UIButton extends UIControl<UIButton> {
 	private String label;
 	private DecimalAnimation hoverAnimation = new DecimalAnimation(150);
 	private IClickEventListener clickEvent = null;
@@ -45,7 +45,7 @@ public class UIButton extends UIComponent<UIButton> {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
 		int color = backgroundColor;
-		if(!isEnabled) {
+		if (!isEnabled) {
 			color = Theme.LIGHT_GRAY;
 		} else if (isIn(mouseX, mouseY)) {
 			int adj;
@@ -70,14 +70,11 @@ public class UIButton extends UIComponent<UIButton> {
 		if (isClicking) {
 			px++;
 			py++;
+			UITools.drawArea(px, py, width, height, color, 0, 0);
 		} else {
-			UITools.useShadow(Theme.BACKGROUND_SHADOW);
+			UITools.drawArea(px, py, width, height, color, Theme.BACKGROUND_SHADOW, 0);
 		}
-
-		UITools.drawArea(px, py, width, height, color);
-		UITools.useShadow(-1);
-		UITools.useTextCenterArea(width, height);
-		UITools.useTextCenter(true, true);
-		UITools.drawText(fontRenderer, label, px, py, foregroundColor);
+		
+		UITools.drawText(fontRenderer, label, px + width / 2, py + height / 2, foregroundColor, Theme.BACKGROUND_SHADOW, UITools.CENTER_BOTH);
 	}
 }

@@ -8,6 +8,7 @@ import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.components.UIButton;
 import won983212.simpleui.components.UIComponent;
+import won983212.simpleui.components.UIControl;
 import won983212.simpleui.components.UIPanel;
 import won983212.simpleui.components.UIRectangle;
 import won983212.simpleui.components.UISettingList;
@@ -60,8 +61,8 @@ public class UIScreenSettings extends UIScreen {
 		this.parent = parent;
 	}
 
-	private List<UIComponent> createPages() {
-		ArrayList<UIComponent> ret = new ArrayList<>();
+	private List<UIControl> createPages() {
+		ArrayList<UIControl> ret = new ArrayList<>();
 		for (Property[] p : pages) {
 			ret.add(new UISettingList(p));
 		}

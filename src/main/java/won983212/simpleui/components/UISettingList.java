@@ -25,7 +25,7 @@ public class UISettingList extends UIPanel {
 	private void createComponents() {
 		for (int i = 0; i < properties.length; i++) {
 			final int px = x + MARGIN;
-			final int py = y + MARGIN + (ITEM_HEIGHT + ITEM_GAP) * i;
+			final int py = (int) (y + MARGIN + (ITEM_HEIGHT + ITEM_GAP) * (i + 0.5));
 			/*add(new UIRectangle().setBounds(px, py, width - MARGIN * 2, ITEM_HEIGHT)
 				.setBackgroundColor(Theme.BACKGROUND));*/
 			add(new UILabel(properties[i].label).setBounds(px + 6, py, width - MARGIN * 2, ITEM_HEIGHT)

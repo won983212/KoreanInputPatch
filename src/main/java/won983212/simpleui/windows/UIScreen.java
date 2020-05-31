@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import net.minecraft.client.gui.GuiScreen;
 import won983212.simpleui.components.UIComponent;
+import won983212.simpleui.components.UIControl;
 import won983212.simpleui.components.UIPanel;
 
 /**
@@ -14,7 +15,7 @@ import won983212.simpleui.components.UIPanel;
 public class UIScreen extends GuiScreen {
 	private UIPanel rootPanel = new UIPanel();
 
-	protected void add(UIComponent comp) {
+	protected void add(UIControl comp) {
 		rootPanel.add(comp);
 	}
 

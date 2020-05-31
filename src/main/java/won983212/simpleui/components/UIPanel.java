@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ListIterator;
 
-public class UIPanel extends UIComponent<UIPanel> {
-	private ArrayList<UIComponent> components = new ArrayList<>();
-	private UIComponent clicked = null;
+public class UIPanel extends UIControl<UIPanel> {
+	private ArrayList<UIControl> components = new ArrayList<>();
+	private UIControl clicked = null;
 	private int selectedPage = -1;
 	
-	public UIPanel addAll(Collection<? extends UIComponent> components) {
+	public UIPanel addAll(Collection<? extends UIControl> components) {
 		this.components.addAll(components);
 		return this;
 	}
 	
-	public UIPanel add(UIComponent comp) {
+	public UIPanel add(UIControl comp) {
 		components.add(comp);
 		return this;
 	}
@@ -51,13 +51,13 @@ public class UIPanel extends UIComponent<UIPanel> {
 		if(selectedPage != -1) {
 			componentKeyType(components.get(selectedPage), typedChar, keyCode);
 		} else {
-			for(UIComponent comp : components) {
+			for(UIControl comp : components) {
 				componentKeyType(comp, typedChar, keyCode);
 			}
 		}
 	}
 	
-	private void componentKeyType(UIComponent comp, char typedChar, int keyCode) {
+	private void componentKeyType(UIControl comp, char typedChar, int keyCode) {
 		if(comp.isEnabled()) {
 			comp.onKeyTyped(typedChar, keyCode);
 		}
@@ -71,7 +71,7 @@ public class UIPanel extends UIComponent<UIPanel> {
 		if(selectedPage != -1) {
 			return componentMouseClicked(components.get(selectedPage), mouseX, mouseY, mouseButton);
 		} else {
-			ListIterator<UIComponent> li = components.listIterator(components.size());
+			ListIterator<UIControl> li = components.listIterator(components.size());
 			while (li.hasPrevious()) {
 				if (componentMouseClicked(li.previous(), mouseX, mouseY, mouseButton))
 					return true;
@@ -80,7 +80,7 @@ public class UIPanel extends UIComponent<UIPanel> {
 		}
 	}
 	
-	private boolean componentMouseClicked(UIComponent comp, int mouseX, int mouseY, int mouseButton) {
+	private boolean componentMouseClicked(UIControl comp, int mouseX, int mouseY, int mouseButton) {
 		if(comp.isEnabled() && comp.isIn(mouseX, mouseY)) {
 			if(comp.onMouseClicked(mouseX, mouseY, mouseButton)) {
 				clicked = comp;
@@ -116,7 +116,7 @@ public class UIPanel extends UIComponent<UIPanel> {
 		if(selectedPage != -1) {
 			components.get(selectedPage).draw(mouseX, mouseY, partialTicks);
 		} else {
-			for(UIComponent comp : components) {
+			for(UIControl comp : components) {
 				comp.draw(mouseX, mouseY, partialTicks);
 			}
 		}

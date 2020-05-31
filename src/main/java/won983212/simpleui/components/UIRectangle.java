@@ -4,10 +4,9 @@ import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 
-public class UIRectangle extends UIComponent<UIRectangle> {
+public class UIRectangle extends UIControl<UIRectangle> {
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
-		useContext();
-		UITools.drawArea(x, y, width, height, backgroundColor);
+		UITools.drawArea(x, y, width, height, backgroundColor, shadow, radius);
 	}
 }

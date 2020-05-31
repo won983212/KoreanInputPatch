@@ -6,7 +6,7 @@ import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.events.IStateChangedEventListener;
 
-public class UISwitch extends UIComponent<UISwitch> {
+public class UISwitch extends UIControl<UISwitch> {
 	public static final int DEFAULT_WIDTH = 24;
 	public static final int DEFAULT_HEIGHT = 9;
 	private boolean isActive;
@@ -36,8 +36,7 @@ public class UISwitch extends UIComponent<UISwitch> {
 	
 	@Override
 	public void draw(int mouseX, int mouseY, float partialTicks) {
-		UITools.useRound(1);
-		UITools.drawArea(x, y, width, height, isActive ? Theme.PRIMARY : Theme.LIGHT_GRAY);
+		UITools.drawArea(x, y, width, height, isActive ? Theme.PRIMARY : Theme.LIGHT_GRAY, 0, 1);
 		
 		double animatedX = 0;
 		if(Configs.getBoolean(Configs.UI_ANIMATE)) {
@@ -47,8 +46,7 @@ public class UISwitch extends UIComponent<UISwitch> {
 		}
 		
 		final double indX = x + 0.5 + animatedX;
-		UITools.useRound(1);
-		UITools.drawArea(indX, y + 0.5, width / 2 - 1, height - 1, Theme.BACKGROUND);
+		UITools.drawArea(indX, y + 0.5, width / 2 - 1, height - 1, Theme.BACKGROUND, 0, 1);
 	}
 	
 	@Override
