@@ -8,64 +8,87 @@ import won983212.kpatch.KoreanInputPatch;
 import won983212.simpleui.UITools;
 import won983212.simpleui.Theme;
 
-public class GuiHanjaSelector extends GuiPopup {
-	private static final int titleHeight = 20;
-	private static final int gap = 3;
-	public static final int HEIGHT = 132;
+public class GuiHanjaSelector {
+	private static final int TITLE_HEIGHT = 20;
+	private static final int GAP = 3;
+	private int width = 0;
+	private int height = 0;
 	
-	protected void renderPopup(int x, int y, Object[] args) {
-		final char key = (char) args[0];
-		final int page = (int) args[1];
-		final String pageText = (String) args[2];
-		final Hanja[] hanjas = (Hanja[]) args[3];
+	private char key;
+	private int page;
+	private String pageText;
+	private Hanja[] hanjas;
+	
+	public void setHanjaData(char key, int page, Hanja[] hanjas) {
+		this.key = key;
+		this.page = page;
+		this.pageText = page + "/" + (int) Math.ceil(hanjas.length / 9.0);
+		this.hanjas = hanjas;
+		this.width = 0;
 
-		int width = 0;
-		final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-
+		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+		int pageContentLength = 0;
+		
 		for (int i = 0; i < 9; i++) {
 			int idx = (page - 1) * 9 + i;
 			if(idx >= hanjas.length)
 				break;
 
-			width = Math.max(width, x + 10 + gap * 2 + fr.getStringWidth(hanjas[idx].meaning));
+			pageContentLength++;
+			width = Math.max(width, 30 + GAP * 2 + fr.getStringWidth(hanjas[idx].meaning));
 			width = Math.max(50, width);
 		}
 		
-		final int _width = width;
+		this.height = TITLE_HEIGHT + GAP + pageContentLength * (fr.FONT_HEIGHT + GAP) + 1;
+	}
+	
+	public void draw(int x, int y) {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
+			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+			
 			// background
 			UITools.useShadow(Theme.BACKGROUND_SHADOW);
-			UITools.drawArea(x, y, _width, HEIGHT, Theme.BACKGROUND);
+			UITools.drawArea(x, y, width, height, Theme.BACKGROUND);
 			
 			// title background
-			UITools.drawArea(x, y, _width, titleHeight, Theme.PRIMARY);
+			UITools.drawArea(x, y, width, TITLE_HEIGHT, Theme.PRIMARY);
 			
 			// title
 			GlStateManager.scale(2, 2, 2);
-			final int keyX = (x + gap + 1) / 2;
-			final int keyY = (y - fr.FONT_HEIGHT + titleHeight / 2) / 2;
+			final int keyX = (x + GAP + 1) / 2;
+			final int keyY = (y - fr.FONT_HEIGHT + TITLE_HEIGHT / 2) / 2;
 			fr.drawStringWithShadow(String.valueOf(key), keyX, keyY, Theme.WHITE);
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			
 			// page indicator
-			final int pageX = x + _width - fr.getStringWidth(pageText) - gap;
-			final int pageY = y - fr.FONT_HEIGHT + titleHeight - gap / 2;
+			final int pageX = x + width - fr.getStringWidth(pageText) - GAP;
+			final int pageY = y - fr.FONT_HEIGHT + TITLE_HEIGHT - GAP / 2;
 			fr.drawStringWithShadow(pageText, pageX, pageY, Theme.WHITE);
-			renderPage(fr, x, y, page, hanjas);
+			
+			// page
+			renderPage(fr, x, y);
 		});
 	}
 	
-	private void renderPage(FontRenderer fr, int x, int y, int page, Hanja[] hanjas) {
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	private void renderPage(FontRenderer fr, int x, int y) {
 		for (int i = 0; i < 9; i++) {
 			int idx = (page - 1) * 9 + i;
 			if(idx >= hanjas.length)
 				break;
 			
-			int py = y + titleHeight + gap + i * (fr.FONT_HEIGHT + gap) + 1;
+			int py = y + TITLE_HEIGHT + GAP + i * (fr.FONT_HEIGHT + GAP) + 1;
 			UITools.useShadow(Theme.GRAY);
-			UITools.drawText(fr, String.valueOf(i + 1), x + gap, py, Theme.BLACK);
-			fr.drawString(String.valueOf(hanjas[idx].hanja), x + 9 + gap * 2, py, Theme.BLACK);
-			fr.drawString(hanjas[idx].meaning, x + 23 + gap * 2, py, Theme.BLACK);
+			UITools.drawText(fr, String.valueOf(i + 1), x + GAP, py, Theme.BLACK);
+			fr.drawString(String.valueOf(hanjas[idx].hanja), x + 9 + GAP * 2, py, Theme.BLACK);
+			fr.drawString(hanjas[idx].meaning, x + 23 + GAP * 2, py, Theme.BLACK);
 		}
 	}
 }

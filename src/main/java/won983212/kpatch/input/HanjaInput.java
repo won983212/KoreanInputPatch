@@ -12,6 +12,7 @@ import won983212.simpleui.indicators.GuiHanjaSelector;
 public class HanjaInput extends InputProcessor {
 	private GuiHanjaSelector indicator = new GuiHanjaSelector();
 	
+	private boolean showIndicator = false;
 	private int page = 1;
 	private char key = 0;
 	private char prevKey = 0;
@@ -28,33 +29,37 @@ public class HanjaInput extends InputProcessor {
 			hanjaCache = Hanja.getHanjas(key);
 			prevKey = key;
 		}
+		updateHanjaUI();
 	}
-	
+
 	public void nextPage() {
-		if(page < getMaxPage()) {
+		int max = 0;
+		if (hanjaCache != null) {
+			max = (int) Math.ceil(hanjaCache.length / 9.0);
+		}
+		if (page < max) {
 			page++;
+			updateHanjaUI();
 		}
 	}
 	
 	public void prevPage() {
 		if(page > 1) {
 			page--;
+			updateHanjaUI();
 		}
-	}
-	
-	private int getMaxPage() {
-		if(hanjaCache != null) {
-			return (int) Math.ceil(hanjaCache.length / 9.0);
-		}
-		return 0;
 	}
 
+	private void updateHanjaUI() {
+		indicator.setHanjaData(key, page, hanjaCache);
+	}
+	
 	@Override
 	public boolean handleKeyTyped(char c, int i) {
 		if (i == 0) {
 			return false;
 		} else if (i == Configs.getInt(Configs.KEY_HANJA)) {
-			if(!indicator.isShow()) {
+			if(!showIndicator) {
 				if(getEndCursor() - getStartCursor() > 1)
 					return true;
 				
@@ -74,9 +79,9 @@ public class HanjaInput extends InputProcessor {
 				if(hanjaCache == null)
 					return true;
 			}
-			indicator.setVisible(!indicator.isShow());
+			showIndicator = !showIndicator;
 			return true;
-		} else if (indicator.isShow()) {
+		} else if (showIndicator) {
 			if (c >= '1' && c <= '9') {
 				input.cancelAllInputContext();
 				backspace();
@@ -88,7 +93,7 @@ public class HanjaInput extends InputProcessor {
 				nextPage();
 				return true;
 			}
-			indicator.setVisible(false);
+			showIndicator = false;
 			return true;
 		}
 		return false;
@@ -96,7 +101,11 @@ public class HanjaInput extends InputProcessor {
 
 	@Override
 	public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
-		indicator.setVisible(false);
+		showIndicator = false;
+	}
+	
+	public int getIndicatorHeight() {
+		return indicator.getHeight();
 	}
 
 	public void drawIndicator(Point2i p) {
@@ -104,6 +113,8 @@ public class HanjaInput extends InputProcessor {
 	}
 
 	public void drawIndicator(int x, int y) {
-		indicator.draw(x, y, key, page, page + "/" + getMaxPage(), hanjaCache);
+		if(showIndicator) {
+			indicator.draw(x, y);
+		}
 	}
 }

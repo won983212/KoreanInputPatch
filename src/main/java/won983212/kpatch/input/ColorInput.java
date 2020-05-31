@@ -8,6 +8,7 @@ import won983212.simpleui.indicators.GuiColorSelector;
 
 public class ColorInput extends InputProcessor {
 	private GuiColorSelector indicator = new GuiColorSelector();
+	private boolean showIndicator = false;
 
 	public ColorInput(IInputWrapper base) {
 		super(base);
@@ -18,13 +19,13 @@ public class ColorInput extends InputProcessor {
 		if (i == 0) {
 			return false;
 		} else if (i == Configs.getInt(Configs.KEY_COLOR)) {
-			indicator.setVisible(!indicator.isShow());
+			showIndicator = !showIndicator;
 			return true;
-		} else if (indicator.isShow()) {
+		} else if (showIndicator) {
 			if ("0123456789abcdeflmnokr".indexOf(c) != -1) {
 				write("§" + c);
 			}
-			indicator.setVisible(false);
+			showIndicator = false;
 			return true;
 		}
 		return false;
@@ -32,7 +33,7 @@ public class ColorInput extends InputProcessor {
 
 	@Override
 	public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
-		indicator.setVisible(false);
+		showIndicator = false;
 	}
 
 	public void drawIndicator(Point2i p) {
@@ -40,6 +41,8 @@ public class ColorInput extends InputProcessor {
 	}
 
 	public void drawIndicator(int x, int y) {
-		indicator.draw(x, y);
+		if(showIndicator) {
+			indicator.draw(x, y);
+		}
 	}
 }

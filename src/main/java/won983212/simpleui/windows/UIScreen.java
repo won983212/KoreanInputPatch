@@ -7,6 +7,10 @@ import net.minecraft.client.gui.GuiScreen;
 import won983212.simpleui.components.UIComponent;
 import won983212.simpleui.components.UIPanel;
 
+/**
+ * SimpleUI를 사용할 수 있는 <code>GuiScreen</code>입니다.
+ * Rendering, Event Handling, Component Managing을 담당합니다.
+ */
 public class UIScreen extends GuiScreen {
 	private UIPanel rootPanel = new UIPanel();
 

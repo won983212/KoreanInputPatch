@@ -73,7 +73,7 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 			krIn.drawIndicator(getPopupLocation(fr.FONT_HEIGHT + 2), getText().length(), getMaxStringLength());
 			colorIn.drawIndicator(getPopupLocation(GuiColorSelector.HEIGHT));
-			hanjaIn.drawIndicator(getPopupLocation(GuiHanjaSelector.HEIGHT));
+			hanjaIn.drawIndicator(getPopupLocation(hanjaIn.getIndicatorHeight()));
 		}
 		super.drawTextBox();
 	}

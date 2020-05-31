@@ -51,7 +51,7 @@ public class GuiKoreanIndicator {
 		if (useAnimation && kr != prevKrMode) {
 			modeChangeAnimation.play();
 			modeBgColorAnimation.play();
-			modeBgColorAnimation.setEndColor(kr ? Theme.adjustColor(Theme.PRIMARY, 70) : Theme.adjustColor(Theme.SECONDARY, 70));
+			modeBgColorAnimation.setEndColor(kr ? Theme.adjColor(Theme.PRIMARY, 70) : Theme.adjColor(Theme.SECONDARY, 70));
 			prevKrMode = kr;
 		}
 

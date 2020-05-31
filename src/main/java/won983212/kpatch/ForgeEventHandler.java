@@ -30,8 +30,8 @@ public class ForgeEventHandler {
 		
 		// TODO Debug
 		if (screen instanceof GuiMainMenu) {
-			Minecraft.getMinecraft().displayGuiScreen(new UIScreenSettings((GuiMainMenu) screen));
-			//Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
+			//Minecraft.getMinecraft().displayGuiScreen(new UIScreenSettings((GuiMainMenu) screen));
+			Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
 			return;
 		}
 		
@@ -84,6 +84,9 @@ public class ForgeEventHandler {
 		}
 	}
 	
+	/**
+	 * Gui 최상단에 rendering합니다. <code>Runnable</code>로 그립니다.
+	 */
 	public void addTopRenderQueue(Runnable runnable) {
 		synchronized (this.afterRenderQueue) {
 			afterRenderQueue.add(runnable);

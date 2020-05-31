@@ -3,10 +3,10 @@ package won983212.simpleui.indicators;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.KoreanInputPatch;
-import won983212.simpleui.UITools;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UITools;
 
-public class GuiColorSelector extends GuiPopup {
+public class GuiColorSelector {
 	private static final String code = "0123456789abcdefklmnor";
 	private static final int[] color = {
 		0x000000, 0x0000aa, 0x00aa00, 0x00aaaa, 0xaa0000, 0xaa00aa, 0xffaa00, 0xaaaaaa,	// 0 1 2 3 4 5 6 7
@@ -24,7 +24,7 @@ public class GuiColorSelector extends GuiPopup {
 	public static final int WIDTH = columns * (colorPanelSize + gap) - gap + margin * 2;
 	public static final int HEIGHT = rows * (colorPanelSize + gap) - gap + margin * 2;
 	
-	protected void renderPopup(int x, int y, Object[] args) {
+	public void draw(int x, int y) {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			FontRenderer fr = UITools.getDefaultASCIIRenderer();
 			

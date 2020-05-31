@@ -59,7 +59,7 @@ public class UIButton extends UIComponent<UIButton> {
 			} else {
 				adj = 30;
 			}
-			color = Theme.adjustColor(backgroundColor, adj);
+			color = Theme.adjColor(backgroundColor, adj);
 		} else {
 			hover = false;
 		}

@@ -8,23 +8,14 @@ public class Theme {
 	public static final int GRAY = 0xff999999;
 	
 	public static final int PRIMARY = 0xff308FBF;
-	public static final int PRIMARY_LIGHTEST;
-	
 	public static final int SECONDARY = 0xffE53935;
-	public static final int SECONDARY_LIGHTEST;
-	
 	public static final int WARN = 0xfffb8c00;
 	public static final int DANGER = 0xffe53935;
 	public static final int SUCCESS = 0xff4caf50;
 	public static final int BACKGROUND = WHITE;
 	public static final int BACKGROUND_SHADOW = DARK_GRAY;
 	
-	static {
-		PRIMARY_LIGHTEST = adjustColor(PRIMARY, 70);
-		SECONDARY_LIGHTEST = adjustColor(SECONDARY, 70);
-	}
-	
-	public static int adjustColor(int color, int offset) {
+	public static int adjColor(int color, int offset) {
 		int a = (color >> 24) & 0xff;
 		int r = (color >> 16) & 0xff;
 		int g = (color >> 8) & 0xff;
