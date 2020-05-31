@@ -112,16 +112,16 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 			this.fontRenderer.drawString(TextFormatting.DARK_GRAY + s2, i + 36 + (116 - i1) / 2, 60, 0);
 			String s3 = I18n.format("book.finalizeWarning");
 			this.fontRenderer.drawSplitString(s3, i + 36, 82, 116, 0);
-			krIn.drawIndicator(2, 2, bookTitle.length(), 15);
+			krIn.setLength(bookTitle.length(), 15);
 		} else {
 			String s4 = I18n.format("book.pageIndicator", currPage + 1, bookTotalPages);
 			String text = pageGetCurrent();
 			this.fontRenderer.drawSplitString(text, i + 36, 34, 116, 0);
 			int j1 = this.fontRenderer.getStringWidth(s4);
 			this.fontRenderer.drawString(s4, i - j1 + 192 - 44, 18, 0);
-			krIn.drawIndicator(2, 2, text.length(), 255);
+			krIn.setLength(text.length(), 255);
 		}
-		
+		krIn.draw(2, 2);
 		drawCursor();
 		
 		// components rendering (GuiScreen.drawScreen)

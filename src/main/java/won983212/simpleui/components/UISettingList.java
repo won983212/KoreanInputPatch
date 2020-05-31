@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
+import won983212.simpleui.components.panels.UIPanel;
 
 public class UISettingList extends UIPanel {
 	private static final int ITEM_HEIGHT = 20;

@@ -6,8 +6,9 @@ import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.events.IClickEventListener;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UIStyledComponent;
 
-public class UIButton extends UIControl<UIButton> {
+public class UIButton extends UIStyledComponent<UIButton> {
 	private String label;
 	private DecimalAnimation hoverAnimation = new DecimalAnimation(150);
 	private IClickEventListener clickEvent = null;
@@ -43,9 +44,9 @@ public class UIButton extends UIControl<UIButton> {
 	}
 
 	@Override
-	public void draw(int mouseX, int mouseY, float partialTicks) {
+	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
 		int color = backgroundColor;
-		if (!isEnabled) {
+		if (!isEnabled()) {
 			color = Theme.LIGHT_GRAY;
 		} else if (isIn(mouseX, mouseY)) {
 			int adj;

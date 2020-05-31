@@ -107,7 +107,7 @@ public class HanjaInput extends InputProcessor {
 		return indicator.getHeight();
 	}
 
-	public void drawIndicator(int x, int y) {
+	public void draw(int x, int y) {
 		if(showIndicator) {
 			indicator.draw(x, y);
 		}

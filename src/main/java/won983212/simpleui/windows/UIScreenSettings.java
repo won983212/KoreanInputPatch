@@ -6,13 +6,14 @@ import java.util.List;
 import net.minecraft.client.gui.GuiMainMenu;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UIComponent;
+import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.components.UIButton;
-import won983212.simpleui.components.UIComponent;
-import won983212.simpleui.components.UIControl;
-import won983212.simpleui.components.UIPanel;
 import won983212.simpleui.components.UIRectangle;
 import won983212.simpleui.components.UISettingList;
 import won983212.simpleui.components.UISettingList.Property;
+import won983212.simpleui.components.panels.UIMultiplexerPanel;
+import won983212.simpleui.components.panels.UIPanel;
 import won983212.simpleui.components.UITab;
 import won983212.simpleui.events.IStateChangedEventListener;
 
@@ -22,7 +23,7 @@ public class UIScreenSettings extends UIScreen {
 	private static Property[][] pages;
 	private static String[] pageTabs;
 	private GuiMainMenu parent;
-	private UIPanel pageView;
+	private UIMultiplexerPanel pageView;
 	
 	static {
 		pages = new Property[4][];
@@ -61,8 +62,8 @@ public class UIScreenSettings extends UIScreen {
 		this.parent = parent;
 	}
 
-	private List<UIControl> createPages() {
-		ArrayList<UIControl> ret = new ArrayList<>();
+	private List<UIComponent> createPages() {
+		ArrayList<UIComponent> ret = new ArrayList<>();
 		for (Property[] p : pages) {
 			ret.add(new UISettingList(p));
 		}
@@ -89,7 +90,7 @@ public class UIScreenSettings extends UIScreen {
 		// content
 		add(new UIRectangle().setBounds(sx + navW, sy, WIDTH - navW, HEIGHT)
 			.setBackgroundColor(Theme.BACKGROUND));
-		add(pageView = new UIPanel().addAll(createPages()).selectPage(0).setBounds(sx + navW, sy, WIDTH - navW, HEIGHT));
+		add(pageView = (UIMultiplexerPanel) new UIMultiplexerPanel().addAll(createPages()).selectPage(0).setBounds(sx + navW, sy, WIDTH - navW, HEIGHT));
 
 		// footer
 		add(new UIButton("초기화").setBounds(sx + WIDTH - 72, sy + HEIGHT - 17, 34, 14));

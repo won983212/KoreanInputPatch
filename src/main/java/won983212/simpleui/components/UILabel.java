@@ -1,8 +1,9 @@
 package won983212.simpleui.components;
 
+import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.UITools;
 
-public class UILabel extends UIControl<UILabel> {
+public class UILabel extends UIStyledComponent<UILabel> {
 	private String text;
 	
 	public UILabel(String text) {
@@ -15,7 +16,7 @@ public class UILabel extends UIControl<UILabel> {
 	}
 	
 	@Override
-	public void draw(int mouseX, int mouseY, float partialTicks) {
+	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
 		UITools.drawText(fontRenderer, text, x, y, foregroundColor, shadow, textArrange);
 	}
 }

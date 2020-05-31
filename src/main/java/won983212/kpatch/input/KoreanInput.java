@@ -19,10 +19,15 @@ public class KoreanInput extends InputProcessor {
 	private int cho = -1;
 	private int jung = -1;
 	private int jong = 0;
-	private GuiKoreanIndicator indicator = new GuiKoreanIndicator();
+	private final GuiKoreanIndicator indicator;
 
 	public KoreanInput(IInputWrapper wrapper) {
+		this(wrapper, "자");
+	}
+	
+	public KoreanInput(IInputWrapper wrapper, String unit) {
 		super(wrapper);
+		indicator = new GuiKoreanIndicator(unit);
 	}
 
 	public boolean handleKeyTyped(char c, int i) {
@@ -194,15 +199,15 @@ public class KoreanInput extends InputProcessor {
 			input.setMovingCursor(input.getAnchorCursor());
 		}
 	}
-	
-	public void drawIndicator(int x, int y, int len, int maxLen) {
-		indicator.drawIndicator(x, y, len, maxLen);
-	}
-	
-	public void drawIndicator(int x, int y, int len, int maxLen, String unit) {
-		indicator.drawIndicator(x, y, len, maxLen, unit);
+
+	public void setLength(int len, int maxLen) {
+		indicator.setLength(len, maxLen);
 	}
 
+	public void draw(int x, int y) {
+		indicator.draw(x, y);
+	}
+	
 	public static boolean isKorMode() {
 		return isKorean;
 	}

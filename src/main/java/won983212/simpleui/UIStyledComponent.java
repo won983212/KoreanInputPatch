@@ -1,11 +1,12 @@
-package won983212.simpleui.components;
+package won983212.simpleui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import won983212.simpleui.Theme;
-import won983212.simpleui.UITools;
 
-public abstract class UIControl<T> extends UIComponent<T> {
+/**
+ * UIComponent에 스타일링이 포함된 클래스 
+ */
+public abstract class UIStyledComponent<T> extends UIComponent<T> {
 	protected final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 	protected int backgroundColor = Theme.PRIMARY;
 	protected int foregroundColor = Theme.WHITE;
@@ -40,18 +41,5 @@ public abstract class UIControl<T> extends UIComponent<T> {
 		if (vertical)
 			this.textArrange |= UITools.CENTER_V;
 		return (T) this;
-	}
-
-	public void onKeyTyped(char typedChar, int keyCode) {
-	}
-
-	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
-		return false;
-	}
-
-	public void onMouseReleased(int mouseX, int mouseY, int state) {
-	}
-
-	public void onMouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
 	}
 }

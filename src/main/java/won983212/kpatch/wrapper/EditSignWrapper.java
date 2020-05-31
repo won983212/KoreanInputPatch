@@ -13,7 +13,7 @@ import won983212.kpatch.input.SelectionCursorInput;
 
 public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
-	private KoreanInput krIn = new KoreanInput(this);
+	private KoreanInput krIn = new KoreanInput(this, "%");
 	
 	private String textBuffer;
 
@@ -63,7 +63,8 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 
 		textBuffer = text;
 		selection.drawSelectionBox((width - textWidth) / 2 - 1, y, 0);
-		krIn.drawIndicator(width / 2 - 47, indicatorY, (int)(textWidth * 100 / 90.0), 100, "%");
+		krIn.setLength((int)(textWidth * 100 / 90.0), 100);
+		krIn.draw(width / 2 - 47, indicatorY);
 	}
 
 	@Override

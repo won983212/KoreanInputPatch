@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.client.gui.GuiScreen;
-import won983212.simpleui.components.UIComponent;
-import won983212.simpleui.components.UIControl;
-import won983212.simpleui.components.UIPanel;
+import won983212.simpleui.UIComponent;
+import won983212.simpleui.UIStyledComponent;
+import won983212.simpleui.components.panels.UIPanel;
 
 /**
  * SimpleUI를 사용할 수 있는 <code>GuiScreen</code>입니다.
@@ -15,7 +15,7 @@ import won983212.simpleui.components.UIPanel;
 public class UIScreen extends GuiScreen {
 	private UIPanel rootPanel = new UIPanel();
 
-	protected void add(UIControl comp) {
+	protected void add(UIComponent comp) {
 		rootPanel.add(comp);
 	}
 

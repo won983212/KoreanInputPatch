@@ -2,11 +2,13 @@ package won983212.simpleui.components;
 
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UIComponent;
+import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.events.IStateChangedEventListener;
 
-public class UISwitch extends UIControl<UISwitch> {
+public class UISwitch extends UIComponent<UISwitch> {
 	public static final int DEFAULT_WIDTH = 24;
 	public static final int DEFAULT_HEIGHT = 9;
 	private boolean isActive;
@@ -35,7 +37,7 @@ public class UISwitch extends UIControl<UISwitch> {
 	}
 	
 	@Override
-	public void draw(int mouseX, int mouseY, float partialTicks) {
+	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
 		UITools.drawArea(x, y, width, height, isActive ? Theme.PRIMARY : Theme.LIGHT_GRAY, 0, 1);
 		
 		double animatedX = 0;

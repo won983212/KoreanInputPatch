@@ -2,10 +2,11 @@ package won983212.simpleui.components;
 
 import net.minecraft.client.gui.Gui;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.UITools;
 import won983212.simpleui.events.IStateChangedEventListener;
 
-public class UITab extends UIControl<UITab> {
+public class UITab extends UIStyledComponent<UITab> {
 	private static final int ITEM_HEIGHT = 28;
 	
 	private int selected = 0;
@@ -39,7 +40,7 @@ public class UITab extends UIControl<UITab> {
 	}
 	
 	@Override
-	public void draw(int mouseX, int mouseY, float partialTicks) {
+	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
 		if(values == null) 
 			return;
 		

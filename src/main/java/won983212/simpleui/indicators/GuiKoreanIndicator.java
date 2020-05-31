@@ -13,7 +13,7 @@ import won983212.simpleui.animation.AnimationBase;
 import won983212.simpleui.animation.ColorAnimation;
 import won983212.simpleui.animation.DecimalAnimation;
 
-public class GuiKoreanIndicator {
+public class GuiKoreanIndicator implements IIndicatorUI {
 	public static final int HEIGHT = 11;
 	private DecimalAnimation alertBoomingAnimation = new DecimalAnimation(150);
 	private DecimalAnimation alertWidthAnimation = new DecimalAnimation(200);
@@ -23,17 +23,24 @@ public class GuiKoreanIndicator {
 	private int alertBg;
 	private boolean prevKrMode = KoreanInput.isKorMode();
 	private int prevLen = 0;
+	
+	private int len = 0;
+	private int maxLen = 0;
+	private String unit = "자";
 
-	public GuiKoreanIndicator() {
+	public GuiKoreanIndicator(String unit) {
+		this.unit = unit;
 		alertBoomingAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
 		modeBgColorAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
 	}
-	
-	public void drawIndicator(int x, int y, int len, int maxLen) {
-		drawIndicator(x, y, len, maxLen, "자");
-	}
 
-	public void drawIndicator(int x, int y, int len, int maxLen, String unit) {
+	public void setLength(int len, int maxLen) {
+		this.len = len;
+		this.maxLen = maxLen;
+	}
+	
+	@Override
+	public void draw(int x, int y) {
 		FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 		final int conf = Configs.getInt(Configs.IME_INDICATOR_VISIBLE_MODE);
 		final boolean useAnimation = Configs.getBoolean(Configs.IME_INDICATOR_ANIMATE);

@@ -6,7 +6,7 @@ import won983212.kpatch.KoreanInputPatch;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 
-public class GuiColorSelector {
+public class GuiColorSelector implements IIndicatorUI {
 	private static final String code = "0123456789abcdefklmnor";
 	private static final int[] color = {
 		0x000000, 0x0000aa, 0x00aa00, 0x00aaaa, 0xaa0000, 0xaa00aa, 0xffaa00, 0xaaaaaa,	// 0 1 2 3 4 5 6 7
