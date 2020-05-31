@@ -1,24 +1,11 @@
 package won983212.simpleui.windows;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.gui.GuiMainMenu;
-import won983212.kpatch.Configs;
-import won983212.simpleui.Theme;
-import won983212.simpleui.UIComponent;
-import won983212.simpleui.UIStyledComponent;
-import won983212.simpleui.components.UIButton;
-import won983212.simpleui.components.UIRectangle;
-import won983212.simpleui.components.UISettingList;
-import won983212.simpleui.components.UISettingList.Property;
-import won983212.simpleui.components.panels.UIMultiplexerPanel;
-import won983212.simpleui.components.panels.UIPanel;
-import won983212.simpleui.components.UITab;
-import won983212.simpleui.events.IStateChangedEventListener;
-
+//TODO Debug
 public class UIScreenSettings extends UIScreen {
-	public static final int WIDTH = 300;
+	public UIScreenSettings(int width, int height) {
+		super(width, height);
+	}
+	/*public static final int WIDTH = 300;
 	public static final int HEIGHT = 200;
 	private static Property[][] pages;
 	private static String[] pageTabs;
@@ -105,5 +92,5 @@ public class UIScreenSettings extends UIScreen {
 		
 		drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
 		super.drawScreen(mouseX, mouseY, partialTicks);
-	}
+	}*/
 }

@@ -3,10 +3,11 @@ package won983212.simpleui.components;
 import net.minecraft.client.Minecraft;
 import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
+import won983212.simpleui.components.panels.UIStyledComponent;
 import won983212.simpleui.events.IClickEventListener;
 import won983212.kpatch.Configs;
+import won983212.simpleui.DirWeights;
 import won983212.simpleui.Theme;
-import won983212.simpleui.UIStyledComponent;
 
 public class UIButton extends UIStyledComponent<UIButton> {
 	private String label;
@@ -17,10 +18,12 @@ public class UIButton extends UIStyledComponent<UIButton> {
 
 	public UIButton(String label) {
 		setText(label);
+		setPadding(new DirWeights(2));
 	}
 
 	public UIButton setText(String label) {
 		this.label = label;
+		setMinimalSize(fontRenderer.getStringWidth(label), fontRenderer.FONT_HEIGHT);
 		return this;
 	}
 
@@ -48,7 +51,7 @@ public class UIButton extends UIStyledComponent<UIButton> {
 		int color = backgroundColor;
 		if (!isEnabled()) {
 			color = Theme.LIGHT_GRAY;
-		} else if (isIn(mouseX, mouseY)) {
+		} else if (containsRelative(mouseX, mouseY)) {
 			int adj;
 			if (Configs.getBoolean(Configs.UI_ANIMATE)) {
 				if (!hover) {
@@ -65,12 +68,12 @@ public class UIButton extends UIStyledComponent<UIButton> {
 			hover = false;
 		}
 
-		int px = x;
-		int py = y;
+		float px = x;
+		float py = y;
 
 		if (isClicking) {
-			px++;
-			py++;
+			px += 0.5;
+			py += 0.5;
 			UITools.drawArea(px, py, width, height, color, 0, 0);
 		} else {
 			UITools.drawArea(px, py, width, height, color, Theme.BACKGROUND_SHADOW, 0);

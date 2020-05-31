@@ -94,14 +94,12 @@ public class UIPanel extends UIObject {
 
 	@Override
 	protected boolean onPress(int mouseX, int mouseY, int mouseButton) {
-		boolean any = false;
 		for (int i = uiList.size() - 1; i >= 0; i--) {
 			UIObject obj = uiList.get(i);
 			Rectangle rect = obj.getRelativeBounds();
 			if (obj.containsRelative(mouseX - rect.x, mouseY - rect.y)) {
 				if (obj.isInteractive() && obj.onPress(mouseX - rect.x, mouseY - rect.y, mouseButton)) {
 					setFocus(obj);
-					any = true;
 					lastPressedObject = obj;
 					return true;
 				}

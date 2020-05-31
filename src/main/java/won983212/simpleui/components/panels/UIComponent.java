@@ -1,10 +1,15 @@
-package won983212.simpleui;
+package won983212.simpleui.components.panels;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import won983212.simpleui.Arranges;
+import won983212.simpleui.DirWeights;
+import won983212.simpleui.HorizontalArrange;
+import won983212.simpleui.VerticalArrange;
 
 // TODO Combobox, Keybox, Textfield
 /**
@@ -25,11 +30,29 @@ public abstract class UIComponent<T> {
 	private boolean isVisible = true;
 	
 	public Object metadata = null;
+	protected UIPanel parent = null;
 	private Dimension sizeCache = null;
 	
+	protected Point calculateActualLocation() {
+		UIComponent obj = this;
+		Point p = new Point(0, 0);
+		while(obj != null) {
+			p.x += obj.x;
+			p.y += obj.y;
+			obj = obj.parent;
+		}
+		return p;
+	}
 	
-	public boolean isIn(int px, int py) {
-		return px >= x && px <= x + width && py >= y && py <= y + height;
+	/**
+	 * <code>(x, y)</code> 좌표가 컴포넌트 영역 내에 포함되는지 확인합니다. 좌표는 상대좌표를 사용합니다.
+	 * 상대좌표는 이 컴포넌트 영역의 가장 오른쪽 위가 (0, 0)인 좌표입니다.
+	 * @param x 상대적인 x좌표
+	 * @param y 상대적인 y좌표
+	 * @return <code>(x, y)</code>가 이 컴포넌트 내에 포함되는지 확인
+	 */
+	public boolean containsRelative(int x, int y) {
+		return x >= 0 && y >= 0 && x < width && y < height;
 	}
 	
 	public boolean isVisible() {
@@ -38,6 +61,21 @@ public abstract class UIComponent<T> {
 	
 	public boolean isEnabled() {
 		return isEnabled;
+	}
+	
+	/**
+	 * 이 Component가 상호작용이 가능한지 여부입니다. <code>true</code>일 경우 키 입력과 마우스 입력을 받을 수 있습니다. 
+	 */
+	public boolean isInteractive() {
+		return isVisible && isEnabled;
+	}
+	
+	public T setRelativeBounds(int x, int y, int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		return (T) this;
 	}
 	
 	public T setEnabled(boolean enable) {
@@ -60,9 +98,53 @@ public abstract class UIComponent<T> {
 		return (T) this;
 	}
 	
+	public T setMargin(DirWeights margin) {
+		this.margin = margin;
+		return (T) this;
+	}
+	
+	public T setPadding(DirWeights padding) {
+		this.padding = padding;
+		return (T) this;
+	}
+	
+	public T setMinimalSize(int width, int height) {
+		this.minSize = new Dimension(width, height);
+		return (T) this;
+	}
+	
+	public T setArrange(int arrange) {
+		setHorizontalArrange(Arranges.getHorizontalArrangeByTemplate(arrange));
+		setVerticalArrange(Arranges.getVerticalArrangeByTemplate(arrange));
+		return (T) this;
+	}
+	
 	/**
-	 * 레이아웃시 사용할 최종 최소 사이즈를 구합니다. <code>getMeasuredMinSize</code>는 컴포넌트의 최소 사이즈를 구하는 반면,
-	 * 이 메서드는 실제 layout될 때 어느정도의 영역을 차지하는지 구합니다. 일반적으로는 minSize에 padding과 margin을 더한 값을 사용합니다.
+	 * <code>getMeasuredMinSize</code>에서 사용하는 캐시를 삭제합니다. 이 메서드를 호출하고 <code>getMeasuredMinSize</code>를 호출하면
+	 * 다시 계산해서 캐싱합니다.
+	 */
+	public void invalidateSize() {
+		sizeCache = null;
+	}
+	
+	/**
+	 * 최상위 panel에 다시 layout을 요청합니다.
+	 */
+	public void requestLayout() {
+		if(parent != null)
+			parent.requestLayout();
+	}
+	
+	/**
+	 * 사용 가능한 영역(내부영역)을 반환합니다.
+	 */
+	protected Rectangle getInnerBounds() {
+		return new Rectangle(0, 0, width, height);
+	}
+	
+	/**
+	 * 레이아웃시 사용할 최소 사이즈를 구합니다. <code>getMeasuredMinSize</code>는 컴포넌트의 최소 사이즈를 구하는 반면,
+	 * 이 메서드는 실제 layout할 때 어느정도의 영역을 차지하는지 구합니다. 일반적으로는 minSize에 padding과 margin을 더한 값을 사용합니다.
 	 */
 	protected Dimension getLayoutMinSize() {
 		return margin.getExpandedSize(getMeasuredMinSize());
@@ -85,6 +167,14 @@ public abstract class UIComponent<T> {
 		return padding.getExpandedSize(minSize);
 	}
 	
+	/**
+	 * 컴포넌트의 위치와 사이즈를 <code>available</code>(사용 가능한 영역)을 기준으로 설정합니다. 
+	 */
+	protected void arrange(Rectangle available) {
+		setSizeByArrange(available);
+		setPositionByArrange(available);
+	}
+	
 	private void setPositionByArrange(Rectangle available) {
 		Rectangle marginCalc = margin.getContentRect(available);
 		this.x = hArrange.getHorizontalArrangedLocation(marginCalc, width);
@@ -105,13 +195,14 @@ public abstract class UIComponent<T> {
 	}
 
 	/**
-	 * 키 입력 이벤트입니다. 활성화(Enabled)되어있는 모든 component에서 받을 수 있습니다.
+	 * 키 입력 이벤트입니다. 포커스된 컴포넌트만 받을 수 있습니다.
 	 */
 	public void onKeyTyped(char typedChar, int keyCode) {
 	}
 
 	/**
 	 * 마우스 클릭 이벤트입니다. 가장 위에 있는(index가 가장 높은) 컴포넌트만 우선적으로 이벤트를 받습니다.
+	 * 이 이벤트를 받은 컴포넌트가 포커스 처리됩니다.
 	 */
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		return false;
@@ -121,6 +212,18 @@ public abstract class UIComponent<T> {
 	 * 마우스 릴리즈 이벤트입니다. 가장 최근에 클릭된 component만 이 이벤트를 받습니다.
 	 */
 	public void onMouseReleased(int mouseX, int mouseY, int state) {
+	}
+
+	/**
+	 * 포커스를 잃었을 때 호출됩니다.
+	 */
+	public void onLostFocus() {
+	}
+
+	/**
+	 * 포커스를 얻었을 때 호출됩니다.
+	 */
+	public void onGotFocus() {
 	}
 
 	/**

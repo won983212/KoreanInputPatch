@@ -2,8 +2,8 @@ package won983212.simpleui.components;
 
 import net.minecraft.client.gui.Gui;
 import won983212.simpleui.Theme;
-import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.UITools;
+import won983212.simpleui.components.panels.UIStyledComponent;
 import won983212.simpleui.events.IStateChangedEventListener;
 
 public class UITab extends UIStyledComponent<UITab> {

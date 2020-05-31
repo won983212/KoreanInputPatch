@@ -2,23 +2,20 @@ package won983212.simpleui.components;
 
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
-import won983212.simpleui.UIComponent;
-import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
+import won983212.simpleui.components.panels.UIComponent;
+import won983212.simpleui.components.panels.UIStyledComponent;
 import won983212.simpleui.events.IStateChangedEventListener;
 
 public class UISwitch extends UIComponent<UISwitch> {
-	public static final int DEFAULT_WIDTH = 24;
-	public static final int DEFAULT_HEIGHT = 9;
 	private boolean isActive;
 	private IStateChangedEventListener<Boolean> event;
 	private DecimalAnimation barAnimation = new DecimalAnimation(100);
 	
 	public UISwitch() {
 		setActive(false);
-		width = DEFAULT_WIDTH;
-		height = DEFAULT_HEIGHT;
+		setMinimalSize(24, 9);
 	}
 	
 	public UISwitch setChangedEventListener(IStateChangedEventListener<Boolean> event) {

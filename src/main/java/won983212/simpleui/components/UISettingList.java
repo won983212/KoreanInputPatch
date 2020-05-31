@@ -1,13 +1,10 @@
 package won983212.simpleui.components;
 
-import java.util.HashMap;
-
-import won983212.simpleui.Theme;
-import won983212.simpleui.UITools;
 import won983212.simpleui.components.panels.UIPanel;
 
+//TODO Debug
 public class UISettingList extends UIPanel {
-	private static final int ITEM_HEIGHT = 20;
+	/*private static final int ITEM_HEIGHT = 20;
 	private static final int ITEM_GAP = 3;
 	private static final int MARGIN = 6;
 	private Property[] properties; // cached properties.
@@ -27,8 +24,7 @@ public class UISettingList extends UIPanel {
 		for (int i = 0; i < properties.length; i++) {
 			final int px = x + MARGIN;
 			final int py = (int) (y + MARGIN + (ITEM_HEIGHT + ITEM_GAP) * (i + 0.5));
-			/*add(new UIRectangle().setBounds(px, py, width - MARGIN * 2, ITEM_HEIGHT)
-				.setBackgroundColor(Theme.BACKGROUND));*/
+			//add(new UIRectangle().setBounds(px, py, width - MARGIN * 2, ITEM_HEIGHT).setBackgroundColor(Theme.BACKGROUND));
 			add(new UILabel(properties[i].label).setBounds(px + 6, py, width - MARGIN * 2, ITEM_HEIGHT)
 					.setTextCenter(false, true).setForegroundColor(Theme.BLACK).setShadow(Theme.LIGHT_GRAY));
 			switch (properties[i].type) {
@@ -65,5 +61,5 @@ public class UISettingList extends UIPanel {
 			this.type = type;
 			this.selectLabels = selectLabels;
 		}
-	}
+	}*/
 }

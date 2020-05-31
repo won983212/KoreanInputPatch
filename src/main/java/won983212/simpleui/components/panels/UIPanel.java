@@ -1,22 +1,20 @@
 package won983212.simpleui.components.panels;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ListIterator;
 
-import won983212.simpleui.UIComponent;
-import won983212.simpleui.UIStyledComponent;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class UIPanel extends UIComponent<UIPanel> {
-	private ArrayList<UIComponent> components = new ArrayList<>();
+	protected ArrayList<UIComponent> components = new ArrayList<>();
 	private UIComponent clicked = null;
-
-	public UIPanel addAll(Collection<? extends UIComponent> components) {
-		this.components.addAll(components);
-		return this;
-	}
+	private UIComponent focusd = null;
 
 	public UIPanel add(UIComponent comp) {
+		comp.parent = this;
 		components.add(comp);
 		return this;
 	}
@@ -25,31 +23,71 @@ public class UIPanel extends UIComponent<UIPanel> {
 		components.clear();
 		return this;
 	}
-
-	public UIComponent getComponent(int index) {
-		return components.get(index);
+	
+	@Override
+	public void requestLayout() {
+		if (parent == null) {
+			invalidateSize();
+			layout();
+		} else
+			parent.requestLayout();
 	}
 
-	protected void componentKeyType(UIComponent comp, char typedChar, int keyCode) {
-		if (comp.isEnabled()) {
-			comp.onKeyTyped(typedChar, keyCode);
+	@Override
+	public void arrange(Rectangle available) {
+		super.arrange(available);
+		layout();
+	}
+
+	@Override
+	public Dimension measureMinSize() {
+		Dimension dim = new Dimension();
+		for (UIComponent obj : components) {
+			Dimension clientDim = obj.getLayoutMinSize();
+			dim.width = Math.max(dim.width, clientDim.width);
+			dim.height = Math.max(dim.height, clientDim.height);
+		}
+		return dim;
+	}
+
+	/**
+	 * 자식 컴포넌트들을 전부 arrange합니다.
+	 */
+	public void layout() {
+		Rectangle available = getInnerBounds();
+		for (UIComponent obj : components) {
+			obj.arrange(available);
 		}
 	}
-
-	protected boolean componentMouseClicked(UIComponent comp, int mouseX, int mouseY, int mouseButton) {
-		if (comp.isEnabled() && comp.isIn(mouseX, mouseY)) {
-			if (comp.onMouseClicked(mouseX, mouseY, mouseButton)) {
-				clicked = comp;
+	
+	@Override
+	public boolean containsRelative(int x, int y) {
+		for (UIComponent obj : components) {
+			if (obj.isInteractive() && obj.containsRelative(x - obj.x, y - obj.y))
 				return true;
-			}
 		}
 		return false;
 	}
 
 	@Override
+	public void invalidateSize() {
+		for (UIComponent obj : components)
+			obj.invalidateSize();
+		super.invalidateSize();
+	}
+
+	/**
+	 * 컴포넌트 리스트상 <code>index</code> 위치에 있는 component를 반환합니다.
+	 */
+	public UIComponent getComponent(int index) {
+		return components.get(index);
+	}
+
+	@Override
 	public void onKeyTyped(char typedChar, int keyCode) {
 		for (UIComponent comp : components) {
-			componentKeyType(comp, typedChar, keyCode);
+			if (comp instanceof UIPanel || focusd == comp)
+				comp.onKeyTyped(typedChar, keyCode);
 		}
 	}
 
@@ -57,9 +95,16 @@ public class UIPanel extends UIComponent<UIPanel> {
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		ListIterator<UIComponent> li = components.listIterator(components.size());
 		while (li.hasPrevious()) {
-			if (componentMouseClicked(li.previous(), mouseX, mouseY, mouseButton))
-				return true;
+			UIComponent comp = li.previous();
+			if (comp.isInteractive() && comp.containsRelative(mouseX - comp.x, mouseY - comp.y)) {
+				if (comp.onMouseClicked(mouseX - comp.x, mouseY - comp.y, mouseButton)) {
+					setFocus(comp);
+					clicked = comp;
+					return true;
+				}
+			}
 		}
+		setFocus(null);
 		return false;
 	}
 
@@ -78,10 +123,28 @@ public class UIPanel extends UIComponent<UIPanel> {
 		}
 	}
 
+	public void setFocus(UIComponent obj) {
+		if (focusd == obj)
+			return;
+		if (focusd != null)
+			focusd.onLostFocus();
+		focusd = obj;
+		if (focusd != null)
+			focusd.onGotFocus();
+	}
+
+	@Override
+	public void onLostFocus() {
+		super.onLostFocus();
+		setFocus(null);
+	}
+
 	@Override
 	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
 		for (UIComponent comp : components) {
-			comp.draw(mouseX, mouseY, partialTicks);
+			GlStateManager.translate(x, y, 0);
+			comp.draw(mouseX - comp.x, mouseY - comp.y, partialTicks);
+			GlStateManager.translate(-x, -y, 0);
 		}
 	}
 }

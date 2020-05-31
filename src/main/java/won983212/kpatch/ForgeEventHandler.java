@@ -20,6 +20,7 @@ import won983212.kpatch.wrapper.EditSignWrapper;
 import won983212.kpatch.wrapper.TextfieldWrapper;
 import won983212.simpleui.windows.UIScreen;
 import won983212.simpleui.windows.UIScreenSettings;
+import won983212.simpleui.windows.UIScreenTest;
 
 public class ForgeEventHandler {
 	private Queue<Runnable> afterRenderQueue = Queues.newArrayDeque();
@@ -30,7 +31,7 @@ public class ForgeEventHandler {
 		
 		// TODO Debug
 		if (screen instanceof GuiMainMenu) {
-			Minecraft.getMinecraft().displayGuiScreen(new UIScreenSettings((GuiMainMenu) screen));
+			Minecraft.getMinecraft().displayGuiScreen(new UIScreenTest((GuiMainMenu) screen));
 			//Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
 			return;
 		}

@@ -2,8 +2,8 @@ package won983212.simpleui.components;
 
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
-import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.UITools;
+import won983212.simpleui.components.panels.UIStyledComponent;
 
 public class UIRectangle extends UIStyledComponent<UIRectangle> {
 	@Override

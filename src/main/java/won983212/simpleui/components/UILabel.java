@@ -1,7 +1,7 @@
 package won983212.simpleui.components;
 
-import won983212.simpleui.UIStyledComponent;
 import won983212.simpleui.UITools;
+import won983212.simpleui.components.panels.UIStyledComponent;
 
 public class UILabel extends UIStyledComponent<UILabel> {
 	private String text;
@@ -12,6 +12,7 @@ public class UILabel extends UIStyledComponent<UILabel> {
 	
 	public UILabel setText(String text) {
 		this.text = text;
+		setMinimalSize(fontRenderer.getStringWidth(text), fontRenderer.FONT_HEIGHT);
 		return this;
 	}
 	

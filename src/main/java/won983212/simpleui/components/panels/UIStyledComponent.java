@@ -1,7 +1,9 @@
-package won983212.simpleui;
+package won983212.simpleui.components.panels;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import won983212.simpleui.Theme;
+import won983212.simpleui.UITools;
 
 /**
  * UIComponent에 스타일링이 포함된 클래스 
