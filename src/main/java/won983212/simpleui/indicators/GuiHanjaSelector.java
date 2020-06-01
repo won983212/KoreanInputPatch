@@ -8,11 +8,9 @@ import won983212.kpatch.KoreanInputPatch;
 import won983212.simpleui.UITools;
 import won983212.simpleui.Theme;
 
-public class GuiHanjaSelector implements IIndicatorUI {
+public class GuiHanjaSelector extends GuiIndicator {
 	private static final int TITLE_HEIGHT = 20;
 	private static final int GAP = 3;
-	private int width = 0;
-	private int height = 0;
 	
 	private char key;
 	private int page;

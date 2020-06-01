@@ -8,6 +8,6 @@ import won983212.simpleui.components.panels.UIStyledComponent;
 public class UIRectangle extends UIStyledComponent<UIRectangle> {
 	@Override
 	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
-		UITools.drawArea(x, y, width, height, backgroundColor, shadow, radius);
+		UITools.drawArea(x, y, width, height, backgroundColor, shadow, roundRadius);
 	}
 }

@@ -6,7 +6,7 @@ import won983212.kpatch.KoreanInputPatch;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 
-public class GuiColorSelector implements IIndicatorUI {
+public class GuiColorSelector extends GuiIndicator {
 	private static final String code = "0123456789abcdefklmnor";
 	private static final int[] color = {
 		0x000000, 0x0000aa, 0x00aa00, 0x00aaaa, 0xaa0000, 0xaa00aa, 0xffaa00, 0xaaaaaa,	// 0 1 2 3 4 5 6 7
@@ -21,15 +21,17 @@ public class GuiColorSelector implements IIndicatorUI {
 	private static final int gap = 3;
 	private static final int borderColor = Theme.DARK_GRAY;
 	
-	public static final int WIDTH = columns * (colorPanelSize + gap) - gap + margin * 2;
-	public static final int HEIGHT = rows * (colorPanelSize + gap) - gap + margin * 2;
+	public GuiColorSelector() {
+		this.width = columns * (colorPanelSize + gap) - gap + margin * 2;
+		this.height = rows * (colorPanelSize + gap) - gap + margin * 2;
+	}
 	
 	public void draw(int x, int y) {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			FontRenderer fr = UITools.getDefaultASCIIRenderer();
 			
 			// background
-			UITools.drawArea(x, y, WIDTH, HEIGHT, Theme.BACKGROUND, Theme.BACKGROUND_SHADOW, 0);
+			UITools.drawArea(x, y, width, height, Theme.BACKGROUND, Theme.BACKGROUND_SHADOW, 0);
 			
 			int k = 0;
 			for (int j = 0; j < rows; j++) {

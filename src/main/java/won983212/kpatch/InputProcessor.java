@@ -62,7 +62,7 @@ public abstract class InputProcessor {
 			input.setText(s1.substring(0, s1.length() - 1) + s2);
 			setCursor(start - 1);
 		} else if (amount > 0 && s2.length() > 0) {
-			input.setText(s1.substring(0, s1.length() - 1) + s2);
+			input.setText(s1 + s2.substring(1));
 			setCursor(start);
 		} else {
 			return false;

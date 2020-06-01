@@ -46,7 +46,7 @@ public class UIScreen extends GuiScreen {
 		if(screenBounds.x == -1 || screenBounds.y == -1) {
 			screenBounds.setLocation((width - screenBounds.width) / 2, (height - screenBounds.height) / 2);
 		}
-		rootPanel.setRelativeBounds(0, 0, screenBounds.width, screenBounds.height);
+		rootPanel.setRelativeBounds(screenBounds.x, screenBounds.y, screenBounds.width, screenBounds.height);
 		rootPanel.layout();
 	}
 	
@@ -59,9 +59,7 @@ public class UIScreen extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		GlStateManager.translate(screenBounds.x, screenBounds.y, 0);
 		rootPanel.draw(mouseX - screenBounds.x, mouseY - screenBounds.y, partialTicks);
-		GlStateManager.translate(-screenBounds.x, -screenBounds.y, 0);
 	}
 
 	@Override

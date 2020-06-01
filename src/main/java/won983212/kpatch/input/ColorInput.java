@@ -1,5 +1,7 @@
 package won983212.kpatch.input;
 
+import java.awt.Point;
+
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
@@ -37,6 +39,12 @@ public class ColorInput extends InputProcessor {
 		showIndicator = false;
 	}
 
+	public void draw(int parentX, int parentY, int parentWidth, int parentHeight) {
+		if(showIndicator) {
+			indicator.draw(parentX, parentY, parentWidth, parentHeight);
+		}
+	}
+	
 	public void draw(int x, int y) {
 		if(showIndicator) {
 			indicator.draw(x, y);

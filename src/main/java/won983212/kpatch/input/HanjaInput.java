@@ -1,5 +1,7 @@
 package won983212.kpatch.input;
 
+import java.awt.Point;
+
 import org.lwjgl.input.Keyboard;
 
 import won983212.kpatch.Configs;
@@ -50,7 +52,9 @@ public class HanjaInput extends InputProcessor {
 	}
 
 	private void updateHanjaUI() {
-		indicator.setHanjaData(key, page, hanjaCache);
+		if(hanjaCache != null) {
+			indicator.setHanjaData(key, page, hanjaCache);
+		}
 	}
 	
 	@Override
@@ -105,6 +109,12 @@ public class HanjaInput extends InputProcessor {
 	
 	public int getIndicatorHeight() {
 		return indicator.getHeight();
+	}
+
+	public void draw(int parentX, int parentY, int parentWidth, int parentHeight) {
+		if(showIndicator) {
+			indicator.draw(parentX, parentY, parentWidth, parentHeight);
+		}
 	}
 
 	public void draw(int x, int y) {

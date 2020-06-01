@@ -68,10 +68,11 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	public void drawTextBox() {
 		if (isFocused()) {
 			int ind_x = getEnableBackgroundDrawing() ? (this.x - 1) : (this.x - 2);
+			int ind_y = getEnableBackgroundDrawing() ? (y < 2 ? y + 1 : y - 1) : y;
 			krIn.setLength(getText().length(), getMaxStringLength());
-			krIn.draw(ind_x, getIndicatorY(GuiKoreanIndicator.HEIGHT));
-			colorIn.draw(ind_x, getIndicatorY(GuiColorSelector.HEIGHT));
-			hanjaIn.draw(ind_x, getIndicatorY(hanjaIn.getIndicatorHeight()));
+			krIn.draw(ind_x, ind_y, width, height);
+			colorIn.draw(ind_x, ind_y, width, height);
+			hanjaIn.draw(ind_x, ind_y, width, height);
 		}
 		super.drawTextBox();
 	}

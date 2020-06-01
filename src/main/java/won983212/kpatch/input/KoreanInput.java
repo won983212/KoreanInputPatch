@@ -1,11 +1,14 @@
 package won983212.kpatch.input;
 
+import java.awt.Point;
+
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
+import won983212.simpleui.indicators.GuiIndicator;
 import won983212.simpleui.indicators.GuiKoreanIndicator;
 
 public class KoreanInput extends InputProcessor {
@@ -119,6 +122,10 @@ public class KoreanInput extends InputProcessor {
 				return false;
 			backspaceKorean();
 			return true;
+		} else if (i == Keyboard.KEY_DELETE) {
+			deleteChars(1);
+			cancelAssemble();
+			return true;
 		} else if (i == Configs.getInt(Configs.KEY_KOR)) {
 			isKorean = !isKorean;
 			cancelAssemble();
@@ -204,6 +211,10 @@ public class KoreanInput extends InputProcessor {
 		indicator.setLength(len, maxLen);
 	}
 
+	public void draw(int parentX, int parentY, int parentWidth, int parentHeight) {
+		indicator.draw(parentX, parentY, parentWidth, parentHeight);
+	}
+	
 	public void draw(int x, int y) {
 		indicator.draw(x, y);
 	}

@@ -13,8 +13,7 @@ import won983212.simpleui.animation.AnimationBase;
 import won983212.simpleui.animation.ColorAnimation;
 import won983212.simpleui.animation.DecimalAnimation;
 
-public class GuiKoreanIndicator implements IIndicatorUI {
-	public static final int HEIGHT = 11;
+public class GuiKoreanIndicator extends GuiIndicator {
 	private DecimalAnimation alertBoomingAnimation = new DecimalAnimation(150);
 	private DecimalAnimation alertWidthAnimation = new DecimalAnimation(200);
 	private DecimalAnimation modeChangeAnimation = new DecimalAnimation(200);
@@ -30,6 +29,8 @@ public class GuiKoreanIndicator implements IIndicatorUI {
 
 	public GuiKoreanIndicator(String unit) {
 		this.unit = unit;
+		this.width = 30;
+		this.height = 11;
 		alertBoomingAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
 		modeBgColorAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
 	}
@@ -85,17 +86,17 @@ public class GuiKoreanIndicator implements IIndicatorUI {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			// kor indicator bg
 			if(modeBgColorAnimation.isRunning()) {
-				UITools.drawArea(x, y, textWidth + 8, HEIGHT, modeBgColorAnimation.update(), 0, 0);
+				UITools.drawArea(x, y, textWidth + 8, height, modeBgColorAnimation.update(), 0, 0);
 			} else {
-				UITools.drawArea(x, y, textWidth + 8, HEIGHT, Theme.BACKGROUND, 0, 0);
+				UITools.drawArea(x, y, textWidth + 8, height, Theme.BACKGROUND, 0, 0);
 			}
 	
 			// kor indicator badge
 			if (modeChangeAnimation.isRunning()) {
-				UITools.drawArea(x, y, 2, HEIGHT, !kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
-				UITools.drawArea(x, y, 2, (int) (HEIGHT * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
+				UITools.drawArea(x, y, 2, height, !kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
+				UITools.drawArea(x, y, 2, (int) (height * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
 			} else {
-				UITools.drawArea(x, y, 2, HEIGHT, kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
+				UITools.drawArea(x, y, 2, height, kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
 			}
 	
 			if (alertText != null) {
@@ -104,13 +105,13 @@ public class GuiKoreanIndicator implements IIndicatorUI {
 	
 				// alert bg
 				double p = useAnimation ? alertWidthAnimation.update() : 1;
-				UITools.drawArcRect(alertX, y, alertX + alertWidth * p, y + HEIGHT, alertBg, 0, 0);
+				UITools.drawArcRect(alertX, y, alertX + alertWidth * p, y + height, alertBg, 0, 0);
 	
 				// alert text
 				if (p > 0.9) {
 					double scale = useAnimation ? 1 + alertBoomingAnimation.update() * 0.3 : 1;
 					int alertTextX = (int) ((alertX + (alertWidth - fr.getStringWidth(alertText) * scale) / 2) / scale);
-					int alertTextY = (int) ((y + (HEIGHT - fr.FONT_HEIGHT * scale) / 2) / scale);
+					int alertTextY = (int) ((y + (height - fr.FONT_HEIGHT * scale) / 2) / scale);
 
 					if (useAnimation) {
 						GlStateManager.pushMatrix();

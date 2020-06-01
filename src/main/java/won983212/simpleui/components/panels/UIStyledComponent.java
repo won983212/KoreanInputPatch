@@ -13,7 +13,7 @@ public abstract class UIStyledComponent<T> extends UIComponent<T> {
 	protected int backgroundColor = Theme.PRIMARY;
 	protected int foregroundColor = Theme.WHITE;
 	protected int shadow = 0;
-	protected int radius = 0;
+	protected int roundRadius = 0;
 	protected int textArrange = 0;
 
 	public T setBackgroundColor(int color) {
@@ -32,7 +32,7 @@ public abstract class UIStyledComponent<T> extends UIComponent<T> {
 	}
 
 	public T setRadius(int radius) {
-		this.radius = radius;
+		this.roundRadius = radius;
 		return (T) this;
 	}
 
