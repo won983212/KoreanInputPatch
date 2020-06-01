@@ -31,7 +31,7 @@ public class ForgeEventHandler {
 		
 		// TODO Debug
 		if (screen instanceof GuiMainMenu) {
-			//Minecraft.getMinecraft().displayGuiScreen(new UIScreenTest((GuiMainMenu) screen));
+			Minecraft.getMinecraft().displayGuiScreen(new UIScreenTest((GuiMainMenu) screen));
 			//Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
 			return;
 		}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import won983212.simpleui.components.UIKeyBox;
 import won983212.simpleui.components.panels.UIComponent;
 import won983212.simpleui.components.panels.UIPanel;
 import won983212.simpleui.components.panels.UIStyledComponent;
@@ -64,7 +65,9 @@ public class UIScreen extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
+		if (!UIKeyBox.isKeyBoxEditing()) {
+			super.keyTyped(typedChar, keyCode);
+		}
 		rootPanel.onKeyTyped(typedChar, keyCode);
 	}
 
