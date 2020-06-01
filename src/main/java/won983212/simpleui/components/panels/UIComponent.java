@@ -30,6 +30,7 @@ public abstract class UIComponent<T> {
 	private boolean isVisible = true;
 	
 	public Object metadata = null;
+	protected Object layoutData = null;
 	protected UIPanel parent = null;
 	private Dimension sizeCache = null;
 	

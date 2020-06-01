@@ -4,14 +4,25 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-//TODO Implement
 public class GridPanel extends UIPanel {
-	/*private ArrayList<CellLength> columns = new ArrayList<CellLength>();
+	private ArrayList<CellLength> columns = new ArrayList<CellLength>();
 	private ArrayList<CellLength> rows = new ArrayList<CellLength>();
 	
-	@Override
-	public void add(UIObject obj) {
-		super.add(obj);
+	/**
+	 * 여러개의 셀 크기를 택스트로 한번에 정의합니다. 셀 크기는 따옴표(,)로 구분합니다.
+	 * <ul>
+	 *  <li><code>FIXED</code>: "크기" (고정 크기 3.14 = "3.14")</li>
+	 *  <li><code>AUTO</code>: "auto"</li>
+	 *  <li><code>ALLOCATED</code>: "*비율" (가변 비율 크기 3 = "*3")</li>
+	 * </ul>
+	 * ex) 고정 크기 3.14, 자동, 3배수 비율 크기 = "3.14,auto,*3"
+	 */
+	public void addColumns(String text) {
+		for (String ent : text.split(",")) {
+			if (ent != null && ent.length() > 0) {
+				addColumn(new LengthDefinition(ent.trim()));
+			}
+		}
 	}
 	
 	public void addColumn(LengthDefinition column) {
@@ -20,6 +31,14 @@ public class GridPanel extends UIPanel {
 	
 	public void addEmptyColumn() {
 		columns.add(new CellLength(new LengthDefinition(LengthType.ALLOCATED, 1), 0));
+	}
+	
+	public void addRows(String text) {
+		for (String ent : text.split(",")) {
+			if (ent != null && ent.length() > 0) {
+				addRow(new LengthDefinition(ent.trim()));
+			}
+		}
 	}
 	
 	public void addRow(LengthDefinition row) {
@@ -35,12 +54,13 @@ public class GridPanel extends UIPanel {
 			c.maxDesiredLength = 0;
 		for(CellLength r : rows)
 			r.maxDesiredLength = 0;
-		for(UIObject obj : uiList) {
+		for(UIComponent obj : components) {
+			GridLayoutMetadata layout = getLayoutData(obj);
 			Dimension desired = obj.getLayoutMinSize();
-			CellLength column = columns.get(obj.layoutX);
-			column.maxDesiredLength = Math.max(column.maxDesiredLength, desired.width / obj.layoutXSpan);
-			CellLength row = rows.get(obj.layoutY);
-			row.maxDesiredLength = Math.max(row.maxDesiredLength, desired.height / obj.layoutYSpan);
+			CellLength column = columns.get(layout.x);
+			column.maxDesiredLength = Math.max(column.maxDesiredLength, desired.width / layout.xSpan);
+			CellLength row = rows.get(layout.y);
+			row.maxDesiredLength = Math.max(row.maxDesiredLength, desired.height / layout.ySpan);
 		}
 	}
 	
@@ -98,9 +118,8 @@ public class GridPanel extends UIPanel {
 	@Override
 	public void layout() {
 		measureMaxSize();
-		Rectangle rect = getRelativeBounds();
-		int[] widths = calculateActualLength(rect.width, columns);
-		int[] heights = calculateActualLength(rect.height, rows);
+		int[] widths = calculateActualLength(width, columns);
+		int[] heights = calculateActualLength(height, rows);
 		int[] stackedX = new int[widths.length+1];
 		int[] stackedY = new int[heights.length+1];
 		
@@ -112,14 +131,35 @@ public class GridPanel extends UIPanel {
 		for(int i=1;i<stackedY.length;i++)
 			stackedY[i] = stackedY[i-1]+heights[i-1];
 		
-		for(UIObject obj : uiList) {
-			Rectangle available = new Rectangle(stackedX[obj.layoutX], stackedY[obj.layoutY], 0, 0);
-			available.width = stackedX[obj.layoutX + obj.layoutXSpan] - available.x;
-			available.height = stackedY[obj.layoutY + obj.layoutYSpan] - available.y;
+		for(UIComponent obj : components) {
+			GridLayoutMetadata layout = getLayoutData(obj);
+			Rectangle available = new Rectangle(stackedX[layout.x], stackedY[layout.y], 0, 0);
+			available.width = stackedX[layout.x + layout.xSpan] - available.x;
+			available.height = stackedY[layout.y + layout.ySpan] - available.y;
 			obj.arrange(available);
 		}
 	}
 	
+	private static GridLayoutMetadata getLayoutData(UIComponent comp) {
+		if(comp.layoutData == null || comp.layoutData.getClass() != GridLayoutMetadata.class) {
+			comp.layoutData = new GridLayoutMetadata(0, 0, 1, 1);
+		}
+		return (GridLayoutMetadata) comp.layoutData;
+	}
+	
+	public static <T> T setLayout(UIComponent<T> comp, int layoutX, int layoutY, int xSpan, int ySpan) {
+		comp.layoutData = new GridLayoutMetadata(layoutX, layoutY, xSpan, ySpan);
+		return (T) comp;
+	}
+	
+	/**
+	 * 셀 크기 타입
+	 * <ul>
+	 *  <li><code>FIXED</code>: 고정 크기입니다. 인수는 설정할 크기를 전달합니다.</li>
+	 *  <li><code>AUTO</code>: 자동 맞춤 크기입니다. 셀 내부 컴포넌트의 사이즈에 맞춰서 크기를 조절합니다. 인수는 없습니다.</li>
+	 *  <li><code>ALLOCATED</code>: 가변 비율 크기입니다. auto와 고정 크기셀을 할당하고 남은 영역을 비율에 맞춰 다른 allocated셀과 영역을 나누어 할당받습니다. 인수는 비율을 전달합니다.</li>
+	 * </ul> 
+	 */
 	public static enum LengthType {
 		FIXED,
 		AUTO,
@@ -134,9 +174,25 @@ public class GridPanel extends UIPanel {
 			this.type = type;
 			this.argument = arg;
 		}
+		
+		public LengthDefinition(String text) {
+			try {
+				if (text.equals("auto")) {
+					this.type = LengthType.AUTO;
+				} else if (text.charAt(0) == '*') {
+					this.type = LengthType.ALLOCATED;
+					this.argument = Double.parseDouble(text.substring(1));
+				} else {
+					this.type = LengthType.FIXED;
+					this.argument = Double.parseDouble(text);
+				}
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("알 수 없는 포맷입니다.");
+			}
+		}
 	}
 	
-	public static class CellLength {
+	private static class CellLength {
 		public LengthDefinition lengthDef;
 		public int maxDesiredLength;
 		
@@ -144,5 +200,19 @@ public class GridPanel extends UIPanel {
 			this.lengthDef = lenDef;
 			this.maxDesiredLength = desired;
 		}
-	}*/
+	}
+	
+	private static class GridLayoutMetadata {
+		public final int x;
+		public final int y;
+		public final int xSpan;
+		public final int ySpan;
+		
+		private GridLayoutMetadata(int layoutX, int layoutY, int xSpan, int ySpan) {
+			this.x = layoutX;
+			this.y = layoutY;
+			this.xSpan = xSpan;
+			this.ySpan = ySpan;
+		}
+	}
 }

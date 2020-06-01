@@ -46,8 +46,11 @@ public abstract class InputProcessor {
 		input.setText(s1 + text + s2);
 		setCursor(start + text.length());
 	}
-
-	protected void backspace() {
+	
+	/**
+	 * amount만큼 문자를 삭제합니다. amount가 음수면 왼쪽으로, 양수면 오른쪽으로 삭제합니다.
+	 */
+	protected boolean deleteChars(int amount) {
 		int start = getStartCursor();
 		String in = input.getText();
 		String s1 = in.substring(0, start);
@@ -55,10 +58,16 @@ public abstract class InputProcessor {
 		if (input.getMovingCursor() != input.getAnchorCursor()) {
 			input.setText(s1 + s2);
 			setCursor(start);
-		} else if (start > 0) {
+		} else if (amount < 0 && start > 0) {
 			input.setText(s1.substring(0, s1.length() - 1) + s2);
 			setCursor(start - 1);
+		} else if (amount > 0 && s2.length() > 0) {
+			input.setText(s1.substring(0, s1.length() - 1) + s2);
+			setCursor(start);
+		} else {
+			return false;
 		}
+		return true;
 	}
 	
 	public static boolean processKeyInput(char charIn, int keyIn, InputProcessor... processors) {

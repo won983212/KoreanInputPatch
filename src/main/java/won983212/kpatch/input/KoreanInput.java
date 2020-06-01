@@ -146,9 +146,9 @@ public class KoreanInput extends InputProcessor {
 
 	private void backspaceKorean() {
 		if (cho == -1) { // 아얘 assemble이 안된 상태. 그냥 백스페이스 ㄱ
-			backspace();
+			deleteChars(-1);
 		} else if (jung == -1) { // 초성만 있으면 문자 삭제.
-			backspace();
+			deleteChars(-1);
 			cancelAssemble();
 		} else if (jong == 0) {
 			if (Jungsung[jung].length() == 2) {

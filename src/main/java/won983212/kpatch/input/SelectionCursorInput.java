@@ -124,19 +124,9 @@ public class SelectionCursorInput extends InputProcessor {
 			}
 			return true;
 		} else if (i == Keyboard.KEY_BACK) {
-			int minCur = Math.min(anchorCursor, movingCursor);
-			String s1 = text.substring(0, minCur);
-			String s2 = text.substring(Math.max(anchorCursor, movingCursor));
-			if (anchorCursor != movingCursor) {
-				input.setText(s1 + s2);
-				setCursor(minCur);
-			} else if (s1.length() > 0) {
-				input.setText(s1.substring(0, s1.length() - 1) + s2);
-				setCursor(minCur - 1);
-			} else {
-				return false;
-			}
-			return true;
+			return deleteChars(-1);
+		} else if (i == Keyboard.KEY_DELETE) {
+			return deleteChars(1);
 		} else {
 			return false;
 		}

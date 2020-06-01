@@ -5,6 +5,7 @@ import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
 import won983212.simpleui.indicators.GuiColorSelector;
 
+//TODO Book, sign에 아직 color, hanja적용 안했음
 public class ColorInput extends InputProcessor {
 	private GuiColorSelector indicator = new GuiColorSelector();
 	private boolean showIndicator = false;
@@ -23,6 +24,7 @@ public class ColorInput extends InputProcessor {
 		} else if (showIndicator) {
 			if ("0123456789abcdeflmnokr".indexOf(c) != -1) {
 				write("§" + c);
+				input.cancelAllInputContext();
 			}
 			showIndicator = false;
 			return true;

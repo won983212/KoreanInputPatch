@@ -82,9 +82,9 @@ public class HanjaInput extends InputProcessor {
 			return true;
 		} else if (showIndicator) {
 			if (c >= '1' && c <= '9') {
-				input.cancelAllInputContext();
-				backspace();
+				deleteChars(-1);
 				write(hanjaCache[(page - 1) * 9 + c - '1'].hanja);
+				input.cancelAllInputContext();
 			} else if(i == Keyboard.KEY_LEFT) {
 				prevPage();
 				return true;
