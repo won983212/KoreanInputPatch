@@ -20,9 +20,7 @@ public class UIScreenTest extends UIScreen {
 	@Override
 	protected void initComponents() {
 		add(new UIRectangle().setBackgroundColor(0xff666666));
-		add(new UIKeyBox().setArrange(Arranges.TC));
 		add(new UIKeyBox().setArrange(Arranges.CC));
-		add(new UIKeyBox().setArrange(Arranges.BC));
 	}
 	
 	@Override

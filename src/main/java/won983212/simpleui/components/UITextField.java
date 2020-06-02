@@ -16,11 +16,11 @@ import won983212.simpleui.indicators.GuiColorSelector;
 import won983212.simpleui.indicators.GuiIndicator;
 import won983212.simpleui.indicators.GuiKoreanIndicator;
 
-//TODO LineOffset 구현
 public class UITextField extends UIStyledComponent<UITextField> implements IInputWrapper {
 	private String text = "";
 	private int maxTextLength = 256;
 	private boolean isFocused = false;
+	private int lineOffset = 0;
 	
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
 	private KoreanInput krIn = new KoreanInput(this);
@@ -65,19 +65,35 @@ public class UITextField extends UIStyledComponent<UITextField> implements IInpu
 
 	@Override
 	protected void renderComponent(int mouseX, int mouseY, float partialTicks) {
-		int textX = x + 1;
+		int textX = x + 2;
 		int textY = y + (height - fontRenderer.FONT_HEIGHT) / 2;
+
+		if(isFocused) {
+			UITools.drawArea(x, y, width, height, Theme.PRIMARY, 0, roundRadius);
+			UITools.drawArea(x + 0.5, y + 0.5, width - 1, height - 1, backgroundColor, borderShadow, roundRadius);
+		} else {
+			UITools.drawArea(x, y, width, height, backgroundColor, borderShadow, roundRadius);
+		}
 		
-		UITools.drawArea(x, y, width, height, backgroundColor, shadow, roundRadius);
-		UITools.drawText(fontRenderer, text, textX, textY, foregroundColor, shadow, 0);
+		String text = fontRenderer.trimStringToWidth(this.text.substring(lineOffset), width);
+		UITools.drawText(fontRenderer, text, textX, textY, foregroundColor, textShadow, 0);
 		
 		if (isFocused) {
 			Point p = calculateActualLocation();
-			krIn.setLength(text.length(), maxTextLength);
+			krIn.setLength(this.text.length(), maxTextLength);
 			krIn.draw(p.x, p.y, width, height);
 			colorIn.draw(p.x, p.y, width, height);
 			hanjaIn.draw(p.x, p.y, width, height);
-			selection.drawSelectionBox(textX, textY, 0);
+			
+			int startCur = Math.max(0, selection.getStartCursor() - lineOffset);
+			int endCur = Math.min(text.length(), selection.getEndCursor() - lineOffset);
+			if(startCur < text.length() + 1 && endCur >= 0) {
+				int minX = textX + fontRenderer.getStringWidth(text.substring(0, startCur));
+				int maxX = textX + fontRenderer.getStringWidth(text.substring(0, endCur));
+				minX = Math.min(textX + width, minX);
+				maxX = Math.min(textX + width - (textX - x), maxX);
+				selection.drawSelectionBox(minX, textY, maxX, textY + fontRenderer.FONT_HEIGHT);
+			}
 		}
 	}
 
@@ -114,6 +130,18 @@ public class UITextField extends UIStyledComponent<UITextField> implements IInpu
 	@Override
 	public void setMovingCursor(int cursor) {
 		selection.setMovingCursor(cursor);
+		
+		int fullTextLen = text.length();
+		if(fullTextLen < lineOffset) {
+			lineOffset = fullTextLen;
+		}
+		
+		int textLen = fontRenderer.trimStringToWidth(this.text.substring(lineOffset), width).length();
+		if(cursor - lineOffset > textLen) {
+			lineOffset = cursor - textLen;
+		} else if(cursor - lineOffset < 0) {
+			lineOffset = cursor;
+		}
 	}
 
 	@Override

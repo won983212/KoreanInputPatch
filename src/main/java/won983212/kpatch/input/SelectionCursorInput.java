@@ -46,12 +46,7 @@ public class SelectionCursorInput extends InputProcessor {
 	public void setMovingCursor(int cursor) {
 		this.movingCursor = slice(cursor);
 	}
-
-	public void setCursor(int cursor) {
-		setAnchorCursor(cursor);
-		setMovingCursor(cursor);
-	}
-
+	
 	public boolean checkIsOutOfRange(int len) {
 		return anchorCursor < 0 || movingCursor < 0 || anchorCursor > len || movingCursor > len;
 	}
@@ -72,8 +67,8 @@ public class SelectionCursorInput extends InputProcessor {
 	public boolean handleKeyTyped(char c, int i) {
 		String text = input.getText();
 		if (GuiScreen.isKeyComboCtrlA(i)) {
-			setAnchorCursor(0);
-			setMovingCursor(text.length());
+			input.setAnchorCursor(0);
+			input.setMovingCursor(text.length());
 			return true;
 		} else if (GuiScreen.isKeyComboCtrlC(i)) {
 			GuiScreen.setClipboardString(this.getSelectedText());
@@ -87,14 +82,14 @@ public class SelectionCursorInput extends InputProcessor {
 			return true;
 		} else if (i == Keyboard.KEY_HOME) {
 			if (GuiScreen.isShiftKeyDown()) {
-				setMovingCursor(0);
+				input.setMovingCursor(0);
 			} else {
 				setCursor(0);
 			}
 			return true;
 		} else if (i == Keyboard.KEY_END) {
 			if (GuiScreen.isShiftKeyDown()) {
-				setMovingCursor(text.length());
+				input.setMovingCursor(text.length());
 			} else {
 				setCursor(text.length());
 			}
@@ -102,7 +97,7 @@ public class SelectionCursorInput extends InputProcessor {
 		} else if (i == Keyboard.KEY_LEFT) {
 			if (GuiScreen.isShiftKeyDown()) {
 				if (movingCursor > 0)
-					setMovingCursor(movingCursor - 1);
+					input.setMovingCursor(movingCursor - 1);
 			} else if (anchorCursor != movingCursor) {
 				setCursor(Math.min(anchorCursor, movingCursor));
 			} else if (anchorCursor > 0) {
@@ -114,7 +109,7 @@ public class SelectionCursorInput extends InputProcessor {
 		} else if (i == Keyboard.KEY_RIGHT) {
 			if (GuiScreen.isShiftKeyDown()) {
 				if (movingCursor < text.length())
-					setMovingCursor(movingCursor + 1);
+					input.setMovingCursor(movingCursor + 1);
 			} else if (anchorCursor != movingCursor) {
 				setCursor(Math.max(anchorCursor, movingCursor));
 			} else if (anchorCursor < text.length()) {

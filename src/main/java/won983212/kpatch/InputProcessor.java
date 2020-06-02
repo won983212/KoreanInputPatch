@@ -24,7 +24,7 @@ public abstract class InputProcessor {
 		return input.getAnchorCursor() != input.getMovingCursor();
 	}
 
-	protected void setCursor(int cursor) {
+	public void setCursor(int cursor) {
 		input.setAnchorCursor(cursor);
 		input.setMovingCursor(cursor);
 	}

@@ -2,6 +2,7 @@ package won983212.simpleui.components.panels;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 
@@ -12,10 +13,11 @@ public abstract class UIStyledComponent<T> extends UIComponent<T> {
 	protected final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 	protected int backgroundColor = Theme.PRIMARY;
 	protected int foregroundColor = Theme.WHITE;
-	protected int shadow = 0;
+	protected int borderShadow = 0;
+	protected int textShadow = 0;
 	protected int roundRadius = 0;
 	protected int textArrange = 0;
-
+	
 	public T setBackgroundColor(int color) {
 		this.backgroundColor = color;
 		return (T) this;
@@ -26,8 +28,13 @@ public abstract class UIStyledComponent<T> extends UIComponent<T> {
 		return (T) this;
 	}
 
-	public T setShadow(int color) {
-		this.shadow = color;
+	public T setBorderShadow(int color) {
+		this.borderShadow = color;
+		return (T) this;
+	}
+
+	public T setTextShadow(int color) {
+		this.textShadow = color;
 		return (T) this;
 	}
 
