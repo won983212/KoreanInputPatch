@@ -8,12 +8,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.text.TextComponentString;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
+import won983212.kpatch.input.ColorInput;
+import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
 
 public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
 	private KoreanInput krIn = new KoreanInput(this, "%");
+	private ColorInput colorIn = new ColorInput(this);
+	private HanjaInput hanjaIn = new HanjaInput(this);
 	
 	private String textBuffer;
 
@@ -31,14 +35,14 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 			}
 		} else {
 			textBuffer = tileSign.signText[editLine].getUnformattedText();
-			InputProcessor.processKeyInput(typedChar, keyCode, krIn, selection);
+			InputProcessor.processKeyInput(typedChar, keyCode, colorIn, hanjaIn, krIn, selection);
 			tileSign.signText[editLine] = new TextComponentString(textBuffer);
 		}
 	}
 	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, krIn, selection);
+		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, colorIn, hanjaIn, krIn, selection);
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
@@ -65,6 +69,8 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		selection.drawSelectionBox((width - textWidth) / 2 - 1, y, 0);
 		krIn.setLength((int)(textWidth * 100 / 90.0), 100);
 		krIn.draw(width / 2 - 47, indicatorY);
+		colorIn.draw(2, 2);
+		hanjaIn.draw(2, 2);
 	}
 
 	@Override

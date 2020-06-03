@@ -14,6 +14,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
+import won983212.kpatch.input.ColorInput;
+import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
 
@@ -21,6 +23,8 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation("textures/gui/book.png");
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
 	private KoreanInput krIn = new KoreanInput(this);
+	private ColorInput colorIn = new ColorInput(this);
+	private HanjaInput hanjaIn = new HanjaInput(this);
 	
 	public EditBookWrapper(GuiScreenBook parent) {
 		super(Minecraft.getMinecraft().player, parent.book, parent.bookIsUnsigned);
@@ -37,7 +41,7 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (this.bookIsUnsigned) {
-			if (InputProcessor.processKeyInput(typedChar, keyCode, krIn, selection)) {
+			if (InputProcessor.processKeyInput(typedChar, keyCode, colorIn, hanjaIn, krIn, selection)) {
 				if ((keyCode == 28 || keyCode == 156)) {
 					if (bookGettingSigned) {
 						if (!bookTitle.isEmpty()) {
@@ -59,7 +63,7 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 	
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, krIn, selection);
+		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, colorIn, hanjaIn, krIn, selection);
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
@@ -122,6 +126,8 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 			krIn.setLength(text.length(), 255);
 		}
 		krIn.draw(2, 2);
+		colorIn.draw(2, 2);
+		hanjaIn.draw(2, 2);
 		drawCursor();
 		
 		// components rendering (GuiScreen.drawScreen)
