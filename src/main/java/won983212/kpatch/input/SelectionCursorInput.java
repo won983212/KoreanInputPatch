@@ -206,7 +206,7 @@ public class SelectionCursorInput extends InputProcessor {
 	}
 
 	// draw caret. color will be selected automatically.
-	public static void drawSelectionBox(int startX, int startY, int endX, int endY) {
+	public static void drawSelectionBox(double startX, double startY, double endX, double endY) {
 		int color = -1;
 		if (startX == endX) {
 			endX += 1;
@@ -215,15 +215,15 @@ public class SelectionCursorInput extends InputProcessor {
 		drawSelectionBox(startX, startY, endX, endY, color);
 	}
 
-	public static void drawSelectionBox(int startX, int startY, int endX, int endY, int color) {
+	public static void drawSelectionBox(double startX, double startY, double endX, double endY, int color) {
 		if (startX < endX) {
-			int i = startX;
+			double i = startX;
 			startX = endX;
 			endX = i;
 		}
 
 		if (startY < endY) {
-			int j = startY;
+			double j = startY;
 			startY = endY;
 			endY = j;
 		}

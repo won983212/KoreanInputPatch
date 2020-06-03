@@ -48,8 +48,8 @@ public class UITab extends UIStyledComponent<UITab> {
 			int textColor = Theme.DARK_GRAY;
 			String value = values[i];
 			if(i == selected) {
-				UITools.drawArea(x, y + i * ITEM_HEIGHT, width, ITEM_HEIGHT, Theme.WHITE, 0, 0);
-				UITools.drawArea(x, y + i * ITEM_HEIGHT, 2, ITEM_HEIGHT, backgroundColor, 0, 0);
+				UITools.drawArea(x, y + i * ITEM_HEIGHT, width, ITEM_HEIGHT, Theme.WHITE);
+				UITools.drawArea(x, y + i * ITEM_HEIGHT, 2, ITEM_HEIGHT, backgroundColor);
 				textColor = backgroundColor;
 				value = "§l" + value;
 			}

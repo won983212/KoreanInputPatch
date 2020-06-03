@@ -35,7 +35,8 @@ public class UISwitch extends UIComponent<UISwitch> {
 	
 	@Override
 	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
-		UITools.drawArea(x, y, width, height, isActive ? Theme.PRIMARY : Theme.LIGHT_GRAY, 0, 1);
+		// background
+		UITools.drawArea(x, y, width, height, isActive ? Theme.PRIMARY : Theme.LIGHT_GRAY, 0, 0, 1);
 		
 		double animatedX = 0;
 		if(Configs.getBoolean(Configs.UI_ANIMATE)) {
@@ -44,8 +45,9 @@ public class UISwitch extends UIComponent<UISwitch> {
 			animatedX = isActive ? width / 2 : 0;
 		}
 		
+		// switch
 		final double indX = x + 0.5 + animatedX;
-		UITools.drawArea(indX, y + 0.5, width / 2 - 1, height - 1, Theme.BACKGROUND, 0, 1);
+		UITools.drawArea(indX, y + 0.5, width / 2 - 1, height - 1, Theme.BACKGROUND, 0, 0, 1);
 	}
 	
 	@Override

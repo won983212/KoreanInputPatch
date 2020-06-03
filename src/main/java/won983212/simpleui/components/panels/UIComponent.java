@@ -11,7 +11,7 @@ import won983212.simpleui.DirWeights;
 import won983212.simpleui.HorizontalArrange;
 import won983212.simpleui.VerticalArrange;
 
-// TODO Combobox, Keybox
+// TODO Combobox
 /**
  * Component의 기초적인 기능을 담은 클래스 (위치, 크기, 이벤트)
  */

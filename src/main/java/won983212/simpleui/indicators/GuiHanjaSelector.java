@@ -45,10 +45,10 @@ public class GuiHanjaSelector extends GuiIndicator {
 			FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 			
 			// background
-			UITools.drawArea(x, y, width, height, Theme.BACKGROUND, Theme.BACKGROUND_SHADOW, 0);
+			UITools.drawArea(x, y, width, height, Theme.BACKGROUND, Theme.BACKGROUND_SHADOW);
 			
 			// title background
-			UITools.drawArea(x, y, width, TITLE_HEIGHT, Theme.PRIMARY, 0, 0);
+			UITools.drawArea(x, y, width, TITLE_HEIGHT, Theme.PRIMARY);
 			
 			// title
 			GlStateManager.scale(2, 2, 2);
@@ -69,7 +69,7 @@ public class GuiHanjaSelector extends GuiIndicator {
 					break;
 				
 				int py = y + TITLE_HEIGHT + GAP + i * (fr.FONT_HEIGHT + GAP) + 1;
-				UITools.drawText(fr, String.valueOf(i + 1), x + GAP, py, Theme.BLACK, Theme.GRAY, 0);
+				UITools.drawText(fr, String.valueOf(i + 1), x + GAP, py, Theme.BLACK, Theme.GRAY);
 				fr.drawString(String.valueOf(hanjas[idx].hanja), x + 9 + GAP * 2, py, Theme.BLACK);
 				fr.drawString(hanjas[idx].meaning, x + 23 + GAP * 2, py, Theme.BLACK);
 			}

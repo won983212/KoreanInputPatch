@@ -8,7 +8,7 @@ import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.components.panels.UIStyledComponent;
 
-public class UIKeyBox extends UIStyledComponent<UIButton> {
+public class UIKeyBox extends UIStyledComponent<UIKeyBox> {
 	private static UIKeyBox editingBox = null;
 	private DecimalAnimation hoverAnimation = new DecimalAnimation(150);
 	private boolean hover = false;
@@ -21,6 +21,7 @@ public class UIKeyBox extends UIStyledComponent<UIButton> {
 	public UIKeyBox(int initialKey) {
 		this.key = initialKey;
 		setMinimalSize(50, 18);
+		setTextShadow(Theme.BACKGROUND_SHADOW);
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class UIKeyBox extends UIStyledComponent<UIButton> {
 			keyText = Keyboard.getKeyName(key);
 		}
 		
-		UITools.drawArea(x, y, width, height, color, borderShadow, roundRadius);
+		UITools.drawArea(x, y, width, height, color, borderShadow, borderColor, roundRadius);
 		UITools.drawText(fontRenderer, keyText, x + width / 2, y + height / 2, foregroundColor, textShadow, UITools.CENTER_BOTH);
 	}
 	

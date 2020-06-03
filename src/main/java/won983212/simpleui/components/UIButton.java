@@ -19,6 +19,7 @@ public class UIButton extends UIStyledComponent<UIButton> {
 	public UIButton(String label) {
 		setText(label);
 		setPadding(new DirWeights(2));
+		setTextShadow(Theme.BACKGROUND_SHADOW);
 	}
 
 	public UIButton setText(String label) {
@@ -74,11 +75,11 @@ public class UIButton extends UIStyledComponent<UIButton> {
 		if (isClicking) {
 			px += 0.5;
 			py += 0.5;
-			UITools.drawArea(px, py, width, height, color, 0, 0);
+			UITools.drawArea(px, py, width, height, color, 0, borderColor, 0);
 		} else {
-			UITools.drawArea(px, py, width, height, color, Theme.BACKGROUND_SHADOW, 0);
+			UITools.drawArea(px, py, width, height, color, Theme.BACKGROUND_SHADOW, borderColor, 0);
 		}
 		
-		UITools.drawText(fontRenderer, label, px + width / 2, py + height / 2, foregroundColor, Theme.BACKGROUND_SHADOW, UITools.CENTER_BOTH);
+		UITools.drawText(fontRenderer, label, px + width / 2, py + height / 2, foregroundColor, textShadow, UITools.CENTER_BOTH);
 	}
 }

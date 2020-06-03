@@ -86,17 +86,17 @@ public class GuiKoreanIndicator extends GuiIndicator {
 		KoreanInputPatch.instance.getEventHandler().addTopRenderQueue(() -> {
 			// kor indicator bg
 			if(modeBgColorAnimation.isRunning()) {
-				UITools.drawArea(x, y, textWidth + 8, height, modeBgColorAnimation.update(), 0, 0);
+				UITools.drawArea(x, y, textWidth + 8, height, modeBgColorAnimation.update());
 			} else {
-				UITools.drawArea(x, y, textWidth + 8, height, Theme.BACKGROUND, 0, 0);
+				UITools.drawArea(x, y, textWidth + 8, height, Theme.BACKGROUND);
 			}
 	
 			// kor indicator badge
 			if (modeChangeAnimation.isRunning()) {
-				UITools.drawArea(x, y, 2, height, !kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
-				UITools.drawArea(x, y, 2, (int) (height * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
+				UITools.drawArea(x, y, 2, height, !kr ? Theme.PRIMARY : Theme.SECONDARY);
+				UITools.drawArea(x, y, 2, (int) (height * modeChangeAnimation.update()), kr ? Theme.PRIMARY : Theme.SECONDARY);
 			} else {
-				UITools.drawArea(x, y, 2, height, kr ? Theme.PRIMARY : Theme.SECONDARY, 0, 0);
+				UITools.drawArea(x, y, 2, height, kr ? Theme.PRIMARY : Theme.SECONDARY);
 			}
 	
 			if (alertText != null) {
@@ -105,7 +105,7 @@ public class GuiKoreanIndicator extends GuiIndicator {
 	
 				// alert bg
 				double p = useAnimation ? alertWidthAnimation.update() : 1;
-				UITools.drawArcRect(alertX, y, alertX + alertWidth * p, y + height, alertBg, 0, 0);
+				UITools.drawArcRect(alertX, y, alertX + alertWidth * p, y + height, alertBg);
 	
 				// alert text
 				if (p > 0.9) {
@@ -128,7 +128,7 @@ public class GuiKoreanIndicator extends GuiIndicator {
 	
 			// kor indicator text
 			int textX = x + 2 + (textWidth + 6 - fr.getStringWidth(idiText)) / 2;
-			UITools.drawText(fr, idiText, textX, y + 1, Theme.BLACK, Theme.LIGHT_GRAY, 0);
+			UITools.drawText(fr, idiText, textX, y + 1, Theme.BLACK, Theme.LIGHT_GRAY);
 		});
 	}
 }

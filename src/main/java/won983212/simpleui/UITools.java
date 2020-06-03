@@ -48,17 +48,34 @@ public class UITools {
 	}
 
 	private static void drawRoundRect(double left, double top, double right, double bottom, double rad) {
-		drawRect(left + rad, top, right - rad, bottom);
-		drawRect(left, top + rad, left + rad, bottom - rad);
-		drawRect(left + rad, top + rad, right, bottom - rad);
-		drawArc(left + rad, top + rad, rad, 1);
-		drawArc(left + rad, bottom - rad, rad, 2);
-		drawArc(right - rad, bottom - rad, rad, 3);
-		drawArc(right - rad, top + rad, rad, 4);
+		if(rad > 0) {
+			drawRect(left + rad, top, right - rad, bottom);
+			drawRect(left, top + rad, left + rad, bottom - rad);
+			drawRect(left + rad, top + rad, right, bottom - rad);
+			drawArc(left + rad, top + rad, rad, 1);
+			drawArc(left + rad, bottom - rad, rad, 2);
+			drawArc(right - rad, bottom - rad, rad, 3);
+			drawArc(right - rad, top + rad, rad, 4);
+		} else {
+			drawRect(left, top, right, bottom);
+		}
+	}
+
+	public static void drawArcRect(double left, double top, double right, double bottom, int color) {
+		drawArcRect(left, top, right, bottom, color, 0, 0, 0);
+	}
+
+	public static void drawArcRect(double left, double top, double right, double bottom, int color, int shadow) {
+		drawArcRect(left, top, right, bottom, color, shadow, 0, 0);
 	}
 
 	public static void drawArcRect(double left, double top, double right, double bottom, int color, int shadow,
-			int round) {
+			int border) {
+		drawArcRect(left, top, right, bottom, color, shadow, border, 0);
+	}
+	
+	public static void drawArcRect(double left, double top, double right, double bottom, int color, int shadow,
+			int border, int round) {
 		if (left > right) {
 			double i = left;
 			left = right;
@@ -79,26 +96,38 @@ public class UITools {
 
 		if (shadow != 0) {
 			bindColor(shadow);
-			if (round > 0) {
-				drawRoundRect(left + 0.5, top + 0.5, right + 0.5, bottom + 0.5, round);
-			} else {
-				drawRect(left + 0.5, top + 0.5, right + 0.5, bottom + 0.5);
-			}
+			drawRoundRect(left + 0.5, top + 0.5, right + 0.5, bottom + 0.5, round);
 		}
 
-		bindColor(color);
-		if (round > 0) {
+		if(border != 0) {
+			bindColor(border);
 			drawRoundRect(left, top, right, bottom, round);
+			bindColor(color);
+			drawRoundRect(left + 0.5, top + 0.5, right - 0.5, bottom - 0.5, round);
 		} else {
-			drawRect(left, top, right, bottom);
+			bindColor(color);
+			drawRoundRect(left, top, right, bottom, round);
 		}
 
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
 	}
 
-	public static void drawArea(double x, double y, double width, double height, int color, int shadow, int round) {
-		drawArcRect(x, y, x + width, y + height, color, shadow, round);
+	public static void drawArea(double x, double y, double width, double height, int color) {
+		drawArcRect(x, y, x + width, y + height, color);
+	}
+
+	public static void drawArea(double x, double y, double width, double height, int color, int shadow) {
+		drawArcRect(x, y, x + width, y + height, color, shadow);
+	}
+
+	public static void drawArea(double x, double y, double width, double height, int color, int shadow, int border) {
+		drawArcRect(x, y, x + width, y + height, color, shadow, border);
+	}
+
+	public static void drawArea(double x, double y, double width, double height, int color, int shadow, int border,
+			int round) {
+		drawArcRect(x, y, x + width, y + height, color, shadow, border, round);
 	}
 
 	public static FontRenderer getDefaultASCIIRenderer() {
@@ -107,21 +136,25 @@ public class UITools {
 		}
 		return ascii_font_renderer;
 	}
-
-	public static void drawText(FontRenderer fr, String text, float x, float y, int color, int shadow, int arrange) {
+	
+	public static int drawText(FontRenderer fr, String text, float x, float y, int color, int shadow) {
+		return drawText(fr, text, x, y, color, shadow, 0);
+	}
+	
+	public static int drawText(FontRenderer fr, String text, float x, float y, int color, int shadow, int arrange) {
 		if (arrange > 0) {
 			if ((arrange & CENTER_H) > 0) {
-				x = x - fr.getStringWidth(text) / 2;
+				x = x - fr.getStringWidth(text) / 2f;
 			}
 			if ((arrange & CENTER_V) > 0) {
-				y = y - fr.FONT_HEIGHT / 2;
+				y = y - fr.FONT_HEIGHT / 2f;
 			}
 		}
 
 		if (shadow != 0) {
 			fr.drawString(text, x + 0.5f, y + 0.5f, shadow, false);
 		}
-
-		fr.drawString(text, x, y, color, false);
+		
+		return fr.drawString(text, x, y, color, false) + (shadow != 0 ? 1 : 0);
 	}
 }

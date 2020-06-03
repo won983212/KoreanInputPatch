@@ -13,9 +13,10 @@ public abstract class UIStyledComponent<T> extends UIComponent<T> {
 	protected final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 	protected int backgroundColor = Theme.PRIMARY;
 	protected int foregroundColor = Theme.WHITE;
+	protected int borderColor = 0;
 	protected int borderShadow = 0;
-	protected int textShadow = 0;
 	protected int roundRadius = 0;
+	protected int textShadow = 0;
 	protected int textArrange = 0;
 	
 	public T setBackgroundColor(int color) {
@@ -30,6 +31,11 @@ public abstract class UIStyledComponent<T> extends UIComponent<T> {
 
 	public T setBorderShadow(int color) {
 		this.borderShadow = color;
+		return (T) this;
+	}
+
+	public T setBorder(int borderColor) {
+		this.borderColor = borderColor;
 		return (T) this;
 	}
 

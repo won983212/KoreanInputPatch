@@ -2,7 +2,9 @@ package won983212.simpleui.windows;
 
 import net.minecraft.client.gui.GuiMainMenu;
 import won983212.simpleui.Arranges;
+import won983212.simpleui.Theme;
 import won983212.simpleui.components.UIButton;
+import won983212.simpleui.components.UICombobox;
 import won983212.simpleui.components.UIKeyBox;
 import won983212.simpleui.components.UIRectangle;
 import won983212.simpleui.components.UISwitch;
@@ -20,7 +22,8 @@ public class UIScreenTest extends UIScreen {
 	@Override
 	protected void initComponents() {
 		add(new UIRectangle().setBackgroundColor(0xff666666));
-		add(new UIKeyBox().setArrange(Arranges.CC));
+		add(new UITextField().setArrange(Arranges.CC));
+		add(new UICombobox().setArrange(Arranges.BC));
 	}
 	
 	@Override
