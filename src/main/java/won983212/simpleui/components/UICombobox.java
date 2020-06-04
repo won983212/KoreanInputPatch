@@ -5,11 +5,28 @@ import won983212.simpleui.UITools;
 import won983212.simpleui.components.panels.UIStyledComponent;
 
 public class UICombobox extends UIStyledComponent<UICombobox> {
+	private boolean isFocused = false;
+	
 	public UICombobox() {
 		setMinimalSize(60, 14);
 		setBackgroundColor(Theme.WHITE);
 		setForegroundColor(Theme.BLACK);
 		setBorder(Theme.GRAY);
+	}
+
+	@Override
+	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
+		return true;
+	}
+	
+	@Override
+	public void onLostFocus() {
+		isFocused = false;
+	}
+
+	@Override
+	public void onGotFocus() {
+		isFocused = true;
 	}
 	
 	@Override
@@ -22,7 +39,14 @@ public class UICombobox extends UIStyledComponent<UICombobox> {
 			color = Theme.LIGHT_GRAY;
 		}
 		
+		// background
 		UITools.drawArea(x, y, width, height, backgroundColor, borderShadow, borderColor, roundRadius);
-		UITools.drawText(fontRenderer, "Selected", textX, textY, color, textShadow);
+		
+		// selected label
+		UITools.drawText(fontRenderer, "Selected", textX, textY, foregroundColor, textShadow);
+		
+		// arrow
+		char arrow = isFocused ? '▲' : '▼';
+		UITools.drawText(fontRenderer, String.valueOf(arrow), x + width - fontRenderer.getCharWidth(arrow) - 2, textY, foregroundColor, 0);
 	}
 }
