@@ -22,8 +22,10 @@ public class UIScreenTest extends UIScreen {
 	@Override
 	protected void initComponents() {
 		add(new UIRectangle().setBackgroundColor(0xff666666));
-		add(new UITextField().setArrange(Arranges.CC));
-		add(new UICombobox().setArrange(Arranges.BC));
+		add(new UIButton("Hello").setArrange(Arranges.CC));
+		add(new UICombobox(new String[] {
+			"Item1", "Item2", "Item3", "Item4"
+		}).setArrange(Arranges.BC));
 	}
 	
 	@Override

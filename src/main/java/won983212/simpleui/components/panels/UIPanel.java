@@ -21,6 +21,7 @@ public class UIPanel extends UIComponent<UIPanel> {
 
 	public UIPanel clearComponents() {
 		components.clear();
+		focusd = null;
 		return this;
 	}
 	
@@ -94,18 +95,27 @@ public class UIPanel extends UIComponent<UIPanel> {
 	@Override
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		ListIterator<UIComponent> li = components.listIterator(components.size());
+		clicked = null;
+		
 		while (li.hasPrevious()) {
 			UIComponent comp = li.previous();
 			if (comp.isInteractive() && comp.containsRelative(mouseX - comp.x, mouseY - comp.y)) {
 				if (comp.onMouseClicked(mouseX - comp.x, mouseY - comp.y, mouseButton)) {
-					setFocus(comp);
-					clicked = comp;
-					return true;
+					if(clicked == null) {
+						setFocus(comp);
+						clicked = comp;
+					}
 				}
 			}
+			comp.onStaticMouseDown(mouseX, mouseY, mouseButton);
 		}
-		setFocus(null);
-		return false;
+		
+		if (clicked != null) {
+			setFocus(null);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

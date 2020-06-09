@@ -11,7 +11,6 @@ import won983212.simpleui.DirWeights;
 import won983212.simpleui.HorizontalArrange;
 import won983212.simpleui.VerticalArrange;
 
-// TODO Combobox
 /**
  * Component의 기초적인 기능을 담은 클래스 (위치, 크기, 이벤트)
  */
@@ -71,11 +70,22 @@ public abstract class UIComponent<T> {
 		return isVisible && isEnabled;
 	}
 	
-	public T setRelativeBounds(int x, int y, int width, int height) {
+	public T setRelativeLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
+		return (T) this;
+	}
+	
+	public T setRelativeBounds(int x, int y, int width, int height) {
+		setRelativeLocation(x, y);
 		this.width = width;
 		this.height = height;
+		invalidateSize();
+		return (T) this;
+	}
+	
+	public T setVisible(boolean visible) {
+		this.isVisible = visible;
 		return (T) this;
 	}
 	
@@ -207,6 +217,12 @@ public abstract class UIComponent<T> {
 	 */
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		return false;
+	}
+
+	/**
+	 * 전역 마우스 클릭 이벤트입니다. 화면을 클릭하면 컴포넌트 영역, 깊이와 관련 없이 무조건 호출됩니다. 
+	 */
+	public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
 	}
 
 	/**
