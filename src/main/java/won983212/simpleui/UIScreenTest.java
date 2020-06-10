@@ -1,8 +1,6 @@
-package won983212.simpleui.windows;
+package won983212.simpleui;
 
 import net.minecraft.client.gui.GuiMainMenu;
-import won983212.simpleui.Arranges;
-import won983212.simpleui.Theme;
 import won983212.simpleui.components.UIButton;
 import won983212.simpleui.components.UICombobox;
 import won983212.simpleui.components.UIKeyBox;

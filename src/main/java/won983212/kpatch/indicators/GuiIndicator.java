@@ -1,4 +1,4 @@
-package won983212.simpleui.indicators;
+package won983212.kpatch.indicators;
 
 import java.awt.Point;
 

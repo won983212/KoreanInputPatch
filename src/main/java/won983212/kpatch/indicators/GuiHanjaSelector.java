@@ -1,4 +1,4 @@
-package won983212.simpleui.indicators;
+package won983212.kpatch.indicators;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

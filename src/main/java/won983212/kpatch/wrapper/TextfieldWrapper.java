@@ -7,11 +7,11 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
+import won983212.kpatch.indicators.GuiColorSelector;
+import won983212.kpatch.indicators.GuiKoreanIndicator;
 import won983212.kpatch.input.ColorInput;
 import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
-import won983212.simpleui.indicators.GuiColorSelector;
-import won983212.simpleui.indicators.GuiKoreanIndicator;
 
 public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 	private static final Field[] FIELDS = GuiTextField.class.getDeclaredFields();

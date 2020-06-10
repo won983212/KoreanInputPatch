@@ -13,7 +13,7 @@ public class GridPanel extends UIPanel {
 	 * <ul>
 	 *  <li><code>FIXED</code>: "크기" (고정 크기 3.14 = "3.14")</li>
 	 *  <li><code>AUTO</code>: "auto"</li>
-	 *  <li><code>ALLOCATED</code>: "*비율" (가변 비율 크기 3 = "*3")</li>
+	 *  <li><code>ALLOCATED</code>: "*비율" (가변 비율 크기 3 = "*3", 비율이 1이면 숫자 생략 가능)</li>
 	 * </ul>
 	 * ex) 고정 크기 3.14, 자동, 3배수 비율 크기 = "3.14,auto,*3"
 	 */
@@ -181,7 +181,7 @@ public class GridPanel extends UIPanel {
 					this.type = LengthType.AUTO;
 				} else if (text.charAt(0) == '*') {
 					this.type = LengthType.ALLOCATED;
-					this.argument = Double.parseDouble(text.substring(1));
+					this.argument = text.length() == 1 ? 1 : Double.parseDouble(text.substring(1));
 				} else {
 					this.type = LengthType.FIXED;
 					this.argument = Double.parseDouble(text);

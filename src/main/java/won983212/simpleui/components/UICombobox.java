@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import won983212.simpleui.Arranges;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UIScreen;
 import won983212.simpleui.UITools;
 import won983212.simpleui.components.panels.StackPanel;
 import won983212.simpleui.components.panels.StackPanel.Orientation;
@@ -11,7 +12,6 @@ import won983212.simpleui.components.panels.UIComponent;
 import won983212.simpleui.components.panels.UIStyledComponent;
 import won983212.simpleui.events.IClickEventListener;
 import won983212.simpleui.events.IStateChangedEventListener;
-import won983212.simpleui.windows.UIScreen;
 
 public class UICombobox extends UIStyledComponent<UICombobox> implements IClickEventListener {
 	private int selected = -1;

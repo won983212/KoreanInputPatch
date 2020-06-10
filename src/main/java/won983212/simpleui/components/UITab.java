@@ -13,6 +13,11 @@ public class UITab extends UIStyledComponent<UITab> {
 	private String[] values = null;
 	private IStateChangedEventListener<Integer> event;
 	
+	public UITab() {
+		setBackgroundColor(0xffdedede);
+		setForegroundColor(Theme.PRIMARY);
+	}
+	
 	public UITab setSelectedEvent(IStateChangedEventListener<Integer> event) {
 		this.event = event;
 		return this;
@@ -44,13 +49,14 @@ public class UITab extends UIStyledComponent<UITab> {
 		if(values == null) 
 			return;
 		
+		UITools.drawArea(x, y, width, height, backgroundColor);
 		for (int i = 0; i < values.length; i++) {
 			int textColor = Theme.DARK_GRAY;
 			String value = values[i];
 			if(i == selected) {
 				UITools.drawArea(x, y + i * ITEM_HEIGHT, width, ITEM_HEIGHT, Theme.WHITE);
-				UITools.drawArea(x, y + i * ITEM_HEIGHT, 2, ITEM_HEIGHT, backgroundColor);
-				textColor = backgroundColor;
+				UITools.drawArea(x, y + i * ITEM_HEIGHT, 2, ITEM_HEIGHT, foregroundColor);
+				textColor = foregroundColor;
 				value = "§l" + value;
 			}
 			UITools.drawText(fontRenderer, value, x + 12, y + ITEM_HEIGHT * (i + 0.5f), textColor, Theme.LIGHT_GRAY, UITools.CENTER_V);

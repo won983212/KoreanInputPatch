@@ -15,12 +15,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import won983212.kpatch.screens.UIScreenSettings;
 import won983212.kpatch.wrapper.EditBookWrapper;
 import won983212.kpatch.wrapper.EditSignWrapper;
 import won983212.kpatch.wrapper.TextfieldWrapper;
-import won983212.simpleui.windows.UIScreen;
-import won983212.simpleui.windows.UIScreenSettings;
-import won983212.simpleui.windows.UIScreenTest;
+import won983212.simpleui.UIScreen;
+import won983212.simpleui.UIScreenTest;
 
 public class ForgeEventHandler {
 	private Queue<Runnable> afterRenderQueue = Queues.newArrayDeque();
@@ -31,7 +31,7 @@ public class ForgeEventHandler {
 		
 		// TODO Debug
 		if (screen instanceof GuiMainMenu) {
-			Minecraft.getMinecraft().displayGuiScreen(new UIScreenTest((GuiMainMenu) screen));
+			Minecraft.getMinecraft().displayGuiScreen(new UIScreenSettings((GuiMainMenu) screen));
 			//Minecraft.getMinecraft().displayGuiScreen(new TestScreen());
 			return;
 		}

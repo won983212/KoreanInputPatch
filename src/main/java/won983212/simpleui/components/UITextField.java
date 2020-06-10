@@ -4,6 +4,9 @@ import java.awt.Point;
 
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
+import won983212.kpatch.indicators.GuiColorSelector;
+import won983212.kpatch.indicators.GuiIndicator;
+import won983212.kpatch.indicators.GuiKoreanIndicator;
 import won983212.kpatch.input.ColorInput;
 import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
@@ -12,9 +15,6 @@ import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 import won983212.simpleui.components.panels.UIComponent;
 import won983212.simpleui.components.panels.UIStyledComponent;
-import won983212.simpleui.indicators.GuiColorSelector;
-import won983212.simpleui.indicators.GuiIndicator;
-import won983212.simpleui.indicators.GuiKoreanIndicator;
 
 public class UITextField extends UIStyledComponent<UITextField> implements IInputWrapper {
 	private String text = "";
