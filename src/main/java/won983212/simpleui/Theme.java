@@ -15,7 +15,7 @@ public class Theme {
 	public static final int BACKGROUND = WHITE;
 	public static final int BACKGROUND_SHADOW = DARK_GRAY;
 	
-	public static int adjColor(int color, int offset) {
+	public static int adjColor(int color, double offset) {
 		int a = (color >> 24) & 0xff;
 		int r = (color >> 16) & 0xff;
 		int g = (color >> 8) & 0xff;
@@ -26,9 +26,9 @@ public class Theme {
 			g += Math.min(0xff, (0xff - g) * (offset / 100.0));
 			b += Math.min(0xff, (0xff - b) * (offset / 100.0));
 		} else {
-			r -= Math.max(0, r * (offset / 100.0));
-			g -= Math.max(0, g * (offset / 100.0));
-			b -= Math.max(0, b * (offset / 100.0));
+			r -= Math.max(0, r * (-offset / 100.0));
+			g -= Math.max(0, g * (-offset / 100.0));
+			b -= Math.max(0, b * (-offset / 100.0));
 		}
 		
 		return (a << 24) + (r << 16) + (g << 8) + b;

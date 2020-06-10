@@ -56,21 +56,23 @@ public class UIButton extends UIStyledComponent<UIButton> {
 	@Override
 	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
 		int color = backgroundColor;
+		boolean isBright = (color & 0x00ffffff) > 0xdddddd;
+
 		if (!isEnabled()) {
 			color = Theme.LIGHT_GRAY;
 		} else if (containsRelative(mouseX, mouseY)) {
-			int adj;
+			double adj;
 			if (Configs.getBoolean(Configs.UI_ANIMATE)) {
 				if (!hover) {
 					hoverAnimation.setReverse(false);
 					hoverAnimation.play();
 					hover = true;
 				}
-				adj = (int) (hoverAnimation.update() * 30);
+				adj = hoverAnimation.update();
 			} else {
-				adj = 30;
+				adj = 1;
 			}
-			color = Theme.adjColor(backgroundColor, adj);
+			color = Theme.adjColor(backgroundColor, adj * (isBright ? -30 : 30));
 		} else {
 			hover = false;
 		}
@@ -80,7 +82,7 @@ public class UIButton extends UIStyledComponent<UIButton> {
 
 		if(isFlat) {
 			if (isClicking) {
-				UITools.drawArea(px, py, width, height, Theme.adjColor(backgroundColor, -30), 0, borderColor, 0);
+				UITools.drawArea(px, py, width, height, Theme.adjColor(backgroundColor, (isBright ? -60 : -30)), 0, borderColor, 0);
 			} else {
 				UITools.drawArea(px, py, width, height, color, 0, borderColor, 0);
 			}
