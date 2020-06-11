@@ -1,8 +1,11 @@
 package won983212.simpleui.components;
 
 import net.minecraft.client.gui.Gui;
+import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
+import won983212.simpleui.animation.DecimalAnimation;
+import won983212.simpleui.animation.IntervalAnimation;
 import won983212.simpleui.components.panels.UIStyledComponent;
 import won983212.simpleui.events.IStateChangedEventListener;
 
@@ -10,7 +13,9 @@ public class UITab extends UIStyledComponent<UITab> {
 	private static final int ITEM_HEIGHT = 28;
 	
 	private int selected = 0;
+	private int prevSelected = 0;
 	private String[] values = null;
+	private IntervalAnimation transitionAnimation = new IntervalAnimation(100);
 	private IStateChangedEventListener<Integer> event;
 	
 	public UITab() {
@@ -49,13 +54,27 @@ public class UITab extends UIStyledComponent<UITab> {
 		if(values == null) 
 			return;
 		
+		// background
 		UITools.drawArea(x, y, width, height, backgroundColor);
+
+		int selectedY = y + selected * ITEM_HEIGHT;
+		if (Configs.getBoolean(Configs.UI_ANIMATE)) {
+			if(prevSelected != selected) {
+				transitionAnimation.setRange(prevSelected * ITEM_HEIGHT, selected * ITEM_HEIGHT);
+				transitionAnimation.play();
+				prevSelected = selected;
+			}
+			selectedY = (int) (transitionAnimation.update() + y);
+		}
+		
+		// selected indicator
+		UITools.drawArea(x, selectedY, width, ITEM_HEIGHT, Theme.WHITE);
+		UITools.drawArea(x, selectedY, 2, ITEM_HEIGHT, foregroundColor);
+		
 		for (int i = 0; i < values.length; i++) {
 			int textColor = Theme.DARK_GRAY;
 			String value = values[i];
 			if(i == selected) {
-				UITools.drawArea(x, y + i * ITEM_HEIGHT, width, ITEM_HEIGHT, Theme.WHITE);
-				UITools.drawArea(x, y + i * ITEM_HEIGHT, 2, ITEM_HEIGHT, foregroundColor);
 				textColor = foregroundColor;
 				value = "§l" + value;
 			}

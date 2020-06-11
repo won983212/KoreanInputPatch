@@ -12,9 +12,13 @@ public class UISwitch extends UIComponent<UISwitch> {
 	private boolean isActive;
 	private IStateChangedEventListener<Boolean> event;
 	private DecimalAnimation barAnimation = new DecimalAnimation(100);
-	
+
 	public UISwitch() {
-		setActive(false);
+		this(false);
+	}
+	
+	public UISwitch(boolean isActive) {
+		setActive(isActive);
 		setMinimalSize(24, 9);
 	}
 	

@@ -34,6 +34,11 @@ public class UITextField extends UIStyledComponent<UITextField> implements IInpu
 		setForegroundColor(Theme.BLACK);
 	}
 	
+	public UITextField(String text) {
+		this();
+		setText(text);
+	}
+	
 	public UITextField setMaxTextLength(int len) {
 		this.maxTextLength = len;
 		return this;

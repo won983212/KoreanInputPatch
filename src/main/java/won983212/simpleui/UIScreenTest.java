@@ -21,7 +21,7 @@ public class UIScreenTest extends UIScreen {
 	protected void initComponents() {
 		add(new UIRectangle().setBackgroundColor(0xff666666));
 		add(new UIButton("Hello").setArrange(Arranges.CC));
-		add(new UICombobox(new String[] {
+		add(new UICombobox(0, new String[] {
 			"Item1", "Item2", "Item3", "Item4"
 		}).setArrange(Arranges.BC));
 	}

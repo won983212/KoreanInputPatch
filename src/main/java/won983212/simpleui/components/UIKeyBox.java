@@ -23,7 +23,7 @@ public class UIKeyBox extends UIStyledComponent<UIKeyBox> {
 		setMinimalSize(50, 18);
 		setTextShadow(Theme.BACKGROUND_SHADOW);
 	}
-
+	
 	@Override
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		editingBox = this;

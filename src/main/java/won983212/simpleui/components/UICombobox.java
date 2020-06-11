@@ -27,10 +27,10 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 	}.setOrientation(Orientation.VERTICAL);
 	
 	public UICombobox() {
-		this(null);
+		this(-1, null);
 	}
 	
-	public UICombobox(Object[] items) {
+	public UICombobox(int selected, Object[] items) {
 		setMinimalSize(60, 14);
 		setBackgroundColor(Theme.WHITE);
 		setForegroundColor(Theme.BLACK);
@@ -40,6 +40,7 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 		comboboxPopup.setArrange(Arranges.TL);
 		comboboxPopup.setVisible(false);
 		setItems(items);
+		setSelectedItem(selected);
 		UIScreen.addPopup(comboboxPopup);
 	}
 
@@ -49,7 +50,7 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 			for (int i = 0; i < items.length; i++) {
 				comboboxPopup.add(new UIButton(items[i].toString())
 					.setBackgroundColor(0xffffffff).setForegroundColor(0xff000000).setTextShadow(0)
-					.setMetadata(i).setClickListener(this).setFlat());
+					.setMetadata(i).setClickListener(this).setBorderShadow(Theme.BACKGROUND_SHADOW).setFlat());
 			}
 		}
 	}

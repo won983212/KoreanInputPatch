@@ -8,9 +8,10 @@ import java.util.ListIterator;
 
 import net.minecraft.client.renderer.GlStateManager;
 
+//TODO Border 기능 추가, SettingPanel 디자인 개선
 public class UIPanel extends UIComponent<UIPanel> {
 	protected ArrayList<UIComponent> components = new ArrayList<>();
-	private UIComponent clicked = null;
+	protected UIComponent clicked = null;
 	private UIComponent focusd = null;
 
 	public UIPanel add(UIComponent comp) {
