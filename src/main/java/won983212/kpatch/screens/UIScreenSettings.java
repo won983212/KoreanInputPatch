@@ -9,20 +9,21 @@ import won983212.simpleui.DirWeights;
 import won983212.simpleui.HorizontalArrange;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UIScreen;
-import won983212.simpleui.components.UIButton;
-import won983212.simpleui.components.UICombobox;
-import won983212.simpleui.components.UIKeyBox;
-import won983212.simpleui.components.UILabel;
-import won983212.simpleui.components.UIRectangle;
-import won983212.simpleui.components.UISwitch;
-import won983212.simpleui.components.UITab;
-import won983212.simpleui.components.UITextField;
-import won983212.simpleui.components.panels.GridPanel;
-import won983212.simpleui.components.panels.GridPanel.LengthDefinition;
-import won983212.simpleui.components.panels.GridPanel.LengthType;
-import won983212.simpleui.components.panels.StackPanel;
-import won983212.simpleui.components.panels.SwitchPanel;
-import won983212.simpleui.components.panels.UIComponent;
+import won983212.simpleui.component.GridPanel;
+import won983212.simpleui.component.StackPanel;
+import won983212.simpleui.component.SwitchPanel;
+import won983212.simpleui.component.UIComponent;
+import won983212.simpleui.component.GridPanel.LengthDefinition;
+import won983212.simpleui.component.GridPanel.LengthType;
+import won983212.simpleui.component.deco.BorderDeco;
+import won983212.simpleui.component.ui.UIButton;
+import won983212.simpleui.component.ui.UICombobox;
+import won983212.simpleui.component.ui.UIKeyBox;
+import won983212.simpleui.component.ui.UILabel;
+import won983212.simpleui.component.ui.UIRectangle;
+import won983212.simpleui.component.ui.UISwitch;
+import won983212.simpleui.component.ui.UITab;
+import won983212.simpleui.component.ui.UITextField;
 import won983212.simpleui.events.IStateChangedEventListener;
 
 public class UIScreenSettings extends UIScreen implements IStateChangedEventListener<Integer> {
@@ -60,7 +61,7 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 		GridPanel panel = new GridPanel();
 		panel.addColumns("*,auto");
 		for (int i = 0; i < properties.size(); i++)
-			panel.addRow(new LengthDefinition(LengthType.AUTO, 0));
+			panel.addRow(new LengthDefinition(LengthType.FIXED, 25));
 		
 		for (int i = 0; i < properties.size(); i++) {
 			Property p = properties.get(i);
@@ -74,10 +75,11 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 				comp = new UITextField(Configs.get(p.confId));
 				break;
 			case Property.KEY:
-				comp = new UIKeyBox(Configs.getInt(p.confId));
+				comp = new BorderDeco(new UIKeyBox(Configs.getInt(p.confId)).setMinimalSize(60, 16))
+						.setForegroundColor(Theme.adjColor(Theme.PRIMARY, -20));
 				break;
 			case Property.SELECT:
-				comp = new UICombobox(Configs.getInt(p.confId), p.selectLabels);
+				comp = new UICombobox(Configs.getInt(p.confId), p.selectLabels).setMinimalSize(80, 14);
 				break;
 			}
 			
@@ -94,7 +96,7 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 	@Override
 	protected void initComponents() {
 		GridPanel panel = new GridPanel();
-		panel.addColumns("80, *, auto");
+		panel.addColumns("60, *, auto");
 		panel.addRows("*, 20");
 		panel.add(GridPanel.setLayout((sidebar = new UITab()).setSelectedEvent(this), 0, 0, 1, 2));
 		panel.add(GridPanel.setLayout(new UIRectangle().setBackgroundColor(Theme.BACKGROUND), 1, 0, 2, 2));

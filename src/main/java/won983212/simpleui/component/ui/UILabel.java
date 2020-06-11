@@ -1,7 +1,7 @@
-package won983212.simpleui.components;
+package won983212.simpleui.component.ui;
 
 import won983212.simpleui.UITools;
-import won983212.simpleui.components.panels.UIStyledComponent;
+import won983212.simpleui.component.UIStyledComponent;
 
 public class UILabel extends UIStyledComponent<UILabel> {
 	private String text;

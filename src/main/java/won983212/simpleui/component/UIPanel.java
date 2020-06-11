@@ -1,4 +1,4 @@
-package won983212.simpleui.components.panels;
+package won983212.simpleui.component;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -8,7 +8,6 @@ import java.util.ListIterator;
 
 import net.minecraft.client.renderer.GlStateManager;
 
-//TODO Border 기능 추가, SettingPanel 디자인 개선
 public class UIPanel extends UIComponent<UIPanel> {
 	protected ArrayList<UIComponent> components = new ArrayList<>();
 	protected UIComponent clicked = null;
@@ -88,8 +87,9 @@ public class UIPanel extends UIComponent<UIPanel> {
 	@Override
 	public void onKeyTyped(char typedChar, int keyCode) {
 		for (UIComponent comp : components) {
-			if (comp instanceof UIPanel || focusd == comp)
+			if (comp instanceof UIPanel || focusd == comp) {
 				comp.onKeyTyped(typedChar, keyCode);
+			}
 		}
 	}
 
@@ -112,9 +112,9 @@ public class UIPanel extends UIComponent<UIPanel> {
 		}
 		
 		if (clicked != null) {
-			setFocus(null);
 			return true;
 		} else {
+			setFocus(null);
 			return false;
 		}
 	}

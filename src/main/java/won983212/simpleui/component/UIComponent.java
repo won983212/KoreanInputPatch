@@ -1,4 +1,4 @@
-package won983212.simpleui.components.panels;
+package won983212.simpleui.component;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -30,7 +30,7 @@ public abstract class UIComponent<T> {
 	
 	public Object metadata = null;
 	protected Object layoutData = null;
-	protected UIPanel parent = null;
+	protected UIComponent parent = null;
 	private Dimension sizeCache = null;
 	
 	protected Point calculateActualLocation() {

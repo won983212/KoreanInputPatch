@@ -1,4 +1,4 @@
-package won983212.simpleui.components;
+package won983212.simpleui.component.ui;
 
 import java.awt.Point;
 
@@ -13,8 +13,7 @@ import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
-import won983212.simpleui.components.panels.UIComponent;
-import won983212.simpleui.components.panels.UIStyledComponent;
+import won983212.simpleui.component.UIStyledComponent;
 
 public class UITextField extends UIStyledComponent<UITextField> implements IInputWrapper {
 	private String text = "";

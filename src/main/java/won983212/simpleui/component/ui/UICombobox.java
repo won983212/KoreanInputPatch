@@ -1,4 +1,4 @@
-package won983212.simpleui.components;
+package won983212.simpleui.component.ui;
 
 import java.awt.Point;
 
@@ -6,10 +6,11 @@ import won983212.simpleui.Arranges;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UIScreen;
 import won983212.simpleui.UITools;
-import won983212.simpleui.components.panels.StackPanel;
-import won983212.simpleui.components.panels.StackPanel.Orientation;
-import won983212.simpleui.components.panels.UIComponent;
-import won983212.simpleui.components.panels.UIStyledComponent;
+import won983212.simpleui.component.StackPanel;
+import won983212.simpleui.component.UIComponent;
+import won983212.simpleui.component.UIStyledComponent;
+import won983212.simpleui.component.StackPanel.Orientation;
+import won983212.simpleui.component.deco.BorderDeco;
 import won983212.simpleui.events.IClickEventListener;
 import won983212.simpleui.events.IStateChangedEventListener;
 
@@ -17,14 +18,8 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 	private int selected = -1;
 	private Object[] items = null;
 	private IStateChangedEventListener<Integer> event = null;
-	private StackPanel comboboxPopup = new StackPanel() {
-		@Override
-		public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
-			if(!containsRelative(mouseX, mouseY)) {
-				setVisible(false);
-			}
-		}
-	}.setOrientation(Orientation.VERTICAL);
+	private BorderDeco comboboxPopup;
+	private StackPanel popupMenu;
 	
 	public UICombobox() {
 		this(-1, null);
@@ -36,6 +31,16 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 		setForegroundColor(Theme.BLACK);
 		setBorder(Theme.GRAY);
 		
+		popupMenu = new StackPanel().setOrientation(Orientation.VERTICAL);
+		comboboxPopup = new BorderDeco(popupMenu) {
+			@Override
+			public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
+				if(!containsRelative(mouseX, mouseY)) {
+					setVisible(false);
+				}
+			}
+		};
+		
 		comboboxPopup.setMinimalSize(60, 0);
 		comboboxPopup.setArrange(Arranges.TL);
 		comboboxPopup.setVisible(false);
@@ -44,11 +49,19 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 		UIScreen.addPopup(comboboxPopup);
 	}
 
+	@Override
+	public UICombobox setMinimalSize(int width, int height) {
+		if(comboboxPopup != null) {
+			comboboxPopup.setMinimalSize(width, 0);
+		}
+		return super.setMinimalSize(width, height);
+	}
+	
 	private void constructItems() {
-		comboboxPopup.clearComponents();
+		popupMenu.clearComponents();
 		if (items != null) {
 			for (int i = 0; i < items.length; i++) {
-				comboboxPopup.add(new UIButton(items[i].toString())
+				popupMenu.add(new UIButton(items[i].toString())
 					.setBackgroundColor(0xffffffff).setForegroundColor(0xff000000).setTextShadow(0)
 					.setMetadata(i).setClickListener(this).setBorderShadow(Theme.BACKGROUND_SHADOW).setFlat());
 			}

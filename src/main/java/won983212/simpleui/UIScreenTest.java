@@ -1,13 +1,13 @@
 package won983212.simpleui;
 
 import net.minecraft.client.gui.GuiMainMenu;
-import won983212.simpleui.components.UIButton;
-import won983212.simpleui.components.UICombobox;
-import won983212.simpleui.components.UIKeyBox;
-import won983212.simpleui.components.UIRectangle;
-import won983212.simpleui.components.UISwitch;
-import won983212.simpleui.components.UITextField;
-import won983212.simpleui.components.panels.GridPanel;
+import won983212.simpleui.component.GridPanel;
+import won983212.simpleui.component.ui.UIButton;
+import won983212.simpleui.component.ui.UICombobox;
+import won983212.simpleui.component.ui.UIKeyBox;
+import won983212.simpleui.component.ui.UIRectangle;
+import won983212.simpleui.component.ui.UISwitch;
+import won983212.simpleui.component.ui.UITextField;
 
 public class UIScreenTest extends UIScreen {
 	private GuiMainMenu parent;

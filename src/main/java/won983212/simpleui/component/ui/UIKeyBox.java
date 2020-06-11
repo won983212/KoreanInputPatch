@@ -1,4 +1,4 @@
-package won983212.simpleui.components;
+package won983212.simpleui.component.ui;
 
 import org.lwjgl.input.Keyboard;
 
@@ -6,7 +6,7 @@ import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
-import won983212.simpleui.components.panels.UIStyledComponent;
+import won983212.simpleui.component.UIStyledComponent;
 
 public class UIKeyBox extends UIStyledComponent<UIKeyBox> {
 	private static UIKeyBox editingBox = null;

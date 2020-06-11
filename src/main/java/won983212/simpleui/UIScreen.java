@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import won983212.simpleui.components.UIKeyBox;
-import won983212.simpleui.components.panels.UIComponent;
-import won983212.simpleui.components.panels.UIPanel;
-import won983212.simpleui.components.panels.UIStyledComponent;
+import won983212.simpleui.component.UIComponent;
+import won983212.simpleui.component.UIPanel;
+import won983212.simpleui.component.UIStyledComponent;
+import won983212.simpleui.component.ui.UIKeyBox;
 
 /**
  * SimpleUI를 사용할 수 있는 <code>GuiScreen</code>입니다.

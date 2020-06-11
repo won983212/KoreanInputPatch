@@ -1,4 +1,4 @@
-package won983212.simpleui.components.panels;
+package won983212.simpleui.component;
 
 import java.util.ListIterator;
 

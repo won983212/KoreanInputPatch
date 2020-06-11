@@ -1,11 +1,10 @@
-package won983212.simpleui.components;
+package won983212.simpleui.component.ui;
 
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
-import won983212.simpleui.components.panels.UIComponent;
-import won983212.simpleui.components.panels.UIStyledComponent;
+import won983212.simpleui.component.UIComponent;
 import won983212.simpleui.events.IStateChangedEventListener;
 
 public class UISwitch extends UIComponent<UISwitch> {
