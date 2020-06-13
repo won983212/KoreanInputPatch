@@ -31,6 +31,24 @@ public class UIDecorator extends UIStyledComponent<UIDecorator> {
 		super.arrange(available);
 		layout();
 	}
+	
+	@Override
+	public String serializeData() {
+		if(child != null) {
+			return child.serializeData();
+		} else {
+			return super.serializeData();
+		}
+	}
+	
+	@Override
+	public void deserializeData(String serialized) {
+		if(child != null) {
+			child.deserializeData(serialized);
+		} else {
+			super.deserializeData(serialized);
+		}
+	}
 
 	@Override
 	public Dimension measureMinSize() {
@@ -76,7 +94,6 @@ public class UIDecorator extends UIStyledComponent<UIDecorator> {
 					clicked = true;
 				}
 			}
-			child.onStaticMouseDown(mouseX, mouseY, mouseButton);
 		}
 
 		return clicked;
@@ -97,6 +114,21 @@ public class UIDecorator extends UIStyledComponent<UIDecorator> {
 			if(child != null)
 				child.onMouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
 		}
+	}
+	
+	public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
+		if(child != null)
+			child.onStaticMouseDown(mouseX, mouseY, mouseButton);
+	}
+
+	public void onLostFocus() {
+		if(child != null)
+			child.onLostFocus();
+	}
+
+	public void onGotFocus() {
+		if(child != null)
+			child.onGotFocus();
 	}
 
 	@Override

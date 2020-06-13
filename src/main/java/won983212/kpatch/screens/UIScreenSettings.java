@@ -2,6 +2,7 @@ package won983212.kpatch.screens;
 
 import java.util.ArrayList;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Arranges;
@@ -24,71 +25,55 @@ import won983212.simpleui.component.ui.UIRectangle;
 import won983212.simpleui.component.ui.UISwitch;
 import won983212.simpleui.component.ui.UITab;
 import won983212.simpleui.component.ui.UITextField;
+import won983212.simpleui.events.IClickEventListener;
 import won983212.simpleui.events.IStateChangedEventListener;
 
-public class UIScreenSettings extends UIScreen implements IStateChangedEventListener<Integer> {
+public class UIScreenSettings extends UIScreen implements IStateChangedEventListener<Integer>, IClickEventListener {
 	private GuiMainMenu parent;
 	private UITab sidebar;
-	private SwitchPanel contentPanel;
+	private SwitchPanel contentPanel = new SwitchPanel();
+	private ArrayList<SettingProperty> properties = new ArrayList<>();
 	
 	public UIScreenSettings(GuiMainMenu parent) {
-		super(300, 200);
+		super(320, 200);
 		this.parent = parent;
 	}
 	
 	private void generatePages() {
-		ArrayList<Property> properties = new ArrayList<>();
+		ArrayList<SettingProperty> properties = new ArrayList<>();
 		
-		properties.add(new Property("한영 지시자 표시", Configs.IME_INDICATOR_VISIBLE_MODE, Property.SELECT,
+		properties.add(new SettingProperty("한영 지시자 표시", Configs.IME_INDICATOR_VISIBLE_MODE, SettingProperty.SELECT,
 				new String[] {"끄기", "채팅창에만 표시", "모든 필드에 표시"}));
-		properties.add(new Property("한영 지시자 애니메이션", Configs.IME_INDICATOR_ANIMATE, Property.BOOLEAN));
-		properties.add(new Property("UI 애니메이션", Configs.UI_ANIMATE, Property.BOOLEAN));
-		properties.add(new Property("한영 전환키", Configs.KEY_KOR, Property.KEY));
-		properties.add(new Property("한자키", Configs.KEY_HANJA, Property.KEY));
-		properties.add(new Property("색 입력키", Configs.KEY_COLOR, Property.KEY));
+		properties.add(new SettingProperty("한영 지시자 애니메이션", Configs.IME_INDICATOR_ANIMATE, SettingProperty.BOOLEAN));
+		properties.add(new SettingProperty("UI 애니메이션", Configs.UI_ANIMATE, SettingProperty.BOOLEAN));
+		properties.add(new SettingProperty("UI 애니메이션", Configs.UI_ANIMATE, SettingProperty.INPUT));
 		contentPanel.add(generatePage(properties));
 		
-		properties.add(new Property("한영 전환키", Configs.KEY_KOR, Property.KEY));
-		properties.add(new Property("한자키", Configs.KEY_HANJA, Property.KEY));
-		properties.add(new Property("색 입력키", Configs.KEY_COLOR, Property.KEY));
+		properties.add(new SettingProperty("한영 전환키", Configs.KEY_KOR, SettingProperty.KEY));
+		properties.add(new SettingProperty("한자키", Configs.KEY_HANJA, SettingProperty.KEY));
+		properties.add(new SettingProperty("색 입력키", Configs.KEY_COLOR, SettingProperty.KEY));
 		contentPanel.add(generatePage(properties));
 		
 		//sidebar.setTabValues(new String[] {"일반", "입력", "폰트", "키", "고급"});
 		sidebar.setTabValues(new String[] {"일반", "키"});
 	}
 	
-	private GridPanel generatePage(ArrayList<Property> properties) {
+	private GridPanel generatePage(ArrayList<SettingProperty> properties) {
 		GridPanel panel = new GridPanel();
 		panel.addColumns("*,auto");
 		for (int i = 0; i < properties.size(); i++)
 			panel.addRow(new LengthDefinition(LengthType.FIXED, 25));
 		
 		for (int i = 0; i < properties.size(); i++) {
-			Property p = properties.get(i);
-			UIComponent<? extends UIComponent> comp = null;
-
-			switch (p.type) {
-			case Property.BOOLEAN:
-				comp = new UISwitch(Configs.getBoolean(p.confId));
-				break;
-			case Property.INPUT:
-				comp = new UITextField(Configs.get(p.confId));
-				break;
-			case Property.KEY:
-				comp = new BorderDeco(new UIKeyBox(Configs.getInt(p.confId)).setMinimalSize(60, 16))
-						.setForegroundColor(Theme.adjColor(Theme.PRIMARY, -20));
-				break;
-			case Property.SELECT:
-				comp = new UICombobox(Configs.getInt(p.confId), p.selectLabels).setMinimalSize(80, 14);
-				break;
-			}
-			
+			SettingProperty p = properties.get(i);
+			UIComponent<? extends UIComponent> comp = p.getComponent();
 			comp = (UIComponent) comp.setMargin(new DirWeights(10, 0, 8, 8)).setArrange(Arranges.CR);
-			panel.add(GridPanel.setLayout(new UILabel(p.label).setArrange(Arranges.CL).setForegroundColor(Theme.BLACK)
+			panel.add(GridPanel.setLayout(new UILabel(p.getLabel()).setArrange(Arranges.CL).setForegroundColor(Theme.BLACK)
 					.setMargin(new DirWeights(10, 0, 8, 8)), 0, i, 1, 1));
 			panel.add(GridPanel.setLayout(comp, 1, i, 1, 1));
 		}
 		
+		this.properties.addAll(properties);
 		properties.clear();
 		return panel;
 	}
@@ -104,8 +89,10 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 		generatePages();
 		
 		StackPanel buttons = new StackPanel();
-		buttons.add(new UIButton("초기화").setMinimalSize(28, 11).setMargin(new DirWeights(3)).setBackgroundColor(Theme.SECONDARY));
-		buttons.add(new UIButton("저장").setMinimalSize(28, 11).setMargin(new DirWeights(3, 3, 0, 3)));
+		buttons.add(new UIButton("초기화").setId(0).setClickListener(this).setMinimalSize(28, 11)
+				.setMargin(new DirWeights(3)).setBackgroundColor(Theme.SECONDARY));
+		buttons.add(new UIButton("저장").setId(1).setClickListener(this).setMinimalSize(28, 11)
+				.setMargin(new DirWeights(3, 3, 0, 3)));
 		panel.add(GridPanel.setLayout(buttons, 2, 1, 1, 1));
 		add(panel);
 	}
@@ -127,27 +114,19 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 		}
 		return newState;
 	}
-	
-	private static class Property {
-		private static final int SELECT = 1;
-		private static final int BOOLEAN = 2;
-		private static final int KEY = 3;
-		private static final int INPUT = 4;
-		
-		private String label;
-		private String confId;
-		private int type;
-		private String[] selectLabels = null;
-		
-		private Property(String label, String configId, int type) {
-			this(label, configId, type, null);
-		}
-		
-		private Property(String label, String configId, int type, String[] selectLabels) {
-			this.label = label;
-			this.confId = configId;
-			this.type = type;
-			this.selectLabels = selectLabels;
+
+	@Override
+	public void onClick(UIComponent comp, int mouseX, int mouseY, int mouseButton) {
+		switch(comp.getId()) {
+		case 0:
+			//TODO 리셋 전에 물어보기
+			Configs.setDefault();
+			Minecraft.getMinecraft().displayGuiScreen(parent);
+			break;
+		case 1:
+			for(SettingProperty p : properties) p.save();
+			Configs.save();
+			break;
 		}
 	}
 }

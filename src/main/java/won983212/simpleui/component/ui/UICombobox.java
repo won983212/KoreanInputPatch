@@ -31,11 +31,12 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 		setForegroundColor(Theme.BLACK);
 		setBorder(Theme.GRAY);
 		
+		final UICombobox combobox = this;
 		popupMenu = new StackPanel().setOrientation(Orientation.VERTICAL);
 		comboboxPopup = new BorderDeco(popupMenu) {
 			@Override
 			public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
-				if(!containsRelative(mouseX, mouseY)) {
+				if(!combobox.containsAbsolute(mouseX, mouseY)) {
 					setVisible(false);
 				}
 			}
@@ -87,6 +88,16 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 	}
 	
 	@Override
+	public String serializeData() {
+		return String.valueOf(selected);
+	}
+
+	@Override
+	public void deserializeData(String serialized) {
+		selected = Integer.parseInt(serialized);
+	}
+	
+	@Override
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		Point p = calculateActualLocation();
 		comboboxPopup.setRelativeLocation(p.x, p.y + height);
@@ -120,7 +131,6 @@ public class UICombobox extends UIStyledComponent<UICombobox> implements IClickE
 	@Override
 	public void onClick(UIComponent comp, int mouseX, int mouseY, int mouseButton) {
 		int idx = (int) comp.metadata;
-		comboboxPopup.setVisible(false);
 		selected = idx;
 		if(event != null) {
 			event.onChanged(this, idx);

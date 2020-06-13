@@ -15,6 +15,7 @@ import won983212.simpleui.VerticalArrange;
  * Component의 기초적인 기능을 담은 클래스 (위치, 크기, 이벤트)
  */
 public abstract class UIComponent<T> {
+	protected int id = 0;
 	protected int x = 0;
 	protected int y = 0;
 	protected int width = 0;
@@ -45,14 +46,40 @@ public abstract class UIComponent<T> {
 	}
 	
 	/**
+	 * Focus를 재설정합니다. 재설정 대상 패널은 부모 컴포넌트로 한 단계씩 올라갔을 때 가장 먼저 만나는 패널입니다.
+	 */
+	protected void setFocusdComponent(UIComponent comp) {
+		UIComponent obj = this;
+		while(obj != null) {
+			if(obj instanceof UIPanel) {
+				((UIPanel) obj).setFocusdComponent(comp);
+				break;
+			}
+			obj = obj.parent;
+		}
+	}
+	
+	/**
 	 * <code>(x, y)</code> 좌표가 컴포넌트 영역 내에 포함되는지 확인합니다. 좌표는 상대좌표를 사용합니다.
 	 * 상대좌표는 이 컴포넌트 영역의 가장 오른쪽 위가 (0, 0)인 좌표입니다.
-	 * @param x 상대적인 x좌표
-	 * @param y 상대적인 y좌표
+	 * @param x 상대 x좌표
+	 * @param y 상대 y좌표
 	 * @return <code>(x, y)</code>가 이 컴포넌트 내에 포함되는지 확인
 	 */
 	public boolean containsRelative(int x, int y) {
 		return x >= 0 && y >= 0 && x < width && y < height;
+	}
+	
+	/**
+	 * <code>(x, y)</code> 좌표가 컴포넌트 영역 내에 포함되는지 확인합니다. 좌표는 절대좌표를 사용합니다.
+	 * 절대 좌표는 실제 마우스가 클릭된 위치를 기준으로 정합니다. 마인크래프트 창의 왼쪽 위가 (0, 0)입니다.
+	 * @param x 절대 x좌표
+	 * @param y 절대 y좌표
+	 * @return <code>(x, y)</code>가 이 컴포넌트 내에 포함되는지 확인
+	 */
+	public boolean containsAbsolute(int x, int y) {
+		Point p = calculateActualLocation();
+		return x >= p.x && x < p.x + width && y >= p.y && y < p.y + height; 
 	}
 	
 	public boolean isVisible() {
@@ -94,6 +121,11 @@ public abstract class UIComponent<T> {
 		return (T) this;
 	}
 	
+	public T setId(int id) {
+		this.id = id;
+		return (T) this;
+	}
+	
 	public T setMetadata(Object data) {
 		this.metadata = data;
 		return (T) this;
@@ -128,6 +160,23 @@ public abstract class UIComponent<T> {
 		setHorizontalArrange(Arranges.getHorizontalArrangeByTemplate(arrange));
 		setVerticalArrange(Arranges.getVerticalArrangeByTemplate(arrange));
 		return (T) this;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * 이 컴포넌트가 취급하는 데이터(텍스트필드: 입력된 텍스트, 스위치: 스위치 on/off상태, 등..)를 String타입으로 직렬화합니다. 
+	 */
+	public String serializeData() {
+		return "";
+	}
+	
+	/**
+	 *  직렬화된 데이터로부터 이 컴포넌트를 재설정합니다.
+	 */
+	public void deserializeData(String serialized) {
 	}
 	
 	/**
@@ -220,7 +269,7 @@ public abstract class UIComponent<T> {
 	}
 
 	/**
-	 * 전역 마우스 클릭 이벤트입니다. 화면을 클릭하면 컴포넌트 영역, 깊이와 관련 없이 무조건 호출됩니다. 
+	 * 전역 마우스 클릭 이벤트입니다. 컴포넌트 영역이나 focus여부에 상관없이 클릭시 무조건 호출됩니다.
 	 */
 	public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
 	}

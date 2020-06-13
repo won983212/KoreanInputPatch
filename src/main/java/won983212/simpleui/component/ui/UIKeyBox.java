@@ -25,6 +25,16 @@ public class UIKeyBox extends UIStyledComponent<UIKeyBox> {
 	}
 	
 	@Override
+	public String serializeData() {
+		return String.valueOf(key);
+	}
+
+	@Override
+	public void deserializeData(String serialized) {
+		key = Integer.parseInt(serialized);
+	}
+	
+	@Override
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		editingBox = this;
 		return true;

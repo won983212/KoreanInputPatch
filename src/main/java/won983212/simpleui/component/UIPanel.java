@@ -103,19 +103,25 @@ public class UIPanel extends UIComponent<UIPanel> {
 			if (comp.isInteractive() && comp.containsRelative(mouseX - comp.x, mouseY - comp.y)) {
 				if (comp.onMouseClicked(mouseX - comp.x, mouseY - comp.y, mouseButton)) {
 					if(clicked == null) {
-						setFocus(comp);
+						setFocusdComponent(comp);
 						clicked = comp;
 					}
 				}
 			}
-			comp.onStaticMouseDown(mouseX, mouseY, mouseButton);
 		}
 		
 		if (clicked != null) {
 			return true;
 		} else {
-			setFocus(null);
+			setFocusdComponent(null);
 			return false;
+		}
+	}
+	
+	@Override
+	public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
+		for(UIComponent comp : components) {
+			comp.onStaticMouseDown(mouseX, mouseY, mouseButton);
 		}
 	}
 
@@ -134,7 +140,8 @@ public class UIPanel extends UIComponent<UIPanel> {
 		}
 	}
 
-	public void setFocus(UIComponent obj) {
+	@Override
+	public void setFocusdComponent(UIComponent obj) {
 		if (focusd == obj)
 			return;
 		if (focusd != null)
@@ -147,7 +154,7 @@ public class UIPanel extends UIComponent<UIPanel> {
 	@Override
 	public void onLostFocus() {
 		super.onLostFocus();
-		setFocus(null);
+		setFocusdComponent(null);
 	}
 
 	@Override

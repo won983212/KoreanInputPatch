@@ -37,12 +37,23 @@ public class UISwitch extends UIComponent<UISwitch> {
 	}
 	
 	@Override
+	public String serializeData() {
+		return String.valueOf(isActive);
+	}
+
+	@Override
+	public void deserializeData(String serialized) {
+		isActive = serialized.equals("true");
+	}
+	
+	@Override
 	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
 		// background
 		UITools.drawArea(x, y, width, height, isActive ? Theme.PRIMARY : Theme.LIGHT_GRAY, 0, 0, 1);
 		
 		double animatedX = 0;
 		if(Configs.getBoolean(Configs.UI_ANIMATE)) {
+			barAnimation.setReverse(!isActive);
 			animatedX = barAnimation.update() * width / 2;
 		} else {
 			animatedX = isActive ? width / 2 : 0;
@@ -56,16 +67,10 @@ public class UISwitch extends UIComponent<UISwitch> {
 	@Override
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		isActive = !isActive;
-		
-		if(event != null) {
+		if(event != null)
 			isActive = event.onChanged(this, isActive);
-		}
-		
-		if(Configs.getBoolean(Configs.UI_ANIMATE)) {
-			barAnimation.setReverse(!isActive);
+		if(Configs.getBoolean(Configs.UI_ANIMATE))
 			barAnimation.play();
-		}
-		
 		return true;
 	}
 }

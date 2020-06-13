@@ -89,6 +89,8 @@ public class UIScreen extends GuiScreen {
 		if(!popupLayer.onMouseClicked(mouseX, mouseY, mouseButton)) {
 			contentLayer.onMouseClicked(mouseX - screenBounds.x, mouseY - screenBounds.y, mouseButton);
 		}
+		popupLayer.onStaticMouseDown(mouseX, mouseY, mouseButton);
+		contentLayer.onStaticMouseDown(mouseX, mouseY, mouseButton);
 	}
 
 	@Override

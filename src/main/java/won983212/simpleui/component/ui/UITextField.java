@@ -13,8 +13,10 @@ import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
+import won983212.simpleui.component.UIPanel;
 import won983212.simpleui.component.UIStyledComponent;
 
+//TODO 클릭시 커서 위치 재설정
 public class UITextField extends UIStyledComponent<UITextField> implements IInputWrapper {
 	private String text = "";
 	private int maxTextLength = 256;
@@ -53,6 +55,16 @@ public class UITextField extends UIStyledComponent<UITextField> implements IInpu
 	}
 	
 	@Override
+	public String serializeData() {
+		return text;
+	}
+
+	@Override
+	public void deserializeData(String serialized) {
+		text = serialized;
+	}
+	
+	@Override
 	public void onKeyTyped(char typedChar, int keyCode) {
 		InputProcessor.processKeyInput(typedChar, keyCode, colorIn, hanjaIn, krIn, selection);
 	}
@@ -61,6 +73,16 @@ public class UITextField extends UIStyledComponent<UITextField> implements IInpu
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, colorIn, hanjaIn, krIn, selection);
 		return true;
+	}
+
+	@Override
+	public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
+		if(!containsAbsolute(mouseX, mouseY)) {
+			if(isFocused) {
+				isFocused = false;
+				setFocusdComponent(null);
+			}
+		}
 	}
 
 	@Override

@@ -28,9 +28,16 @@ public class SwitchPanel extends UIPanel {
 				comp.onMouseClicked(mouseX - comp.x, mouseY - comp.y, mouseButton);
 				clicked = comp;
 			}
-			comp.onStaticMouseDown(mouseX, mouseY, mouseButton);
 		}
 		return clicked != null;
+	}
+	
+	@Override
+	public void onStaticMouseDown(int mouseX, int mouseY, int mouseButton) {
+		if (!components.isEmpty()) {
+			UIComponent comp = components.get(selected);
+			comp.onStaticMouseDown(mouseX, mouseY, mouseButton);
+		}
 	}
 
 	@Override
