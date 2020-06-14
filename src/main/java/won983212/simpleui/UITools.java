@@ -142,19 +142,50 @@ public class UITools {
 	}
 	
 	public static int drawText(FontRenderer fr, String text, float x, float y, int color, int shadow, int arrange) {
+		return drawText(fr, text, x, y, color, shadow, arrange, Integer.MAX_VALUE);
+	}
+	
+	public static int drawText(FontRenderer fr, String text, float x, float y, int color, int shadow, int arrange, int wrapWidth) {
+		int len = fr.getStringWidth(text);
 		if (arrange > 0) {
 			if ((arrange & CENTER_H) > 0) {
-				x = x - fr.getStringWidth(text) / 2f;
+				int w = wrapWidth;
+				if(wrapWidth >= len) {
+					w = fr.getStringWidth(text);
+				}
+				x = x - w / 2f;
 			}
 			if ((arrange & CENTER_V) > 0) {
-				y = y - fr.FONT_HEIGHT / 2f;
+				int h = fr.FONT_HEIGHT;
+				if(wrapWidth < len) {
+					h = fr.listFormattedStringToWidth(text, wrapWidth).size() * fr.FONT_HEIGHT;
+				}
+				y = y - h / 2f;
 			}
 		}
 
+		float tx = x - ((int) x);
+		float ty = y - ((int) y);
+		
 		if (shadow != 0) {
-			fr.drawString(text, x + 0.5f, y + 0.5f, shadow, false);
+			if(wrapWidth < len) {
+				GlStateManager.translate(tx + 0.5f, ty + 0.5f, 0);
+				fr.drawSplitString(text, (int) x, (int) y, wrapWidth, shadow);
+				GlStateManager.translate(-(tx + 0.5f), -(ty + 0.5f), 0);
+			} else {
+				fr.drawString(text, x + 0.5f, y + 0.5f, shadow, false);
+			}
+			len++;
 		}
 		
-		return fr.drawString(text, x, y, color, false) + (shadow != 0 ? 1 : 0);
+		if(wrapWidth < len) {
+			GlStateManager.translate(tx, ty, 0);
+			fr.drawSplitString(text, (int) x, (int) y, wrapWidth, color);
+			GlStateManager.translate(-tx, -ty, 0);
+		} else {
+			fr.drawString(text, x, y, color, false);
+		}
+		
+		return len;
 	}
 }

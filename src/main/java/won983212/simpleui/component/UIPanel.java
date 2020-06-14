@@ -8,7 +8,7 @@ import java.util.ListIterator;
 
 import net.minecraft.client.renderer.GlStateManager;
 
-public class UIPanel extends UIComponent<UIPanel> {
+public class UIPanel extends UIStyledComponent<UIPanel> {
 	protected ArrayList<UIComponent> components = new ArrayList<>();
 	protected UIComponent clicked = null;
 	private UIComponent focusd = null;

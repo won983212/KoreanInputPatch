@@ -203,6 +203,13 @@ public abstract class UIComponent<T> {
 	}
 	
 	/**
+	 * 컴포넌트 총 영역에서 실제 컨텐츠가 그려질 영역을 반환합니다. 실제 컨텐츠가 그려질 영역은 컴포넌트 영역에서 padding을 뺀 영역입니다.
+	 */
+	protected Rectangle getContentBounds() {
+		return padding.getContentRect(getInnerBounds());
+	}
+	
+	/**
 	 * 레이아웃시 사용할 최소 사이즈를 구합니다. <code>getMeasuredMinSize</code>는 컴포넌트의 최소 사이즈를 구하는 반면,
 	 * 이 메서드는 실제 layout할 때 어느정도의 영역을 차지하는지 구합니다. 일반적으로는 minSize에 padding과 margin을 더한 값을 사용합니다.
 	 */
@@ -244,8 +251,8 @@ public abstract class UIComponent<T> {
 	private void setSizeByArrange(Rectangle available) {
 		Dimension size = getMeasuredMinSize();
 		Rectangle marginCalc = margin.getContentRect(available);
-		this.width = Math.max(minSize.width, hArrange.getWidthArranged(marginCalc, size.width));
-		this.height = Math.max(minSize.height, vArrange.getHeightArranged(marginCalc, size.height));
+		this.width = Math.min(Math.max(minSize.width, hArrange.getWidthArranged(marginCalc, size.width)), marginCalc.width);
+		this.height = Math.min(Math.max(minSize.height, vArrange.getHeightArranged(marginCalc, size.height)), marginCalc.height);
 	}
 
 	public void draw(int mouseX, int mouseY, float partialTicks) {

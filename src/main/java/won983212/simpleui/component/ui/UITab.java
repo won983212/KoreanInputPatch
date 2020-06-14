@@ -19,7 +19,7 @@ public class UITab extends UIStyledComponent<UITab> {
 	private IStateChangedEventListener<Integer> event;
 	
 	public UITab() {
-		setBackgroundColor(0xffdedede);
+		setBackgroundColor(0xffcfcfcf);
 		setForegroundColor(Theme.PRIMARY);
 	}
 	
@@ -78,7 +78,7 @@ public class UITab extends UIStyledComponent<UITab> {
 				textColor = foregroundColor;
 				value = "§l" + value;
 			}
-			UITools.drawText(fontRenderer, value, x + 12, y + ITEM_HEIGHT * (i + 0.5f), textColor, Theme.LIGHT_GRAY, UITools.CENTER_V);
+			UITools.drawText(fontRenderer, value, x + 12, y + ITEM_HEIGHT * (i + 0.5f), textColor, 0, UITools.CENTER_V);
 		}
 	}
 	

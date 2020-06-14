@@ -17,6 +17,7 @@ import won983212.simpleui.component.UIComponent;
 import won983212.simpleui.component.GridPanel.LengthDefinition;
 import won983212.simpleui.component.GridPanel.LengthType;
 import won983212.simpleui.component.deco.BorderDeco;
+import won983212.simpleui.component.ui.UIAlertPopup;
 import won983212.simpleui.component.ui.UIButton;
 import won983212.simpleui.component.ui.UICombobox;
 import won983212.simpleui.component.ui.UIKeyBox;
@@ -32,6 +33,7 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 	private GuiMainMenu parent;
 	private UITab sidebar;
 	private SwitchPanel contentPanel = new SwitchPanel();
+	private UIAlertPopup alert = new UIAlertPopup().setCallbackEvent(this, 2, 3);
 	private ArrayList<SettingProperty> properties = new ArrayList<>();
 	
 	public UIScreenSettings(GuiMainMenu parent) {
@@ -46,7 +48,6 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 				new String[] {"끄기", "채팅창에만 표시", "모든 필드에 표시"}));
 		properties.add(new SettingProperty("한영 지시자 애니메이션", Configs.IME_INDICATOR_ANIMATE, SettingProperty.BOOLEAN));
 		properties.add(new SettingProperty("UI 애니메이션", Configs.UI_ANIMATE, SettingProperty.BOOLEAN));
-		properties.add(new SettingProperty("UI 애니메이션", Configs.UI_ANIMATE, SettingProperty.INPUT));
 		contentPanel.add(generatePage(properties));
 		
 		properties.add(new SettingProperty("한영 전환키", Configs.KEY_KOR, SettingProperty.KEY));
@@ -95,6 +96,8 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 				.setMargin(new DirWeights(3, 3, 0, 3)));
 		panel.add(GridPanel.setLayout(buttons, 2, 1, 1, 1));
 		add(panel);
+		
+		addPopup(alert);
 	}
 	
 	@Override
@@ -119,13 +122,15 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 	public void onClick(UIComponent comp, int mouseX, int mouseY, int mouseButton) {
 		switch(comp.getId()) {
 		case 0:
-			//TODO 리셋 전에 물어보기
-			Configs.setDefault();
-			Minecraft.getMinecraft().displayGuiScreen(parent);
+			alert.showMessage("주의", "모든 데이터가 초기화됩니다. 계속합니까?");
 			break;
 		case 1:
 			for(SettingProperty p : properties) p.save();
 			Configs.save();
+			break;
+		case 3:
+			Configs.setDefault();
+			Minecraft.getMinecraft().displayGuiScreen(parent);
 			break;
 		}
 	}

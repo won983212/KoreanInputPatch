@@ -1,28 +1,24 @@
 package won983212.simpleui.component.ui;
 
 import java.awt.Point;
+import java.util.List;
 
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.kpatch.indicators.GuiColorSelector;
-import won983212.kpatch.indicators.GuiIndicator;
-import won983212.kpatch.indicators.GuiKoreanIndicator;
 import won983212.kpatch.input.ColorInput;
 import won983212.kpatch.input.HanjaInput;
 import won983212.kpatch.input.KoreanInput;
 import won983212.kpatch.input.SelectionCursorInput;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
-import won983212.simpleui.component.UIPanel;
 import won983212.simpleui.component.UIStyledComponent;
 
-//TODO 클릭시 커서 위치 재설정
 public class UITextField extends UIStyledComponent<UITextField> implements IInputWrapper {
 	private String text = "";
 	private int maxTextLength = 256;
 	private boolean isFocused = false;
 	private int lineOffset = 0;
-	private String hint = "Hint test";
+	private String hint = "";
 	
 	private SelectionCursorInput selection = new SelectionCursorInput(this);
 	private KoreanInput krIn = new KoreanInput(this);
@@ -72,6 +68,7 @@ public class UITextField extends UIStyledComponent<UITextField> implements IInpu
 	@Override
 	public boolean onMouseClicked(int mouseX, int mouseY, int mouseButton) {
 		InputProcessor.processMouseClick(mouseX, mouseY, mouseButton, colorIn, hanjaIn, krIn, selection);
+        selection.setCursor(fontRenderer.trimStringToWidth(text.substring(lineOffset), mouseX - 2).length() + lineOffset);
 		return true;
 	}
 
