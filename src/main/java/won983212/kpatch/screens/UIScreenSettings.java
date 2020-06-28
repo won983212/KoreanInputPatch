@@ -3,40 +3,34 @@ package won983212.kpatch.screens;
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Arranges;
 import won983212.simpleui.DirWeights;
-import won983212.simpleui.HorizontalArrange;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UIScreen;
 import won983212.simpleui.component.GridPanel;
+import won983212.simpleui.component.GridPanel.LengthDefinition;
+import won983212.simpleui.component.GridPanel.LengthType;
 import won983212.simpleui.component.StackPanel;
 import won983212.simpleui.component.SwitchPanel;
 import won983212.simpleui.component.UIComponent;
-import won983212.simpleui.component.GridPanel.LengthDefinition;
-import won983212.simpleui.component.GridPanel.LengthType;
-import won983212.simpleui.component.deco.BorderDeco;
 import won983212.simpleui.component.ui.UIAlertPopup;
 import won983212.simpleui.component.ui.UIButton;
-import won983212.simpleui.component.ui.UICombobox;
-import won983212.simpleui.component.ui.UIKeyBox;
 import won983212.simpleui.component.ui.UILabel;
 import won983212.simpleui.component.ui.UIRectangle;
-import won983212.simpleui.component.ui.UISwitch;
 import won983212.simpleui.component.ui.UITab;
-import won983212.simpleui.component.ui.UITextField;
 import won983212.simpleui.events.IClickEventListener;
 import won983212.simpleui.events.IStateChangedEventListener;
 
 public class UIScreenSettings extends UIScreen implements IStateChangedEventListener<Integer>, IClickEventListener {
-	private GuiMainMenu parent;
+	private GuiScreen parent;
 	private UITab sidebar;
 	private SwitchPanel contentPanel = new SwitchPanel();
 	private UIAlertPopup alert = new UIAlertPopup().setCallbackEvent(this, 2, 3);
 	private ArrayList<SettingProperty> properties = new ArrayList<>();
 	
-	public UIScreenSettings(GuiMainMenu parent) {
+	public UIScreenSettings(GuiScreen parent) {
 		super(320, 200);
 		this.parent = parent;
 	}

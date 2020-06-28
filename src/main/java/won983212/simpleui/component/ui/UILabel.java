@@ -18,6 +18,11 @@ public class UILabel extends UIStyledComponent<UILabel> {
 	
 	@Override
 	public void renderComponent(int mouseX, int mouseY, float partialTicks) {
-		UITools.drawText(fontRenderer, text, x, y, foregroundColor, textShadow, textArrange, width);
+		String[] texts = text.split("\n");
+		int stackedY = y;
+		for(String str : texts) {
+			UITools.drawText(fontRenderer, str, x, stackedY, foregroundColor, textShadow, textArrange, width);
+			stackedY += fontRenderer.FONT_HEIGHT + 2;
+		}
 	}
 }

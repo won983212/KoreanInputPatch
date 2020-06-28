@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+/**
+ * GridPanel은 요소들을 테이블 방식으로 배치합니다. 패널을 정해진 규칙에 따라 한 개 이상의 행과 열로 나누어 요소들을 배치합니다.
+ * 대부분의 UI구성에 유용하게 사용됩니다.
+ */
 public class GridPanel extends UIPanel {
 	private ArrayList<CellLength> columns = new ArrayList<CellLength>();
 	private ArrayList<CellLength> rows = new ArrayList<CellLength>();

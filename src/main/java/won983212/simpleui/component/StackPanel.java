@@ -3,6 +3,9 @@ package won983212.simpleui.component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+/**
+ * StackPanel은 요소들을 쌓아가면서 배치합니다.
+ */
 public class StackPanel extends UIPanel {
 	private Orientation orientation = Orientation.HORIZONTAL;
 	

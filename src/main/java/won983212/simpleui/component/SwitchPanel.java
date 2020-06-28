@@ -4,6 +4,10 @@ import java.util.ListIterator;
 
 import net.minecraft.client.renderer.GlStateManager;
 
+/**
+ * SwitchPanel은 여러 개의 컴포넌트중 하나만 보여주는 패널입니다. 미리 컴포넌트들을 추가해두었다가 상황에 따라 다른 컴포넌트를 보여줄 수 있습니다.
+ * UITab과 함깨 사용하면 유용합니다.
+ */
 public class SwitchPanel extends UIPanel {
 	private int selected = 0;
 	
