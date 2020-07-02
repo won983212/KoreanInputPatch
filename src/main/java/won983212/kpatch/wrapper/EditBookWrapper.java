@@ -125,9 +125,8 @@ public class EditBookWrapper extends GuiScreenBook implements IInputWrapper {
 			this.fontRenderer.drawString(s4, i - j1 + 192 - 44, 18, 0);
 			krIn.setLength(text.length(), 255);
 		}
-		krIn.draw(2, 2);
-		colorIn.draw(2, 2);
-		hanjaIn.draw(2, 2);
+		
+		InputProcessor.processRenderAt(2, 2, krIn, colorIn, hanjaIn);
 		drawCursor();
 		
 		// components rendering (GuiScreen.drawScreen)

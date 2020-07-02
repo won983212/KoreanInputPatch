@@ -9,6 +9,12 @@ public abstract class InputProcessor {
 	
 	public abstract boolean handleKeyTyped(char c, int i);
 	
+	public void draw(int parentX, int parentY, int parentWidth, int parentHeight) {
+	}
+	
+	public void draw(int x, int y) {
+	}
+	
 	public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
 	}
 
@@ -81,6 +87,18 @@ public abstract class InputProcessor {
 	public static void processMouseClick(int mouseX, int mouseY, int mouseButton, InputProcessor... processors) {
 		for(InputProcessor p : processors) {
 			p.onMouseClick(mouseX, mouseY, mouseButton);
+		}
+	}
+	
+	public static void processRenderOnIndicator(int parentX, int parentY, int parentWidth, int parentHeight, InputProcessor... processors) {
+		for(InputProcessor p : processors) {
+			p.draw(parentX, parentY, parentWidth, parentHeight);
+		}
+	}
+	
+	public static void processRenderAt(int x, int y, InputProcessor... processors) {
+		for(InputProcessor p : processors) {
+			p.draw(x, y);
 		}
 	}
 }

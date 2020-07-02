@@ -69,8 +69,7 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 		selection.drawSelectionBox((width - textWidth) / 2 - 1, y, 0);
 		krIn.setLength((int)(textWidth * 100 / 90.0), 100);
 		krIn.draw(width / 2 - 47, indicatorY);
-		colorIn.draw(2, 2);
-		hanjaIn.draw(2, 2);
+		InputProcessor.processRenderAt(2, 2, colorIn, hanjaIn);
 	}
 
 	@Override

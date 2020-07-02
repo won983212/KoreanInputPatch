@@ -34,7 +34,7 @@ public class GuiKoreanIndicator extends GuiIndicator {
 		alertBoomingAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
 		modeBgColorAnimation.setCompileType(AnimationBase.COMPILE_MOUNTAIN);
 	}
-
+	
 	public void setLength(int len, int maxLen) {
 		this.len = len;
 		this.maxLen = maxLen;

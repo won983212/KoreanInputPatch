@@ -19,24 +19,45 @@ public class Configs {
 	private static final File configFile = new File(Minecraft.getMinecraft().mcDataDir, "/config/koreaninput.cfg");
 	private static final HashMap<String, String> defaultValues = new HashMap<>();
 	private static Properties data = new Properties();
+
+	// General
+	public static final String INPUT_KEYBOARD_ARRAY = "inputKeyboardArray";
+	public static final String CHAT_CONVERT_KOR_MODE = "chatConvertKorMode";
 	
-	public static final String IME_INDICATOR_VISIBLE_MODE = "imeIndicatorVisible";
-	public static final String IME_INDICATOR_ANIMATE = "imeIndicatorAnimate";
-	public static final String UI_ANIMATE = "uiAnimate";
+	// Font
+	public static final String USE_FONT = "useFont";
+	public static final String FONT_FAMILY = "fontFamily";
+	public static final String USE_FONT_ANTIALIASING = "useFontAntialiasing";
+	
+	// HotKeys
 	public static final String KEY_KOR = "keyKor";
 	public static final String KEY_HANJA = "keyHanja";
 	public static final String KEY_COLOR = "keyColor";
 	
+	// UI
+	public static final String IME_INDICATOR_VISIBLE_MODE = "imeIndicatorVisible";
+	public static final String IME_INDICATOR_ANIMATE = "imeIndicatorAnimate";
+	public static final String UI_ANIMATE = "uiAnimate";
+	
 	static {
-		// IME Indicator를 표시합니다
-		// 0: 끄기, 1: 채팅창에서만 표시, 2: 모든 입력 필드(택스트 필드, 책, 팻말)에서 표시
-		defaultValues.put(IME_INDICATOR_VISIBLE_MODE, "2");
+		// 키보드 자판 배열을 설정합니다.
+		// 0: 두벌식, 1: 세벌식 390, 2: 세벌식 최종
+		defaultValues.put(INPUT_KEYBOARD_ARRAY, "0");
 		
-		// IME Indicator에서 에니메이션 효과를 켭니다.
-		defaultValues.put(IME_INDICATOR_ANIMATE, "true");
+		// 채팅 영타 변환 모드
+		// 0: 끄기, 1: 한글이 포함되지 않은 문장만 변환, 2: 항상 변환
+		defaultValues.put(CHAT_CONVERT_KOR_MODE, "0");
 		
-		// SimpleUI에서 에니메이션 효과를 켭니다.
-		defaultValues.put(UI_ANIMATE, "true");
+		
+		// 폰트 사용 여부
+		defaultValues.put(USE_FONT, "true");
+
+		// 폰트
+		defaultValues.put(FONT_FAMILY, "Sans-serif");
+		
+		// 폰트 안티엘리어싱 사용 여부
+		defaultValues.put(USE_FONT_ANTIALIASING, "false");
+		
 		
 		// 한영 변환키를 설정합니다. (기본 LControl)
 		defaultValues.put(KEY_KOR, String.valueOf(Keyboard.KEY_LCONTROL));
@@ -46,6 +67,18 @@ public class Configs {
 		
 		// 색 입력기 키를 설정합니다. (기본 Insert키)
 		defaultValues.put(KEY_COLOR, String.valueOf(Keyboard.KEY_INSERT));
+		
+		
+		// IME Indicator를 표시합니다
+		// 0: 끄기, 1: 채팅창에서만 표시, 2: 모든 입력 필드(택스트 필드, 책, 팻말)에서 표시
+		defaultValues.put(IME_INDICATOR_VISIBLE_MODE, "1");
+		
+		// IME Indicator에서 에니메이션 효과를 켭니다.
+		defaultValues.put(IME_INDICATOR_ANIMATE, "true");
+		
+		// SimpleUI에서 에니메이션 효과를 켭니다.
+		defaultValues.put(UI_ANIMATE, "true");
+		
 		
 		// 설정파일 버전정보. 버전이 legacy하면 업그레이드한다.
 		defaultValues.put("version", KoreanInputPatch.VERSION);
