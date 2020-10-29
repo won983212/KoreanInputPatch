@@ -67,13 +67,13 @@ public class TextfieldWrapper extends GuiTextField implements IInputWrapper {
 			InputProcessor.processRenderOnIndicator(ind_x, ind_y, width, height, krIn, colorIn, hanjaIn);
 		}
 		// TODO Config button
-		if(mc.currentScreen instanceof GuiChat) {
+		/*if(mc.currentScreen instanceof GuiChat) {
             final ScaledResolution scaledresolution = new ScaledResolution(mc);
             int mx = Mouse.getX() * scaledresolution.getScaledWidth() / mc.displayWidth;
             int my = (1 - Mouse.getY() / mc.displayHeight) * scaledresolution.getScaledHeight() - 1;
             int ind_w = mc.fontRenderer.getStringWidth("한글") + 8;
             UITools.drawArea(x + ind_w + 1, y - 14, 11, 11, Theme.BACKGROUND);
-		}
+		}*/
 		super.drawTextBox();
 	}
 
