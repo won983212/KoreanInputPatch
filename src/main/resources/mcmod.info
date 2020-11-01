@@ -3,7 +3,7 @@
   "modid": "koreanime",
   "name": "Minecraft Korean IME",
   "description": "Korean IME in minecraft",
-  "version": "${version}",
+  "version": "0.4",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",

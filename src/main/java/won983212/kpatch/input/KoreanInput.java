@@ -1,14 +1,11 @@
 package won983212.kpatch.input;
 
-import java.awt.Point;
-
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.util.ChatAllowedCharacters;
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;
-import won983212.kpatch.indicators.GuiIndicator;
 import won983212.kpatch.indicators.GuiKoreanIndicator;
 
 public class KoreanInput extends InputProcessor {

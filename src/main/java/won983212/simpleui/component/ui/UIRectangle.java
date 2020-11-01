@@ -1,7 +1,5 @@
 package won983212.simpleui.component.ui;
 
-import won983212.kpatch.Configs;
-import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 import won983212.simpleui.component.UIStyledComponent;
 

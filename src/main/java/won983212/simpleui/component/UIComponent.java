@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import won983212.simpleui.Arranges;
 import won983212.simpleui.DirWeights;
 import won983212.simpleui.HorizontalArrange;

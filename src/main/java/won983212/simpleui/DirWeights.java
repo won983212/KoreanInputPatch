@@ -3,9 +3,6 @@ package won983212.simpleui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-
 public class DirWeights {
 	public int top;
 	public int bottom;

@@ -3,14 +3,11 @@ package won983212.simpleui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
 import won983212.simpleui.component.UIComponent;
 import won983212.simpleui.component.UIPanel;
-import won983212.simpleui.component.UIStyledComponent;
 import won983212.simpleui.component.ui.UIKeyBox;
 
 /**

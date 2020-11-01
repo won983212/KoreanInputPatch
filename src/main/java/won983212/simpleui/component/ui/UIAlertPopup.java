@@ -1,18 +1,14 @@
 package won983212.simpleui.component.ui;
 
-import java.awt.Rectangle;
-
 import org.lwjgl.input.Keyboard;
 
 import won983212.simpleui.Arranges;
 import won983212.simpleui.DirWeights;
 import won983212.simpleui.Theme;
-import won983212.simpleui.UITools;
 import won983212.simpleui.component.GridPanel;
 import won983212.simpleui.component.StackPanel;
 import won983212.simpleui.component.UIComponent;
 import won983212.simpleui.component.UIPanel;
-import won983212.simpleui.component.UIStyledComponent;
 import won983212.simpleui.events.IClickEventListener;
 
 public class UIAlertPopup extends UIPanel implements IClickEventListener {

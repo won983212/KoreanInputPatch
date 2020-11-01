@@ -1,7 +1,6 @@
 package won983212.simpleui.component.ui;
 
 import java.awt.Point;
-import java.util.List;
 
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;

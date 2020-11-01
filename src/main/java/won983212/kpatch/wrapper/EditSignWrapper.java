@@ -52,8 +52,6 @@ public class EditSignWrapper extends GuiEditSign implements IInputWrapper {
 
 		String text = tileSign.signText[editLine].getUnformattedText();
 		final int textWidth = fontRenderer.getStringWidth(text);
-		final int minCur = selection.getStartCursor();
-		final int maxCur = selection.getEndCursor();
 
 		int y, indicatorY;
 		Block block = this.tileSign.getBlockType();

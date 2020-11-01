@@ -1,7 +1,5 @@
 package won983212.simpleui.component;
 
-import java.util.ListIterator;
-
 import net.minecraft.client.renderer.GlStateManager;
 
 /**

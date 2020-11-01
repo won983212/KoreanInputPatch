@@ -3,12 +3,10 @@ package won983212.kpatch.screens;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.component.UIComponent;
-import won983212.simpleui.component.deco.BorderDeco;
 import won983212.simpleui.component.ui.UICombobox;
 import won983212.simpleui.component.ui.UIKeyBox;
 import won983212.simpleui.component.ui.UISwitch;
 import won983212.simpleui.component.ui.UITextField;
-import won983212.simpleui.events.IStateChangedEventListener;
 
 public class SettingProperty {
 	public static final int SELECT = 1;

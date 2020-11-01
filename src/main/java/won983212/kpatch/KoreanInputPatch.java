@@ -13,7 +13,7 @@ import won983212.font.ZWSPFixedFontRenderer;
 public class KoreanInputPatch {
 	public static final String MODID = "koreanime";
 	public static final String NAME = "Minecraft Korean IME";
-	public static final String VERSION = "0.1";
+	public static final String VERSION = "0.4";
 
 	@Mod.Instance(KoreanInputPatch.MODID)
 	public static KoreanInputPatch instance;

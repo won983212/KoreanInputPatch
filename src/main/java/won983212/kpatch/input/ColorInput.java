@@ -1,7 +1,5 @@
 package won983212.kpatch.input;
 
-import java.awt.Point;
-
 import won983212.kpatch.Configs;
 import won983212.kpatch.IInputWrapper;
 import won983212.kpatch.InputProcessor;

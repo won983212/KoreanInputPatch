@@ -5,8 +5,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.Hanja;
 import won983212.kpatch.KoreanInputPatch;
-import won983212.simpleui.UITools;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UITools;
 
 public class GuiHanjaSelector extends GuiIndicator {
 	private static final int TITLE_HEIGHT = 20;

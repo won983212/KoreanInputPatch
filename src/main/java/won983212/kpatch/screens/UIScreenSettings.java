@@ -1,5 +1,9 @@
 package won983212.kpatch.screens;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
@@ -40,17 +44,11 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 		ArrayList<SettingProperty> properties = new ArrayList<>();
 
 		// 일반
-		properties.add(new SettingProperty("입력 키보드", Configs.INPUT_KEYBOARD_ARRAY, SettingProperty.SELECT,
+		/*properties.add(new SettingProperty("입력 키보드", Configs.INPUT_KEYBOARD_ARRAY, SettingProperty.SELECT,
 				new String[] {"두벌식", "세벌식 390", "세벌식 최종"}));
 		properties.add(new SettingProperty("채팅에서 자동으로 영타 변환", Configs.CHAT_CONVERT_KOR_MODE, SettingProperty.SELECT, 
 				new String[] {"끄기", "한글 없는 문장일 때", "항상"}));
-		contentPanel.add(generatePage(properties));
-		
-		// 폰트
-		properties.add(new SettingProperty("폰트 사용", Configs.USE_FONT, SettingProperty.BOOLEAN));
-		properties.add(new SettingProperty("폰트", Configs.FONT_FAMILY, SettingProperty.INPUT));
-		properties.add(new SettingProperty("안티엘리어싱 사용", Configs.USE_FONT_ANTIALIASING, SettingProperty.BOOLEAN));
-		contentPanel.add(generatePage(properties));
+		contentPanel.add(generatePage(properties));*/
 		
 		// 키
 		properties.add(new SettingProperty("한영 전환키", Configs.KEY_KOR, SettingProperty.KEY));
@@ -75,10 +73,23 @@ public class UIScreenSettings extends UIScreen implements IStateChangedEventList
 		infoPanel.add(GridPanel.setLayout(new UILabel("v" + KoreanInputPatch.VERSION).setMargin(new DirWeights(2, 2, 5, 2)).setForegroundColor(Theme.GRAY), 1, 1, 1, 1));
 		infoPanel.add(GridPanel.setLayout(new UILabel("제작자   룻트(won983212)").setMargin(new DirWeights(8, 2, 2, 2)).setForegroundColor(Theme.BLACK), 0, 2, 2, 1));
 		infoPanel.add(GridPanel.setLayout(new UILabel("이메일   won983212@naver.com").setMargin(new DirWeights(2, 8, 2, 2)).setForegroundColor(Theme.BLACK), 0, 3, 2, 1));
-		infoPanel.add(GridPanel.setLayout(new UIButton("Github로 이동.."), 0, 4, 2, 1));
+		infoPanel.add(GridPanel.setLayout(new UIButton("Github로 이동.."), 0, 4, 2, 1).setClickListener(new IClickEventListener() {
+			@Override
+			public void onClick(UIComponent comp, int mouseX, int mouseY, int mouseButton) {
+				if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+				    try {
+						Desktop.getDesktop().browse(new URI("https://github.com/won983212/KoreanInputPatch"));
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (URISyntaxException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}));
 		contentPanel.add(infoPanel.setArrange(Arranges.CC));
 		
-		sidebar.setTabValues(new String[] {"일반", "폰트", "키", "UI", "모드 정보"});
+		sidebar.setTabValues(new String[] {/*"일반", "폰트",*/ "키", "UI", "모드 정보"});
 	}
 	
 	private GridPanel generatePage(ArrayList<SettingProperty> properties) {

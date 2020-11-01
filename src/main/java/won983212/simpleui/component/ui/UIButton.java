@@ -1,13 +1,12 @@
 package won983212.simpleui.component.ui;
 
-import net.minecraft.client.Minecraft;
+import won983212.kpatch.Configs;
+import won983212.simpleui.DirWeights;
+import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.component.UIStyledComponent;
 import won983212.simpleui.events.IClickEventListener;
-import won983212.kpatch.Configs;
-import won983212.simpleui.DirWeights;
-import won983212.simpleui.Theme;
 
 public class UIButton extends UIStyledComponent<UIButton> {
 	private String label;

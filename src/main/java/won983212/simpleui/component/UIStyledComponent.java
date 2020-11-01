@@ -2,7 +2,6 @@ package won983212.simpleui.component;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 

@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import won983212.kpatch.Configs;
 import won983212.kpatch.KoreanInputPatch;
 import won983212.kpatch.input.KoreanInput;
-import won983212.simpleui.UITools;
 import won983212.simpleui.Theme;
+import won983212.simpleui.UITools;
 import won983212.simpleui.animation.AnimationBase;
 import won983212.simpleui.animation.ColorAnimation;
 import won983212.simpleui.animation.DecimalAnimation;
@@ -128,7 +128,7 @@ public class GuiKoreanIndicator extends GuiIndicator {
 	
 			// kor indicator text
 			int textX = x + 2 + (textWidth + 6 - fr.getStringWidth(idiText)) / 2;
-			UITools.drawText(fr, idiText, textX, y + 1, Theme.BLACK, Theme.LIGHT_GRAY);
+			UITools.drawText(fr, idiText, textX, y + 1, 0xff333333, Theme.LIGHT_GRAY);
 		});
 	}
 }

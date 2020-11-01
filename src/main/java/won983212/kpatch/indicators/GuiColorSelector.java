@@ -15,7 +15,7 @@ public class GuiColorSelector extends GuiIndicator {
 	};
 	
 	private static final int colorPanelSize = 14;
-	private static final int margin = 5;
+	private static final int margin = 3;
 	private static final int columns = 6;
 	private static final int rows = 4;
 	private static final int gap = 3;

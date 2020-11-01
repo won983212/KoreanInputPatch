@@ -1,7 +1,5 @@
 package won983212.kpatch.input;
 
-import java.awt.Point;
-
 import org.lwjgl.input.Keyboard;
 
 import won983212.kpatch.Configs;

@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import won983212.kpatch.screens.UIScreenSettings;
 import won983212.kpatch.wrapper.EditBookWrapper;
 import won983212.kpatch.wrapper.EditSignWrapper;
 import won983212.kpatch.wrapper.TextfieldWrapper;
@@ -54,7 +53,7 @@ public class ForgeEventHandler {
 		GuiScreen screen = e.getGui();
 		if (screen != null) {
 			Minecraft mc = Minecraft.getMinecraft();
-			Class cls = screen.getClass();
+			Class<? extends GuiScreen> cls = screen.getClass();
 			boolean cancel = true;
 			
 			if (cls == GuiEditSign.class) {

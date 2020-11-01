@@ -1,6 +1,5 @@
 package won983212.simpleui;
 
-import java.awt.Dimension;
 import java.awt.Rectangle;
 
 public enum VerticalArrange {

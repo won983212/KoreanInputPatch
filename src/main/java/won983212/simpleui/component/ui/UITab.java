@@ -1,10 +1,8 @@
 package won983212.simpleui.component.ui;
 
-import net.minecraft.client.gui.Gui;
 import won983212.kpatch.Configs;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
-import won983212.simpleui.animation.DecimalAnimation;
 import won983212.simpleui.animation.IntervalAnimation;
 import won983212.simpleui.component.UIStyledComponent;
 import won983212.simpleui.events.IStateChangedEventListener;

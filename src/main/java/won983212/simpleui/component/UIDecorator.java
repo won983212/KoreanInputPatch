@@ -2,8 +2,6 @@ package won983212.simpleui.component;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.ListIterator;
 
 import net.minecraft.client.renderer.GlStateManager;
 

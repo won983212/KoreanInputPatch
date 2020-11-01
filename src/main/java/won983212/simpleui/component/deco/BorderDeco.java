@@ -1,6 +1,5 @@
 package won983212.simpleui.component.deco;
 
-import net.minecraft.client.renderer.GlStateManager;
 import won983212.simpleui.Theme;
 import won983212.simpleui.UITools;
 import won983212.simpleui.component.UIComponent;

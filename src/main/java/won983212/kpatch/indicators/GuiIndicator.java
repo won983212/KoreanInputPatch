@@ -1,7 +1,5 @@
 package won983212.kpatch.indicators;
 
-import java.awt.Point;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 

@@ -21,13 +21,8 @@ public class Configs {
 	private static Properties data = new Properties();
 
 	// General
-	public static final String INPUT_KEYBOARD_ARRAY = "inputKeyboardArray";
-	public static final String CHAT_CONVERT_KOR_MODE = "chatConvertKorMode";
-	
-	// Font
-	public static final String USE_FONT = "useFont";
-	public static final String FONT_FAMILY = "fontFamily";
-	public static final String USE_FONT_ANTIALIASING = "useFontAntialiasing";
+	/*public static final String INPUT_KEYBOARD_ARRAY = "inputKeyboardArray";
+	public static final String CHAT_CONVERT_KOR_MODE = "chatConvertKorMode";*/
 	
 	// HotKeys
 	public static final String KEY_KOR = "keyKor";
@@ -40,23 +35,13 @@ public class Configs {
 	public static final String UI_ANIMATE = "uiAnimate";
 	
 	static {
-		// 키보드 자판 배열을 설정합니다.
+		/*// 키보드 자판 배열을 설정합니다.
 		// 0: 두벌식, 1: 세벌식 390, 2: 세벌식 최종
 		defaultValues.put(INPUT_KEYBOARD_ARRAY, "0");
 		
 		// 채팅 영타 변환 모드
 		// 0: 끄기, 1: 한글이 포함되지 않은 문장만 변환, 2: 항상 변환
-		defaultValues.put(CHAT_CONVERT_KOR_MODE, "0");
-		
-		
-		// 폰트 사용 여부
-		defaultValues.put(USE_FONT, "true");
-
-		// 폰트
-		defaultValues.put(FONT_FAMILY, "Sans-serif");
-		
-		// 폰트 안티엘리어싱 사용 여부
-		defaultValues.put(USE_FONT_ANTIALIASING, "false");
+		defaultValues.put(CHAT_CONVERT_KOR_MODE, "0");*/
 		
 		
 		// 한영 변환키를 설정합니다. (기본 LControl)
