@@ -1,6 +1,5 @@
 package com.won983212.kpatch.input;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.won983212.kpatch.Config;
 import com.won983212.kpatch.IInputWrapper;
 import com.won983212.kpatch.Imm32;
@@ -61,72 +60,7 @@ public class KoreanInput extends InputProcessor {
         if (SharedConstants.isAllowedChatCharacter(c)) {
             if (isKorean) {
                 if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
-                    if ("qwertyuiopasdfghjklzxcvbnmQWERTOP".indexOf(c) == -1)
-                        c = Character.toLowerCase(c);
-                    if (cho == -1) { // 초성 입력
-                        cho = Chosung.indexOf(c);
-                        writeChar(translate(c));
-                        if (cho != -1) {
-                            input.setMovingCursor(input.getMovingCursor() - 1);
-                        }
-                    } else if (jung == -1) { // 중성 입력
-                        jung = findArray(Jungsung, c);
-                        if (jung == -1) {
-                            cho = Chosung.indexOf(c);
-                            input.setMovingCursor(input.getAnchorCursor());
-                            writeChar(translate(c));
-                            input.setMovingCursor(input.getMovingCursor() - 1);
-                        } else {
-                            writeAssembled();
-                        }
-                    } else if (jong == 0) { // 종성 입력
-                        int newJung = findArray(Jungsung, Jungsung[jung] + c);
-                        if (newJung != -1) {
-                            jung = newJung;
-                            writeAssembled();
-                        } else { // 종성에 올 수 없는 문자 입력시
-                            int idx = findArray(Jongsung, c);
-                            if (idx != -1) {
-                                jong = idx;
-                                writeAssembled();
-                            } else {
-                                cancelAssemble();
-                                writeChar(translate(c));
-
-                                cho = Chosung.indexOf(c);
-                                if (cho != -1) {
-                                    input.setMovingCursor(input.getMovingCursor() - 1);
-                                }
-                            }
-                        }
-                    } else { // 종성 복자음 조합
-                        int newJong = findArray(Jongsung, Jongsung[jong] + c);
-                        if (newJong != -1) {
-                            jong = newJong;
-                            writeAssembled();
-                        } else { // 복자음이 안 만들어지면
-                            int newCho = Chosung.indexOf(c);
-                            if (newCho != -1) {
-                                cancelAssemble();
-                                cho = newCho;
-                                writeChar(translate(c));
-                                input.setMovingCursor(input.getMovingCursor() - 1);
-                            } else {
-                                char lastChar;
-                                if (Jongsung[jong].length() == 2) {
-                                    lastChar = Jongsung[jong].charAt(1);
-                                } else {
-                                    lastChar = Jongsung[jong].charAt(0);
-                                }
-                                backspaceKorean();
-                                cancelAssemble();
-                                cho = Chosung.indexOf(lastChar);
-                                jung = findArray(Jungsung, c);
-                                input.setMovingCursor(input.getAnchorCursor());
-                                writeAssembled();
-                            }
-                        }
-                    }
+                    assembleKor(c);
                 } else {
                     if (isAssemble())
                         cancelAssemble();
@@ -138,6 +72,91 @@ public class KoreanInput extends InputProcessor {
             return true;
         }
         return false;
+    }
+
+    private void assembleKor(char c) {
+        if ("qwertyuiopasdfghjklzxcvbnmQWERTOP".indexOf(c) == -1)
+            c = Character.toLowerCase(c);
+        if (cho == -1) { // 초성 입력
+            assembleChosung(c);
+        } else if (jung == -1) { // 중성 입력
+            assembleJungsung(c);
+        } else if (jong == 0) { // 종성 입력
+            assembleJongsung(c);
+        } else { // 종성 복자음 조합
+            assembleDoubleJongsung(c);
+        }
+    }
+
+    private void assembleDoubleJongsung(char c) {
+        int newJong = findArray(Jongsung, Jongsung[jong] + c);
+        if (newJong != -1) {
+            jong = newJong;
+            writeAssembled();
+        } else { // 복자음이 안 만들어지면
+            int newCho = Chosung.indexOf(c);
+            if (newCho != -1) {
+                cancelAssemble();
+                cho = newCho;
+                writeChar(translate(c));
+                input.setMovingCursor(input.getMovingCursor() - 1);
+            } else {
+                char lastChar;
+                if (Jongsung[jong].length() == 2) {
+                    lastChar = Jongsung[jong].charAt(1);
+                } else {
+                    lastChar = Jongsung[jong].charAt(0);
+                }
+                backspaceKorean();
+                cancelAssemble();
+                cho = Chosung.indexOf(lastChar);
+                jung = findArray(Jungsung, c);
+                input.setMovingCursor(input.getAnchorCursor());
+                writeAssembled();
+            }
+        }
+    }
+
+    private void assembleJongsung(char c) {
+        int newJung = findArray(Jungsung, Jungsung[jung] + c);
+        if (newJung != -1) {
+            jung = newJung;
+            writeAssembled();
+        } else { // 종성에 올 수 없는 문자 입력시
+            int idx = findArray(Jongsung, c);
+            if (idx != -1) {
+                jong = idx;
+                writeAssembled();
+            } else {
+                cancelAssemble();
+                writeChar(translate(c));
+
+                cho = Chosung.indexOf(c);
+                if (cho != -1) {
+                    input.setMovingCursor(input.getMovingCursor() - 1);
+                }
+            }
+        }
+    }
+
+    private void assembleJungsung(char c) {
+        jung = findArray(Jungsung, c);
+        if (jung == -1) {
+            cho = Chosung.indexOf(c);
+            input.setMovingCursor(input.getAnchorCursor());
+            writeChar(translate(c));
+            input.setMovingCursor(input.getMovingCursor() - 1);
+        } else {
+            writeAssembled();
+        }
+    }
+
+    private void assembleChosung(char c) {
+        cho = Chosung.indexOf(c);
+        writeChar(translate(c));
+        if (cho != -1) {
+            input.setMovingCursor(input.getMovingCursor() - 1);
+        }
     }
 
     @Override
