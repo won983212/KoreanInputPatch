@@ -1,0 +1,12 @@
+{
+  "key.koreaninput.category": "한글패치",
+  "key.kor.desc": "한영 전환키",
+  "key.hanja.desc": "한자 입력키",
+  "key.color.desc": "색상코드 입력키",
+  "koreanime.configGui.title": "한글 패치 설정",
+  "koreanime.configGui.visibleMode.title": "한영 표시기 활성화 모드",
+  "koreanime.configGui.useAnimation.title": "한영 표시기 애니메이션",
+  "koreanime.configGui.visibleMode0.desc": "끄기",
+  "koreanime.configGui.visibleMode1.desc": "채팅창에서만 보기",
+  "koreanime.configGui.visibleMode2.desc": "항상 켜기"
+}

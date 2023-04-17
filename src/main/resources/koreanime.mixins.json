@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "package": "com.won983212.kpatch.mixin",
+  "refmap": "modid.refmap.json",
+  "mixins": [
+    "MixinTextfieldWidget"
+  ]
+}

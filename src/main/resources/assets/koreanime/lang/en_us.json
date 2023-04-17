@@ -1,0 +1,12 @@
+{
+  "key.koreaninput.category": "Korean IME",
+  "key.kor.desc": "Switch to Korean or English",
+  "key.hanja.desc": "Open Hanja picker",
+  "key.color.desc": "Open color code picker",
+  "koreanime.configGui.title": "Korean IME Settings",
+  "koreanime.configGui.visibleMode.title": "IME indicator visiblility mode",
+  "koreanime.configGui.useAnimation.title": "Use IME indicator animation",
+  "koreanime.configGui.visibleMode0.desc": "Off",
+  "koreanime.configGui.visibleMode1.desc": "Only visible in chat gui",
+  "koreanime.configGui.visibleMode2.desc": "Always visible"
+}
